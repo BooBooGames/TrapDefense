@@ -6,10 +6,10 @@ public class ZombiePath : MonoBehaviour
 {
     [SerializeField] private bool useChildrenAsWaypoints = true;
     [SerializeField] private Transform[] waypoints;
-    [SerializeField] [Min(0.5f)] private float roadWidth = 3f;
-    [SerializeField] [Min(0f)] private float boundaryPadding = 0.25f;
+    [SerializeField][Min(0.5f)] private float roadWidth = 3f;
+    [SerializeField][Min(0f)] private float boundaryPadding = 0.25f;
     [SerializeField] private bool smoothPath = true;
-    [SerializeField] [Min(4)] private int samplesPerSegment = 24;
+    [SerializeField][Min(4)] private int samplesPerSegment = 24;
     [SerializeField] private Color pathColor = new Color(0.18f, 0.95f, 0.42f, 1f);
 
     private readonly List<Vector3> sampledPoints = new List<Vector3>();
@@ -38,6 +38,11 @@ public class ZombiePath : MonoBehaviour
     public float RoadWidth => roadWidth;
 
     public float UsableHalfWidth => Mathf.Max(0f, (roadWidth * 0.5f) - boundaryPadding);
+
+    public void SetRoadWidth(float newRoadWidth)
+    {
+        roadWidth = Mathf.Max(0.5f, newRoadWidth);
+    }
 
     private void Awake()
     {

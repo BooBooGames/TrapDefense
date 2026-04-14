@@ -25,6 +25,12 @@ public class ZombiePathFollower : MonoBehaviour
         UpdateTransform();
     }
 
+    public void ConfigureMovement(float configuredMoveSpeed, float configuredRoadWidthUsage)
+    {
+        moveSpeed = Mathf.Max(0.1f, configuredMoveSpeed);
+        roadWidthUsage = Mathf.Clamp(configuredRoadWidthUsage, 0.1f, 1f);
+    }
+
     private void Start()
     {
         if (!initialized)
