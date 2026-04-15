@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class ZombieCrowdSpawner : MonoBehaviour
@@ -16,7 +17,16 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
     private int spawnedCount;
     private int aliveZombies;
+    private int totalPlannedZombies;
+    private int completedZombies;
+    private int currentWaveNumber;
     private bool wavesRunning;
+
+    public event Action<int, int, float> ProgressChanged;
+
+    public int CurrentWaveNumber => currentWaveNumber;
+    public int TotalWaves => levelConfig != null ? levelConfig.TotalWaves : 0;
+    public float OverallProgress => totalPlannedZombies > 0 ? completedZombies / (float)totalPlannedZombies : 0f;
 
     private void Start()
     {
@@ -33,7 +43,11 @@ public class ZombieCrowdSpawner : MonoBehaviour
             return;
         }
 
+        totalPlannedZombies = CalculateTotalZombieCount();
+        completedZombies = 0;
+        currentWaveNumber = 0;
         wavesRunning = true;
+        NotifyProgressChanged();
         StartCoroutine(RunWaveSequence());
     }
 
@@ -53,6 +67,9 @@ public class ZombieCrowdSpawner : MonoBehaviour
             {
                 continue;
             }
+
+            currentWaveNumber = waveIndex + 1;
+            NotifyProgressChanged();
 
             if (sharedPath != null)
             {
@@ -125,11 +142,18 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
         runtime.Configure(entry.health);
         runtime.Despawned += OnZombieDespawned;
+        runtime.Killed += OnZombieKilled;
 
         ZombiePathFollower follower = zombie.GetComponent<ZombiePathFollower>();
         if (follower == null)
         {
             follower = zombie.AddComponent<ZombiePathFollower>();
+        }
+
+        ZombieWeaponCollision weaponCollision = zombie.GetComponent<ZombieWeaponCollision>();
+        if (weaponCollision == null)
+        {
+            weaponCollision = zombie.AddComponent<ZombieWeaponCollision>();
         }
 
         follower.ConfigureMovement(zombieMoveSpeed, entry.roadWidthUsage);
@@ -142,7 +166,18 @@ public class ZombieCrowdSpawner : MonoBehaviour
     private void OnZombieDespawned(ZombieRuntime zombie)
     {
         zombie.Despawned -= OnZombieDespawned;
+        zombie.Killed -= OnZombieKilled;
         aliveZombies = Mathf.Max(0, aliveZombies - 1);
+        completedZombies = Mathf.Min(totalPlannedZombies, completedZombies + 1);
+        NotifyProgressChanged();
+    }
+
+    private void OnZombieKilled(ZombieRuntime zombie)
+    {
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.AddCoins(1);
+        }
     }
 
     private GameObject CreateFallbackZombie()
@@ -187,10 +222,39 @@ public class ZombieCrowdSpawner : MonoBehaviour
         // Shuffle the final spawn list so mixed-type waves interleave naturally.
         for (int i = queue.Count - 1; i > 0; i--)
         {
-            int swapIndex = Random.Range(0, i + 1);
+            int swapIndex = UnityEngine.Random.Range(0, i + 1);
             (queue[i], queue[swapIndex]) = (queue[swapIndex], queue[i]);
         }
 
         return queue;
+    }
+
+    private int CalculateTotalZombieCount()
+    {
+        if (levelConfig == null || levelConfig.Waves == null)
+        {
+            return 0;
+        }
+
+        int total = 0;
+        for (int i = 0; i < levelConfig.Waves.Length; i++)
+        {
+            WaveDefinition wave = levelConfig.Waves[i];
+            if (wave != null)
+            {
+                total += wave.GetTotalZombieCount();
+            }
+        }
+
+        return total;
+    }
+
+    private void NotifyProgressChanged()
+    {
+        ProgressChanged?.Invoke(currentWaveNumber, TotalWaves, OverallProgress);
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateWaveProgress(currentWaveNumber, TotalWaves, OverallProgress);
+        }
     }
 }

@@ -7,12 +7,14 @@ public class ZombieRuntime : MonoBehaviour
 
     private bool configured;
     private bool despawnNotified;
+    private bool killNotified;
     private float currentHealth;
 
     public float MaxHealth => maxHealth;
     public float CurrentHealth => currentHealth;
 
     public event Action<ZombieRuntime> Despawned;
+    public event Action<ZombieRuntime> Killed;
 
     private void Awake()
     {
@@ -31,8 +33,27 @@ public class ZombieRuntime : MonoBehaviour
         currentHealth = Mathf.Max(0f, currentHealth - damage);
         if (currentHealth <= 0f)
         {
+            NotifyKilled();
             Destroy(gameObject);
         }
+    }
+
+    public void Kill()
+    {
+        currentHealth = 0f;
+        NotifyKilled();
+        Destroy(gameObject);
+    }
+
+    private void NotifyKilled()
+    {
+        if (killNotified)
+        {
+            return;
+        }
+
+        killNotified = true;
+        Killed?.Invoke(this);
     }
 
     private void OnDestroy()
