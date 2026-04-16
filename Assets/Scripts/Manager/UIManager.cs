@@ -15,6 +15,9 @@ public class UIManager : MonoBehaviour
 
     public TextMeshProUGUI coinCounterLabel, gemsCounterLabel;
 
+    public Button weaponUpgradeButton;
+    public TextMeshProUGUI weaponUpgradeLevelLabel;
+
     private int coinCount;
     private int gemsCount;
     private int gearCount;
