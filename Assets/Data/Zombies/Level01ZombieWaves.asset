@@ -16,115 +16,163 @@ MonoBehaviour:
   waves:
   - roadWidth: 3.5
     spawnInterval: 0.45
-    delayBeforeNextWave: 2
+    delayBeforeNextWave: 0
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 12
-      health: 10
+      health: 1
+      moveSpeed: 2.1
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 1
   - roadWidth: 3.8
     spawnInterval: 0.42
-    delayBeforeNextWave: 2
+    delayBeforeNextWave: 0
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 20
-      health: 12
+      health: 1
+      moveSpeed: 2.3
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 1
   - roadWidth: 4
     spawnInterval: 0.39
-    delayBeforeNextWave: 2.25
+    delayBeforeNextWave: 0
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 12
-      health: 14
+      health: 1
+      moveSpeed: 2.5
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 1
     - zombieTypeName: Tank
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 5
-      health: 28
+      health: 2
+      moveSpeed: 2.5
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 0.9
   - roadWidth: 4.2
     spawnInterval: 0.36
-    delayBeforeNextWave: 2.25
+    delayBeforeNextWave: 0
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 15
-      health: 16
+      health: 1
+      moveSpeed: 2.7
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 1
     - zombieTypeName: Brute
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 8
-      health: 32
+      health: 2
+      moveSpeed: 2.7
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 0.9
   - roadWidth: 4.4
     spawnInterval: 0.33
-    delayBeforeNextWave: 2.5
+    delayBeforeNextWave: 0
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 18
-      health: 18
+      health: 1
+      moveSpeed: 2.8
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 1
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 10
-      health: 12
+      health: 2
+      moveSpeed: 2.8
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 0.95
   - roadWidth: 4.6
     spawnInterval: 0.3
-    delayBeforeNextWave: 2.5
+    delayBeforeNextWave: 0
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 20
-      health: 20
+      health: 1
+      moveSpeed: 2.9
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 1
     - zombieTypeName: Brute
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 15
-      health: 36
+      health: 2
+      moveSpeed: 2.9
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 0.9
   - roadWidth: 4.8
     spawnInterval: 0.3
-    delayBeforeNextWave: 2.75
+    delayBeforeNextWave: 0
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 15
-      health: 22
+      health: 1
+      moveSpeed: 3
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 1
     - zombieTypeName: Tank
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 10
-      health: 40
+      health: 2
+      moveSpeed: 3
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 0.9
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 8
-      health: 14
+      health: 1
+      moveSpeed: 3
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 0.95
   - roadWidth: 5
     spawnInterval: 0.29
-    delayBeforeNextWave: 3
+    delayBeforeNextWave: 0
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 18
-      health: 24
+      health: 1
+      moveSpeed: 3.1
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 1
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 12
-      health: 16
+      health: 2
+      moveSpeed: 3.1
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 1
     - zombieTypeName: Brute
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 10
-      health: 42
+      health: 3
+      moveSpeed: 3.1
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 0.9
   - roadWidth: 5.2
     spawnInterval: 0.28
@@ -133,15 +181,24 @@ MonoBehaviour:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 20
-      health: 26
+      health: 1
+      moveSpeed: 3.2
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 1
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 15
-      health: 18
+      health: 2
+      moveSpeed: 3.2
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 1
     - zombieTypeName: Tank
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 15
-      health: 48
+      health: 3
+      moveSpeed: 3.2
+      coinReward: 1
+      gemReward: 0
       roadWidthUsage: 0.9

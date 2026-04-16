@@ -100,6 +100,7 @@ GameObject:
   - component: {fileID: 3467843743958415443}
   - component: {fileID: 800562096591827802}
   - component: {fileID: 675832375207446953}
+  - component: {fileID: 114281076344421267}
   m_Layer: 0
   m_Name: Capsule (3)
   m_TagString: Weapon
@@ -117,7 +118,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 1.335, z: -1.737}
-  m_LocalScale: {x: 0.3, y: 0.92999995, z: 0.3}
+  m_LocalScale: {x: 0.3, y: 3.33, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6929178082917362614}
@@ -195,9 +196,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 3.1670873
+  m_Height: 3.0222025
   m_Direction: 1
-  m_Center: {x: -8.2604855e-15, y: 0.583541, z: 0}
+  m_Center: {x: 0.00000011843696, y: 0.5110943, z: 0.000008027544}
 --- !u!54 &675832375207446953
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -225,6 +226,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &114281076344421267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3143007882922341456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ec57d2f4e249c4bb034db7f39bd106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponTag: Weapon
+  fallbackWeaponDamage: 1
 --- !u!1 &3835535308144376192
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,6 +253,7 @@ GameObject:
   - component: {fileID: 5914317280600878026}
   - component: {fileID: 3401183200723521481}
   - component: {fileID: 214479733635723904}
+  - component: {fileID: 826036397952774400}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Weapon
@@ -255,7 +271,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: -1.737, y: 1.335, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.92999995, z: 0.3}
+  m_LocalScale: {x: 0.3, y: 3.33, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6929178082917362614}
@@ -333,9 +349,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 3.1670873
+  m_Height: 3.055428
   m_Direction: 1
-  m_Center: {x: -8.2604855e-15, y: -0.58354104, z: 0}
+  m_Center: {x: -0.000000096449135, y: -0.5277113, z: -0.000010394713}
 --- !u!54 &214479733635723904
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -363,6 +379,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &826036397952774400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3835535308144376192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ec57d2f4e249c4bb034db7f39bd106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponTag: Weapon
+  fallbackWeaponDamage: 1
 --- !u!1 &4340204740405435680
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,6 +406,7 @@ GameObject:
   - component: {fileID: 6376218194373144454}
   - component: {fileID: 2886200801785912483}
   - component: {fileID: 6603219498090073992}
+  - component: {fileID: 8529379544832983803}
   m_Layer: 0
   m_Name: Capsule (2)
   m_TagString: Weapon
@@ -393,7 +424,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 1.335, z: 1.737}
-  m_LocalScale: {x: 0.3, y: 0.92999995, z: 0.3}
+  m_LocalScale: {x: 0.3, y: 3.33, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6929178082917362614}
@@ -471,9 +502,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 3.1670873
+  m_Height: 3.0554347
   m_Direction: 1
-  m_Center: {x: -8.2604855e-15, y: -0.583541, z: 0}
+  m_Center: {x: -0.00000009645409, y: -0.52770746, z: -0.00001607879}
 --- !u!54 &6603219498090073992
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -501,6 +532,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8529379544832983803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4340204740405435680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ec57d2f4e249c4bb034db7f39bd106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponTag: Weapon
+  fallbackWeaponDamage: 1
 --- !u!1 &6527786118639161087
 GameObject:
   m_ObjectHideFlags: 0
@@ -514,6 +559,7 @@ GameObject:
   - component: {fileID: 355421829820520800}
   - component: {fileID: 7259495628369440021}
   - component: {fileID: 3520680078106229890}
+  - component: {fileID: 4560843521796028505}
   m_Layer: 0
   m_Name: Capsule (1)
   m_TagString: Weapon
@@ -531,7 +577,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 1.737, y: 1.335, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.92999995, z: 0.3}
+  m_LocalScale: {x: 0.3, y: 3.33, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6929178082917362614}
@@ -609,9 +655,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 3.1670873
+  m_Height: 3.0424347
   m_Direction: 1
-  m_Center: {x: -8.2604855e-15, y: 0.583541, z: 0}
+  m_Center: {x: 0.00000010504501, y: 0.5212151, z: 0.000012612216}
 --- !u!54 &3520680078106229890
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -639,6 +685,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4560843521796028505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6527786118639161087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ec57d2f4e249c4bb034db7f39bd106, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponTag: Weapon
+  fallbackWeaponDamage: 1
 --- !u!1 &9046748622329677679
 GameObject:
   m_ObjectHideFlags: 0
@@ -648,14 +708,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6929178082917362614}
-  - component: {fileID: 1201520406548105588}
+  - component: {fileID: 708367616269802753}
+  - component: {fileID: 5150420171647225763}
   m_Layer: 0
   m_Name: Obstacle-3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6929178082917362614
 Transform:
   m_ObjectHideFlags: 0
@@ -676,7 +737,7 @@ Transform:
   - {fileID: 4636768366476601952}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1201520406548105588
+--- !u!114 &708367616269802753
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -685,99 +746,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 9046748622329677679}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d0390bd8b8ffd640b34fe25065ff1df, type: 3}
+  m_Script: {fileID: 11500000, guid: 54b52aaf69a74bdbb583ece6af2db107, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateType: 0
-  isSpeedBased: 0
-  hasOnStart: 0
-  hasOnPlay: 0
-  hasOnUpdate: 0
-  hasOnStepComplete: 0
-  hasOnComplete: 0
-  hasOnTweenCreated: 0
-  hasOnRewind: 0
-  onStart:
-    m_PersistentCalls:
-      m_Calls: []
-  onPlay:
-    m_PersistentCalls:
-      m_Calls: []
-  onUpdate:
-    m_PersistentCalls:
-      m_Calls: []
-  onStepComplete:
-    m_PersistentCalls:
-      m_Calls: []
-  onComplete:
-    m_PersistentCalls:
-      m_Calls: []
-  onTweenCreated:
-    m_PersistentCalls:
-      m_Calls: []
-  onRewind:
-    m_PersistentCalls:
-      m_Calls: []
-  targetIsSelf: 1
-  targetGO: {fileID: 0}
-  tweenTargetIsTargetGO: 1
-  delay: 0
-  duration: 1.5
-  easeType: 1
-  easeCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  loopType: 2
-  loops: -1
-  id: 
-  isRelative: 0
-  isFrom: 0
-  isIndependentUpdate: 0
-  autoKill: 1
-  isActive: 1
-  isValid: 1
-  target: {fileID: 6929178082917362614}
-  animationType: 4
-  targetType: 11
-  forcedTargetType: 0
-  autoPlay: 1
-  useTargetAsV3: 0
-  endValueFloat: 0
-  endValueV3: {x: 0, y: 360, z: 0}
-  endValueV2: {x: 0, y: 0}
-  endValueColor: {r: 1, g: 1, b: 1, a: 1}
-  endValueString: 
-  endValueRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 0
-    height: 0
-  endValueTransform: {fileID: 0}
-  optionalBool0: 0
-  optionalFloat0: 0
-  optionalInt0: 0
-  optionalRotationMode: 1
-  optionalScrambleMode: 0
-  optionalString: 
+  damagePower: 1
+--- !u!114 &5150420171647225763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9046748622329677679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f325d684e964b0ba2fb20a6e955f109, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationAxis: {x: 0, y: 360, z: 0}
+  rotationSpeed: 50
+  rotationSpace: 1

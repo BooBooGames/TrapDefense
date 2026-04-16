@@ -9,7 +9,6 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
     [SerializeField] private ZombiePath sharedPath;
     [SerializeField] private ZombieWaveConfig levelConfig;
-    [SerializeField][Min(0.1f)] private float zombieMoveSpeed = 2.5f;
     [SerializeField][Min(0f)] private float initialSpacing = 1.35f;
     [SerializeField] private Vector3 fallbackZombieScale = new Vector3(0.6f, 1.15f, 0.6f);
     [SerializeField] private Color fallbackZombieColor = new Color(0.3f, 0.75f, 0.36f, 1f);
@@ -141,6 +140,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
         }
 
         runtime.Configure(entry.health);
+        runtime.ConfigureRewards(entry.coinReward, entry.gemReward);
         runtime.Despawned += OnZombieDespawned;
         runtime.Killed += OnZombieKilled;
 
@@ -156,7 +156,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
             weaponCollision = zombie.AddComponent<ZombieWeaponCollision>();
         }
 
-        follower.ConfigureMovement(zombieMoveSpeed, entry.roadWidthUsage);
+        follower.ConfigureMovement(entry.moveSpeed, entry.roadWidthUsage);
         follower.Initialize(sharedPath, initialDistance, spawnedCount + 1);
 
         aliveZombies++;
@@ -176,7 +176,8 @@ public class ZombieCrowdSpawner : MonoBehaviour
     {
         if (UIManager.Instance != null)
         {
-            UIManager.Instance.AddCoins(1);
+            UIManager.Instance.AddCoins(zombie.CoinReward);
+            UIManager.Instance.AddGems(zombie.GemReward);
         }
     }
 

@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
 
     public Button weaponUpgradeButton;
     public TextMeshProUGUI weaponUpgradeLevelLabel;
+    public WeaponUpgradeController weaponUpgradeTarget;
 
     private int coinCount;
     private int gemsCount;
@@ -31,6 +32,8 @@ public class UIManager : MonoBehaviour
         gearCount = ParseInitialGearCount();
         UpdateGearUi(0f);
         UpdateCurrencyUi();
+        BindWeaponUpgradeUi();
+        RefreshWeaponUpgradeUi();
     }
 
     private void OnDestroy()
@@ -38,6 +41,11 @@ public class UIManager : MonoBehaviour
         if (Instance == this)
         {
             Instance = null;
+        }
+
+        if (weaponUpgradeTarget != null)
+        {
+            weaponUpgradeTarget.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
         }
     }
 
@@ -81,6 +89,23 @@ public class UIManager : MonoBehaviour
         UpdateCurrencyUi();
     }
 
+    public bool TrySpendGears(int amount)
+    {
+        if (amount <= 0)
+        {
+            return true;
+        }
+
+        if (gearCount < amount)
+        {
+            return false;
+        }
+
+        gearCount -= amount;
+        UpdateGearUi(gearGenerationDuration > 0f ? gearGenerationTimer / gearGenerationDuration : 0f);
+        return true;
+    }
+
     private void UpdateGearUi(float progress)
     {
         if (gearCounterFill != null)
@@ -92,6 +117,8 @@ public class UIManager : MonoBehaviour
         {
             gearCounterLabel.text = gearCount.ToString();
         }
+
+        RefreshWeaponUpgradeUi();
     }
 
     private int ParseInitialGearCount()
@@ -125,5 +152,59 @@ public class UIManager : MonoBehaviour
         }
 
         return int.TryParse(label.text, out int parsedValue) ? Mathf.Max(0, parsedValue) : 0;
+    }
+
+    private void BindWeaponUpgradeUi()
+    {
+        if (weaponUpgradeButton != null)
+        {
+            weaponUpgradeButton.onClick.RemoveListener(HandleWeaponUpgradeClicked);
+            weaponUpgradeButton.onClick.AddListener(HandleWeaponUpgradeClicked);
+        }
+
+        if (weaponUpgradeTarget != null)
+        {
+            weaponUpgradeTarget.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
+            weaponUpgradeTarget.UpgradeStateChanged += HandleWeaponUpgradeStateChanged;
+        }
+    }
+
+    private void HandleWeaponUpgradeClicked()
+    {
+        if (weaponUpgradeTarget == null)
+        {
+            return;
+        }
+
+        weaponUpgradeTarget.TryUpgrade(this);
+        RefreshWeaponUpgradeUi();
+    }
+
+    private void HandleWeaponUpgradeStateChanged(WeaponUpgradeController _)
+    {
+        RefreshWeaponUpgradeUi();
+    }
+
+    private void RefreshWeaponUpgradeUi()
+    {
+        if (weaponUpgradeLevelLabel != null)
+        {
+            if (weaponUpgradeTarget == null)
+            {
+                weaponUpgradeLevelLabel.text = "Weapon Lv. 0/0";
+            }
+            else
+            {
+                weaponUpgradeLevelLabel.text = $"Weapon Lv. {weaponUpgradeTarget.CurrentLevel}/{weaponUpgradeTarget.MaxLevel}";
+            }
+        }
+
+        if (weaponUpgradeButton != null)
+        {
+            weaponUpgradeButton.interactable =
+                weaponUpgradeTarget != null &&
+                weaponUpgradeTarget.CanUpgrade() &&
+                gearCount >= weaponUpgradeTarget.CurrentUpgradeCost;
+        }
     }
 }

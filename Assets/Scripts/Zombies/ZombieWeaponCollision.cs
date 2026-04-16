@@ -3,6 +3,7 @@ using UnityEngine;
 public class ZombieWeaponCollision : MonoBehaviour
 {
     [SerializeField] private string weaponTag = "Weapon";
+    [SerializeField][Min(1f)] private float fallbackWeaponDamage = 1f;
 
     private ZombieRuntime zombieRuntime;
 
@@ -17,23 +18,36 @@ public class ZombieWeaponCollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (IsWeaponTrigger(other))
+        if (TryGetWeaponDamage(other, out float weaponDamage))
         {
-            zombieRuntime?.Kill();
+            zombieRuntime?.ApplyDamage(weaponDamage);
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (IsWeaponObject(collision.collider))
+        if (TryGetWeaponDamage(collision.collider, out float weaponDamage))
         {
-            zombieRuntime?.Kill();
+            zombieRuntime?.ApplyDamage(weaponDamage);
         }
     }
 
-    private bool IsWeaponTrigger(Collider other)
+    private bool TryGetWeaponDamage(Collider other, out float weaponDamage)
     {
-        return IsWeaponObject(other);
+        weaponDamage = 0f;
+        if (!IsWeaponObject(other))
+        {
+            return false;
+        }
+
+        WeaponDamageSource damageSource = other.GetComponent<WeaponDamageSource>();
+        if (damageSource == null)
+        {
+            damageSource = other.GetComponentInParent<WeaponDamageSource>();
+        }
+
+        weaponDamage = damageSource != null ? damageSource.DamagePower : fallbackWeaponDamage;
+        return true;
     }
 
     private bool IsWeaponObject(Component other)

@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ZombieLevelConfig", menuName = "TrapDefense/Zombies/Level Wave Config")]
 public class ZombieWaveConfig : ScriptableObject
 {
-    [SerializeField] [Min(1)] private int totalWaves = 9;
+    [SerializeField][Min(1)] private int totalWaves = 9;
     [SerializeField] private WaveDefinition[] waves = new WaveDefinition[9];
 
     public int TotalWaves => totalWaves;
@@ -59,5 +59,8 @@ public class ZombieWaveEntry
     public GameObject prefab;
     [Min(1)] public int count = 1;
     [Min(1f)] public float health = 10f;
+    [Min(0.1f)] public float moveSpeed = 2.5f;
+    [Min(0)] public int coinReward = 1;
+    [Min(0)] public int gemReward = 0;
     [Range(0.1f, 1f)] public float roadWidthUsage = 1f;
 }
