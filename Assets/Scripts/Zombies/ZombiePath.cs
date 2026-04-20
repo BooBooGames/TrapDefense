@@ -168,6 +168,68 @@ public class ZombiePath : MonoBehaviour
         }
     }
 
+    public float FindClosestDistance(Vector3 worldPosition, out Vector3 closestPoint, out Vector3 forward)
+    {
+        RebuildIfNeeded();
+
+        if (sampledPoints.Count == 0)
+        {
+            closestPoint = transform.position;
+            forward = transform.forward;
+            return 0f;
+        }
+
+        if (sampledPoints.Count == 1)
+        {
+            closestPoint = sampledPoints[0];
+            forward = sampledForwards.Count > 0 ? sampledForwards[0] : transform.forward;
+            return 0f;
+        }
+
+        float bestDistance = 0f;
+        float bestDistanceSquared = float.MaxValue;
+        closestPoint = sampledPoints[0];
+        forward = sampledForwards[0];
+
+        for (int i = 0; i < sampledPoints.Count - 1; i++)
+        {
+            Vector3 from = sampledPoints[i];
+            Vector3 to = sampledPoints[i + 1];
+            Vector3 segment = to - from;
+            float segmentLengthSquared = segment.sqrMagnitude;
+            if (segmentLengthSquared <= Mathf.Epsilon)
+            {
+                continue;
+            }
+
+            float t = Mathf.Clamp01(Vector3.Dot(worldPosition - from, segment) / segmentLengthSquared);
+            Vector3 projectedPoint = from + (segment * t);
+            float projectedDistanceSquared = (worldPosition - projectedPoint).sqrMagnitude;
+
+            if (projectedDistanceSquared >= bestDistanceSquared)
+            {
+                continue;
+            }
+
+            bestDistanceSquared = projectedDistanceSquared;
+            float segmentStartDistance = cumulativeLengths[i];
+            float segmentLength = Mathf.Sqrt(segmentLengthSquared);
+            bestDistance = segmentStartDistance + (segmentLength * t);
+            closestPoint = projectedPoint;
+
+            Vector3 fromForward = sampledForwards[i];
+            Vector3 toForward = sampledForwards[Mathf.Min(i + 1, sampledForwards.Count - 1)];
+            forward = Vector3.Slerp(fromForward, toForward, t).normalized;
+        }
+
+        if (forward.sqrMagnitude <= 0.0001f)
+        {
+            forward = transform.forward;
+        }
+
+        return bestDistance;
+    }
+
     private void OnDrawGizmos()
     {
         RebuildIfNeeded();
