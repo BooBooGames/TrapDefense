@@ -19,8 +19,6 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI weaponUpgradeLevelLabel;
     public WeaponUpgradeController weaponUpgradeTarget;
 
-    public Image xpBarFill;
-
     public Image healthBarFill;
     public TextMeshProUGUI healthBarLabel;
 
@@ -93,6 +91,8 @@ public class UIManager : MonoBehaviour
             waveProgressBarLabel.text = totalWaves > 0 ? $"Wave {displayedWave}/{totalWaves}" : "Wave 0/0";
         }
     }
+
+    
 
     public void AddCoins(int amount)
     {

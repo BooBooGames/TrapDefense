@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: PowerCardCatalog
+  m_EditorClassIdentifier: Assembly-CSharp::PowerCardCatalog
+  cards:
+  - cardId: 1
+    cardType: Common
+    cardName: Trap Accelerator
+    cardImage: {fileID: 21300000, guid: 544902dde9046429295b5480fb48e5be, type: 3}
+    descriptions:
+    - +8% trap attack speed
+  - cardId: 2
+    cardType: Legendary
+    cardName: Doom Traps
+    cardImage: {fileID: 21300000, guid: 544902dde9046429295b5480fb48e5be, type: 3}
+    descriptions:
+    - Each hit slows enemies
+    - +20% trap damage
+  - cardId: 3
+    cardType: Common
+    cardName: ThinArmor
+    cardImage: {fileID: 21300000, guid: 544902dde9046429295b5480fb48e5be, type: 3}
+    descriptions:
+    - -10% enemy HP
+  - cardId: 4
+    cardType: Epic
+    cardName: Death Mark
+    cardImage: {fileID: 21300000, guid: 544902dde9046429295b5480fb48e5be, type: 3}
+    descriptions:
+    - Enemies has a 5% Chance to die instantly
+  - cardId: 5
+    cardType: Common
+    cardName: Pocket Gears
+    cardImage: {fileID: 21300000, guid: 544902dde9046429295b5480fb48e5be, type: 3}
+    descriptions:
+    - Instantly gain +3 gears
+  - cardId: 6
+    cardType: Rare
+    cardName: Wave Bonus
+    cardImage: {fileID: 21300000, guid: 544902dde9046429295b5480fb48e5be, type: 3}
+    descriptions:
+    - +5 gears on wave complete
+  - cardId: 7
+    cardType: Legendary
+    cardName: Infinite Machine
+    cardImage: {fileID: 21300000, guid: 544902dde9046429295b5480fb48e5be, type: 3}
+    descriptions:
+    - +5 gear production per wave (cumulative)
+  - cardId: 8
+    cardType: Rare
+    cardName: Weakening Strike
+    cardImage: {fileID: 21300000, guid: 544902dde9046429295b5480fb48e5be, type: 3}
+    descriptions:
+    - Trap hits slow enemy
+    - -10% for 2s

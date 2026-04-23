@@ -185,6 +185,11 @@ public class ZombieCrowdSpawner : MonoBehaviour
             UIManager.Instance.AddCoins(zombie.CoinReward);
             UIManager.Instance.AddGems(zombie.GemReward);
         }
+
+        if (PlayerXpSystem.Instance != null)
+        {
+            PlayerXpSystem.Instance.AddXp(1);
+        }
     }
 
     private void OnZombieEscaped(ZombieRuntime zombie)
