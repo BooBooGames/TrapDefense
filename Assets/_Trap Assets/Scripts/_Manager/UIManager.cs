@@ -1,10 +1,26 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    private enum BottomHudButtonIndex
+    {
+        Lock = 0,
+        Upgrade = 1,
+        Home = 2,
+        Card = 3,
+        Shop = 4
+    }
+
     public static UIManager Instance { get; private set; }
+    public GameObject gameOverPanel, gameViewPanel, homeScreenPanel, upgradeScreenPanel, cardViewPanel, shopPanel, bottomHudPanel, selectedButtonImage;
+
+    public List<Button> bottomHudButtons;
+
+    public Button playButton;
 
     public Image waveProgressBarFill;
     public TextMeshProUGUI waveProgressBarLabel;
@@ -18,37 +34,48 @@ public class UIManager : MonoBehaviour
     public Button weaponUpgradeButton;
     public TextMeshProUGUI weaponUpgradeLevelLabel;
     public WeaponUpgradeController weaponUpgradeTarget;
+    public ZombieCrowdSpawner zombieCrowdSpawner;
 
     public Image healthBarFill;
     public TextMeshProUGUI healthBarLabel;
 
-    public GameObject gameOverPanel;
 
     [SerializeField][Min(0)] private int playerHealthUpgradeBonus = 0;
     [SerializeField] private bool pauseOnGameOver = true;
+    [SerializeField] private float selectedButtonYPosition = 0f;
+    [SerializeField][Min(1f)] private float selectedButtonScale = 1.2f;
+    [SerializeField][Min(0.1f)] private float unselectedButtonScale = 1f;
 
-    private int coinCount;
-    private int gemsCount;
     private int gearCount;
     private float gearGenerationTimer;
     private int maxPlayerHealth;
     private int currentPlayerHealth;
     private bool gameOverTriggered;
+    private readonly List<float> defaultBottomButtonYPositions = new List<float>();
 
     private void Awake()
     {
         Instance = this;
-        coinCount = ParseLabelValue(coinCounterLabel);
-        gemsCount = ParseLabelValue(gemsCounterLabel);
+        PlayerCurrencySystem.Initialize(ParseLabelValue(coinCounterLabel), ParseLabelValue(gemsCounterLabel));
         gearCount = ParseInitialGearCount();
         UpdateGearUi(0f);
-        UpdateCurrencyUi();
+        UpdateCurrencyUi(PlayerCurrencySystem.Coins, PlayerCurrencySystem.Gems);
+        BindNavigationButtons();
         BindWeaponUpgradeUi();
         RefreshWeaponUpgradeUi();
+        if (zombieCrowdSpawner == null)
+        {
+            zombieCrowdSpawner = FindFirstObjectByType<ZombieCrowdSpawner>();
+        }
+        PlayerCurrencySystem.CurrencyChanged += HandleCurrencyChanged;
         if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(false);
         }
+
+        CacheBottomHudButtonDefaults();
+        ShowHomeScreen();
+        UpdateBottomHudSelection((int)BottomHudButtonIndex.Home);
     }
 
     private void OnDestroy()
@@ -62,6 +89,8 @@ public class UIManager : MonoBehaviour
         {
             weaponUpgradeTarget.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
         }
+
+        PlayerCurrencySystem.CurrencyChanged -= HandleCurrencyChanged;
     }
 
     private void Update()
@@ -90,20 +119,6 @@ public class UIManager : MonoBehaviour
             int displayedWave = totalWaves > 0 ? Mathf.Clamp(Mathf.Max(currentWave, 1), 1, totalWaves) : 0;
             waveProgressBarLabel.text = totalWaves > 0 ? $"Wave {displayedWave}/{totalWaves}" : "Wave 0/0";
         }
-    }
-
-    
-
-    public void AddCoins(int amount)
-    {
-        coinCount = Mathf.Max(0, coinCount + amount);
-        UpdateCurrencyUi();
-    }
-
-    public void AddGems(int amount)
-    {
-        gemsCount = Mathf.Max(0, gemsCount + amount);
-        UpdateCurrencyUi();
     }
 
     public void InitializePlayerHealth(int baseHealth)
@@ -193,16 +208,16 @@ public class UIManager : MonoBehaviour
         return int.TryParse(gearCounterLabel.text, out int parsedCount) ? Mathf.Max(0, parsedCount) : 0;
     }
 
-    private void UpdateCurrencyUi()
+    private void UpdateCurrencyUi(int coins, int gems)
     {
         if (coinCounterLabel != null)
         {
-            coinCounterLabel.text = coinCount.ToString();
+            coinCounterLabel.text = coins.ToString();
         }
 
         if (gemsCounterLabel != null)
         {
-            gemsCounterLabel.text = gemsCount.ToString();
+            gemsCounterLabel.text = gems.ToString();
         }
     }
 
@@ -245,6 +260,37 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ShowHomeScreen()
+    {
+        ShowScreen(homeScreenPanel, true);
+    }
+
+    public void ShowUpgradeScreen()
+    {
+        ShowScreen(upgradeScreenPanel, true);
+    }
+
+    public void ShowCardScreen()
+    {
+        ShowScreen(cardViewPanel, true);
+    }
+
+    public void ShowShopScreen()
+    {
+        ShowScreen(shopPanel, true);
+    }
+
+    public void StartGame()
+    {
+        if (!gameOverTriggered)
+        {
+            Time.timeScale = 1f;
+        }
+
+        ShowScreen(gameViewPanel, false);
+        zombieCrowdSpawner?.StartWaves();
+    }
+
     private void BindWeaponUpgradeUi()
     {
         if (weaponUpgradeButton != null)
@@ -257,6 +303,132 @@ public class UIManager : MonoBehaviour
         {
             weaponUpgradeTarget.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
             weaponUpgradeTarget.UpgradeStateChanged += HandleWeaponUpgradeStateChanged;
+        }
+    }
+
+    private void BindNavigationButtons()
+    {
+        BindBottomHudButton(BottomHudButtonIndex.Lock, HandleLockButtonClicked);
+        BindBottomHudButton(BottomHudButtonIndex.Upgrade, ShowUpgradeScreen);
+        BindBottomHudButton(BottomHudButtonIndex.Home, ShowHomeScreen);
+        BindBottomHudButton(BottomHudButtonIndex.Card, ShowCardScreen);
+        BindBottomHudButton(BottomHudButtonIndex.Shop, ShowShopScreen);
+
+        if (playButton != null)
+        {
+            playButton.onClick.RemoveListener(StartGame);
+            playButton.onClick.AddListener(StartGame);
+        }
+    }
+
+    private void BindBottomHudButton(BottomHudButtonIndex index, UnityAction callback)
+    {
+        if (bottomHudButtons == null)
+        {
+            return;
+        }
+
+        int buttonIndex = (int)index;
+        if (buttonIndex < 0 || buttonIndex >= bottomHudButtons.Count)
+        {
+            return;
+        }
+
+        Button button = bottomHudButtons[buttonIndex];
+        if (button == null)
+        {
+            return;
+        }
+
+        button.onClick.AddListener(() => HandleBottomHudButtonClicked(buttonIndex, callback));
+    }
+
+    private void HandleLockButtonClicked()
+    {
+    }
+
+    private void HandleBottomHudButtonClicked(int buttonIndex, UnityAction callback)
+    {
+        UpdateBottomHudSelection(buttonIndex);
+        callback?.Invoke();
+    }
+
+    private void CacheBottomHudButtonDefaults()
+    {
+        defaultBottomButtonYPositions.Clear();
+
+        if (bottomHudButtons == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < bottomHudButtons.Count; i++)
+        {
+            RectTransform buttonRect = bottomHudButtons[i] != null ? bottomHudButtons[i].transform as RectTransform : null;
+            defaultBottomButtonYPositions.Add(buttonRect != null ? buttonRect.anchoredPosition.y : 0f);
+        }
+    }
+
+    private void UpdateBottomHudSelection(int selectedIndex)
+    {
+        if (bottomHudButtons == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < bottomHudButtons.Count; i++)
+        {
+            Button button = bottomHudButtons[i];
+            if (button == null)
+            {
+                continue;
+            }
+
+            RectTransform buttonRect = button.transform as RectTransform;
+            if (buttonRect == null)
+            {
+                continue;
+            }
+
+            bool isSelected = i == selectedIndex;
+            Vector2 anchoredPosition = buttonRect.anchoredPosition;
+            float defaultY = i < defaultBottomButtonYPositions.Count ? defaultBottomButtonYPositions[i] : anchoredPosition.y;
+            anchoredPosition.y = isSelected ? selectedButtonYPosition : defaultY;
+            buttonRect.anchoredPosition = anchoredPosition;
+            buttonRect.localScale = Vector3.one * (isSelected ? selectedButtonScale : unselectedButtonScale);
+
+            if (!isSelected || selectedButtonImage == null)
+            {
+                continue;
+            }
+
+            RectTransform selectionRect = selectedButtonImage.transform as RectTransform;
+            if (selectionRect != null)
+            {
+                selectionRect.position = buttonRect.position;
+            }
+            else
+            {
+                selectedButtonImage.transform.position = button.transform.position;
+            }
+        }
+    }
+
+    private void ShowScreen(GameObject activePanel, bool showBottomHud)
+    {
+        SetPanelActive(homeScreenPanel, activePanel == homeScreenPanel);
+        SetPanelActive(upgradeScreenPanel, activePanel == upgradeScreenPanel);
+        SetPanelActive(cardViewPanel, activePanel == cardViewPanel);
+        SetPanelActive(shopPanel, activePanel == shopPanel);
+        SetPanelActive(gameViewPanel, activePanel == gameViewPanel);
+        SetPanelActive(bottomHudPanel, showBottomHud);
+    }
+
+    private void SetPanelActive(GameObject panel, bool isActive)
+    {
+        if (panel != null)
+        {
+            panel.SetActive(isActive);
         }
     }
 
@@ -276,6 +448,11 @@ public class UIManager : MonoBehaviour
         RefreshWeaponUpgradeUi();
     }
 
+    private void HandleCurrencyChanged(int coins, int gems)
+    {
+        UpdateCurrencyUi(coins, gems);
+    }
+
     private void RefreshWeaponUpgradeUi()
     {
         if (weaponUpgradeLevelLabel != null)
@@ -293,9 +470,9 @@ public class UIManager : MonoBehaviour
         if (weaponUpgradeButton != null)
         {
             weaponUpgradeButton.interactable =
-                weaponUpgradeTarget != null &&
-                weaponUpgradeTarget.CanUpgrade() &&
-                gearCount >= weaponUpgradeTarget.CurrentUpgradeCost;
+            weaponUpgradeTarget != null &&
+            weaponUpgradeTarget.CanUpgrade() &&
+            gearCount >= weaponUpgradeTarget.CurrentUpgradeCost;
         }
     }
 }

@@ -12,7 +12,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
     [SerializeField][Min(0f)] private float initialSpacing = 1.35f;
     [SerializeField] private Vector3 fallbackZombieScale = new Vector3(0.6f, 1.15f, 0.6f);
     [SerializeField] private Color fallbackZombieColor = new Color(0.3f, 0.75f, 0.36f, 1f);
-    [SerializeField] private bool autoStartOnPlay = true;
+    [SerializeField] private bool autoStartOnPlay = false;
 
     private int spawnedCount;
     private int aliveZombies;
@@ -180,11 +180,8 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
     private void OnZombieKilled(ZombieRuntime zombie)
     {
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.AddCoins(zombie.CoinReward);
-            UIManager.Instance.AddGems(zombie.GemReward);
-        }
+        PlayerCurrencySystem.AddCoins(zombie.CoinReward);
+        PlayerCurrencySystem.AddGems(zombie.GemReward);
 
         if (PlayerXpSystem.Instance != null)
         {
