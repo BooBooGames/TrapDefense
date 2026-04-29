@@ -20,6 +20,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
     private int completedZombies;
     private int currentWaveNumber;
     private bool wavesRunning;
+    private GameViewScreen gameViewScreen;
 
     public event Action<int, int, float> ProgressChanged;
 
@@ -46,9 +47,13 @@ public class ZombieCrowdSpawner : MonoBehaviour
         completedZombies = 0;
         currentWaveNumber = 0;
         wavesRunning = true;
-        if (UIManager.Instance != null)
+        if (gameViewScreen == null)
         {
-            UIManager.Instance.InitializePlayerHealth(levelConfig.StartingPlayerHealth);
+            gameViewScreen = GameViewScreen.Instance;
+        }
+        if (gameViewScreen != null)
+        {
+            gameViewScreen.InitializePlayerHealth(levelConfig.StartingPlayerHealth);
         }
         NotifyProgressChanged();
         StartCoroutine(RunWaveSequence());
@@ -191,9 +196,9 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
     private void OnZombieEscaped(ZombieRuntime zombie)
     {
-        if (UIManager.Instance != null)
+        if (gameViewScreen != null)
         {
-            UIManager.Instance.DamagePlayer(1);
+            gameViewScreen.DamagePlayer(1);
         }
     }
 
@@ -269,10 +274,6 @@ public class ZombieCrowdSpawner : MonoBehaviour
     private void NotifyProgressChanged()
     {
         ProgressChanged?.Invoke(currentWaveNumber, TotalWaves, OverallProgress);
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.UpdateWaveProgress(currentWaveNumber, TotalWaves, OverallProgress);
-        }
     }
 
     private void HandleZombieReachedEnd(ZombieRuntime zombieRuntime)
@@ -281,5 +282,10 @@ public class ZombieCrowdSpawner : MonoBehaviour
         {
             zombieRuntime.MarkEscaped();
         }
+    }
+
+    public void SetGameViewScreen(GameViewScreen screen)
+    {
+        gameViewScreen = screen;
     }
 }

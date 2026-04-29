@@ -38,15 +38,15 @@ public class WeaponUpgradeController : MonoBehaviour
         return upgradeLevels != null && currentLevel < upgradeLevels.Length;
     }
 
-    public bool TryUpgrade(UIManager uiManager)
+    public bool TryUpgrade(GameViewScreen gameViewScreen)
     {
-        if (!CanUpgrade() || uiManager == null)
+        if (!CanUpgrade() || gameViewScreen == null)
         {
             return false;
         }
 
         int upgradeCost = upgradeLevels[currentLevel].gearCost;
-        if (!uiManager.TrySpendGears(upgradeCost))
+        if (!gameViewScreen.TrySpendGears(upgradeCost))
         {
             return false;
         }
