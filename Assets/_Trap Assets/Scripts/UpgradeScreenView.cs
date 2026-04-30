@@ -39,6 +39,7 @@ public class UpgradeScreenView : MonoBehaviour
         PlayerUpgradeSystem.Initialize(upgradeConfig);
         PlayerUpgradeSystem.UpgradeStateChanged += HandleUpgradeStateChanged;
         PlayerCurrencySystem.CurrencyChanged += HandleCurrencyChanged;
+        ShowUpgradeBackground();
         RefreshUi();
     }
 
@@ -64,6 +65,8 @@ public class UpgradeScreenView : MonoBehaviour
         BindButton(weapon3BuyButton, HandleWeapon3UnlockClicked);
         BindButton(gearFlowUpgradeButton, HandleGearFlowUpgradeClicked);
         BindButton(baseHealthUpgradeButton, HandleBaseHealthUpgradeClicked);
+        BindButton(upgradeButton, HandleUpgradeTabClicked);
+        BindButton(evolutionButton, HandleEvolutionTabClicked);
     }
 
     private void BindButton(Button button, UnityEngine.Events.UnityAction callback)
@@ -109,6 +112,42 @@ public class UpgradeScreenView : MonoBehaviour
         }
     }
 
+
+    private void HandleUpgradeTabClicked()
+    {
+        ShowUpgradeBackground();
+    }
+
+    private void HandleEvolutionTabClicked()
+    {
+        ShowEvolutionBackground();
+    }
+
+    private void ShowUpgradeBackground()
+    {
+        if (upgradesBG != null)
+        {
+            upgradesBG.SetActive(true);
+        }
+
+        if (evolutionBG != null)
+        {
+            evolutionBG.SetActive(false);
+        }
+    }
+
+    private void ShowEvolutionBackground()
+    {
+        if (evolutionBG != null)
+        {
+            evolutionBG.SetActive(true);
+        }
+
+        if (upgradesBG != null)
+        {
+            upgradesBG.SetActive(false);
+        }
+    }
     private void RefreshUi()
     {
         PlayerUpgradeSystem.Initialize(upgradeConfig);
