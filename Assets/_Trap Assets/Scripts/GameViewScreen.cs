@@ -18,6 +18,7 @@ public class GameViewScreen : MonoBehaviour
     [SerializeField] private Image healthBarFill;
     [SerializeField] private TextMeshProUGUI healthBarLabel;
     [SerializeField] private GameObject gameOverPanel;
+    [SerializeField] private UpgradeScreenConfig upgradeConfig;
     [SerializeField][Min(0)] private int playerHealthUpgradeBonus;
     [SerializeField] private bool pauseOnGameOver = true;
 
@@ -32,7 +33,8 @@ public class GameViewScreen : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        AutoResolveReferences();
+        // AutoResolveReferences();
+        ApplyPersistentUpgradeState();
 
         if (zombieCrowdSpawner != null)
         {
@@ -52,6 +54,7 @@ public class GameViewScreen : MonoBehaviour
 
     private void OnEnable()
     {
+        ApplyPersistentUpgradeState();
         BindWeaponUpgradeUi();
 
         if (weaponUpgradeTarget != null)
@@ -106,6 +109,8 @@ public class GameViewScreen : MonoBehaviour
 
     public void StartGameplay()
     {
+        ApplyPersistentUpgradeState();
+
         if (!gameOverTriggered)
         {
             Time.timeScale = 1f;
@@ -234,6 +239,33 @@ public class GameViewScreen : MonoBehaviour
             zombieCrowdSpawner.OverallProgress);
     }
 
+    private void ApplyPersistentUpgradeState()
+    {
+        PlayerUpgradeSystem.Initialize(ResolveUpgradeConfig());
+        gearGenerationDuration = Mathf.Max(0.1f, PlayerUpgradeSystem.CurrentGearFlowValue);
+        playerHealthUpgradeBonus = Mathf.Max(0, PlayerUpgradeSystem.CurrentBaseHealthBonus);
+        gearGenerationTimer = Mathf.Clamp(gearGenerationTimer, 0f, gearGenerationDuration);
+    }
+
+    private UpgradeScreenConfig ResolveUpgradeConfig()
+    {
+        if (upgradeConfig != null)
+        {
+            return upgradeConfig;
+        }
+
+        UpgradeScreenView[] upgradeViews = Resources.FindObjectsOfTypeAll<UpgradeScreenView>();
+        for (int i = 0; i < upgradeViews.Length; i++)
+        {
+            if (upgradeViews[i] != null && upgradeViews[i].ConfigAsset != null)
+            {
+                return upgradeViews[i].ConfigAsset;
+            }
+        }
+
+        return null;
+    }
+
     private void UpdateGearUi(float progress)
     {
         if (gearCounterFill != null)
@@ -316,76 +348,76 @@ public class GameViewScreen : MonoBehaviour
         return int.TryParse(gearCounterLabel.text, out int parsedCount) ? Mathf.Max(0, parsedCount) : 0;
     }
 
-    private void AutoResolveReferences()
-    {
-        if (zombieCrowdSpawner == null)
-        {
-            zombieCrowdSpawner = FindFirstObjectByType<ZombieCrowdSpawner>();
-        }
+    // private void AutoResolveReferences()
+    // {
+    //     if (zombieCrowdSpawner == null)
+    //     {
+    //         zombieCrowdSpawner = FindFirstObjectByType<ZombieCrowdSpawner>();
+    //     }
 
-        if (waveProgressBarLabel == null)
-        {
-            waveProgressBarLabel = FindLabelByName("Wave Count Text (TMP)");
-        }
+    //     if (waveProgressBarLabel == null)
+    //     {
+    //         waveProgressBarLabel = FindLabelByName("Wave Count Text (TMP)");
+    //     }
 
-        if (waveProgressBarFill == null)
-        {
-            waveProgressBarFill = FindSiblingFillImage(waveProgressBarLabel);
-        }
+    //     if (waveProgressBarFill == null)
+    //     {
+    //         waveProgressBarFill = FindSiblingFillImage(waveProgressBarLabel);
+    //     }
 
-        if (gearCounterLabel == null)
-        {
-            gearCounterLabel = FindLabelByName("Gere count Text (TMP)") ?? FindLabelByName("Gear Count Text (TMP)");
-        }
+    //     if (gearCounterLabel == null)
+    //     {
+    //         gearCounterLabel = FindLabelByName("Gere count Text (TMP)") ?? FindLabelByName("Gear Count Text (TMP)");
+    //     }
 
-        if (gearCounterFill == null)
-        {
-            gearCounterFill = FindSiblingFillImage(gearCounterLabel);
-        }
+    //     if (gearCounterFill == null)
+    //     {
+    //         gearCounterFill = FindSiblingFillImage(gearCounterLabel);
+    //     }
 
-        if (weaponUpgradeButton == null)
-        {
-            weaponUpgradeButton = FindButtonByName("Weapon Upgrade");
-        }
+    //     if (weaponUpgradeButton == null)
+    //     {
+    //         weaponUpgradeButton = FindButtonByName("Weapon Upgrade");
+    //     }
 
-        if (weaponUpgradeLevelLabel == null && weaponUpgradeButton != null)
-        {
-            TextMeshProUGUI[] labels = weaponUpgradeButton.GetComponentsInChildren<TextMeshProUGUI>(true);
-            for (int i = 0; i < labels.Length; i++)
-            {
-                if (labels[i] != null && labels[i].transform.parent == weaponUpgradeButton.transform)
-                {
-                    weaponUpgradeLevelLabel = labels[i];
-                    break;
-                }
-            }
+    //     if (weaponUpgradeLevelLabel == null && weaponUpgradeButton != null)
+    //     {
+    //         TextMeshProUGUI[] labels = weaponUpgradeButton.GetComponentsInChildren<TextMeshProUGUI>(true);
+    //         for (int i = 0; i < labels.Length; i++)
+    //         {
+    //             if (labels[i] != null && labels[i].transform.parent == weaponUpgradeButton.transform)
+    //             {
+    //                 weaponUpgradeLevelLabel = labels[i];
+    //                 break;
+    //             }
+    //         }
 
-            if (weaponUpgradeLevelLabel == null && labels.Length > 0)
-            {
-                weaponUpgradeLevelLabel = labels[0];
-            }
-        }
+    //         if (weaponUpgradeLevelLabel == null && labels.Length > 0)
+    //         {
+    //             weaponUpgradeLevelLabel = labels[0];
+    //         }
+    //     }
 
-        if (weaponUpgradeTarget == null)
-        {
-            weaponUpgradeTarget = FindFirstObjectByType<WeaponUpgradeController>();
-        }
+    //     if (weaponUpgradeTarget == null)
+    //     {
+    //         weaponUpgradeTarget = FindFirstObjectByType<WeaponUpgradeController>();
+    //     }
 
-        if (healthBarLabel == null)
-        {
-            healthBarLabel = FindLabelByName("Health Count Text (TMP)");
-        }
+    //     if (healthBarLabel == null)
+    //     {
+    //         healthBarLabel = FindLabelByName("Health Count Text (TMP)");
+    //     }
 
-        if (healthBarFill == null)
-        {
-            healthBarFill = FindSiblingFillImage(healthBarLabel);
-        }
+    //     if (healthBarFill == null)
+    //     {
+    //         healthBarFill = FindSiblingFillImage(healthBarLabel);
+    //     }
 
-        if (gameOverPanel == null)
-        {
-            gameOverPanel = FindGameObjectByName("Game Over Panel");
-        }
-    }
+    //     if (gameOverPanel == null)
+    //     {
+    //         gameOverPanel = FindGameObjectByName("Game Over Panel");
+    //     }
+    // }
 
     private TextMeshProUGUI FindLabelByName(string objectName)
     {

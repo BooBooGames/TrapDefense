@@ -23,15 +23,22 @@ public static class PlayerCurrencySystem
 
     public static void Initialize(int defaultCoins, int defaultGems)
     {
-        if (isInitialized)
-        {
-            return;
-        }
-
         SaveGameData saveData = GameSaveSystem.Load();
-        coins = saveData.hasSavedCoins ? Mathf.Max(0, saveData.coins) : Mathf.Max(0, defaultCoins);
-        gems = Mathf.Max(0, defaultGems);
+        int resolvedCoins = saveData.hasSavedCoins
+            ? Mathf.Max(0, saveData.coins)
+            : Mathf.Max(isInitialized ? coins : 0, Mathf.Max(0, defaultCoins));
+        int resolvedGems = Mathf.Max(isInitialized ? gems : 0, Mathf.Max(0, defaultGems));
+
+        bool valuesChanged = !isInitialized || resolvedCoins != coins || resolvedGems != gems;
+
+        coins = resolvedCoins;
+        gems = resolvedGems;
         isInitialized = true;
+
+        if (valuesChanged)
+        {
+            NotifyCurrencyChanged();
+        }
     }
 
     public static void AddCoins(int amount)
@@ -47,6 +54,25 @@ public static class PlayerCurrencySystem
         NotifyCurrencyChanged();
     }
 
+    public static bool TrySpendCoins(int amount)
+    {
+        if (amount <= 0)
+        {
+            return true;
+        }
+
+        EnsureInitialized();
+        if (coins < amount)
+        {
+            return false;
+        }
+
+        coins -= amount;
+        SaveCoins();
+        NotifyCurrencyChanged();
+        return true;
+    }
+
     public static void AddGems(int amount)
     {
         if (amount == 0)
@@ -57,6 +83,24 @@ public static class PlayerCurrencySystem
         EnsureInitialized();
         gems = Mathf.Max(0, gems + amount);
         NotifyCurrencyChanged();
+    }
+
+    public static bool TrySpendGems(int amount)
+    {
+        if (amount <= 0)
+        {
+            return true;
+        }
+
+        EnsureInitialized();
+        if (gems < amount)
+        {
+            return false;
+        }
+
+        gems -= amount;
+        NotifyCurrencyChanged();
+        return true;
     }
 
     private static void EnsureInitialized()

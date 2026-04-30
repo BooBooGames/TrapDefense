@@ -1,16 +1,21 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CurrencyView : MonoBehaviour
 {
+    [SerializeField] private UIManager uiManager;
     [SerializeField] private TextMeshProUGUI coinCounterLabel;
     [SerializeField] private TextMeshProUGUI gemsCounterLabel;
+    [SerializeField] private Button settingsButton;
+
 
     private void Awake()
     {
         AutoResolveReferences();
         PlayerCurrencySystem.Initialize(ParseLabelValue(coinCounterLabel), ParseLabelValue(gemsCounterLabel));
         Refresh(PlayerCurrencySystem.Coins, PlayerCurrencySystem.Gems);
+        BindBottomHudButton(() => uiManager?.ShowSettingsScreen());
     }
 
     private void OnEnable()
@@ -76,5 +81,14 @@ public class CurrencyView : MonoBehaviour
         }
 
         return int.TryParse(label.text, out int parsedValue) ? Mathf.Max(0, parsedValue) : 0;
+    }
+
+    private void BindBottomHudButton(UnityEngine.Events.UnityAction callback)
+    {
+        if (settingsButton == null)
+        {
+            return;
+        }
+        settingsButton.onClick.AddListener(() => callback?.Invoke());
     }
 }

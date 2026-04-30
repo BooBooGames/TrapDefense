@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aab8ff6ba243a4528ac24fae1a378553, type: 3}
+  m_Name: UpgradeScreenConfig
+  m_EditorClassIdentifier: 
+  weapons:
+  - weaponName: Weapon 1
+    weaponSprite: {fileID: 21300000, guid: e3e3f6ee28b824ed5aad32c493c45e18, type: 3}
+    unlockCost:
+      coins: 0
+      gears: 0
+    unlockedByDefault: 1
+  - weaponName: Weapon 2
+    weaponSprite: {fileID: 21300000, guid: e3e3f6ee28b824ed5aad32c493c45e18, type: 3}
+    unlockCost:
+      coins: 50
+      gears: 0
+    unlockedByDefault: 0
+  - weaponName: Weapon 3
+    weaponSprite: {fileID: 21300000, guid: e3e3f6ee28b824ed5aad32c493c45e18, type: 3}
+    unlockCost:
+      coins: 100
+      gears: 0
+    unlockedByDefault: 0
+  gearFlow:
+    defaultValueSeconds: 5
+    valueMultiplier: 0.91
+    costPerLevel: 10
+    maxLevel: 17
+  baseHealth:
+    defaultValue: 28
+    levelBaseOffset: 6
+    levelValueMultiplier: 4
+    costBaseOffset: 1
+    costMultiplier: 5
+    maxLevel: 30

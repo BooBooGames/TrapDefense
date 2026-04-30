@@ -6,6 +6,13 @@ public class SaveGameData
 {
     public int coins;
     public bool hasSavedCoins;
+    public bool[] unlockedWeaponStates;
+    public int gearFlowLevel;
+    public int baseHealthLevel;
+
+    public bool musicEnabled = true;
+    public bool soundEnabled = true;
+    public bool hapticEnabled = true;
 
     // Future expansion examples:
     // public int selectedWeaponLevel;

@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject cardViewPanel;
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject bottomHudPanel;
+    [SerializeField] private GameObject settingPanel;
     [SerializeField] private Button playButton;
 
     private BottomHudView bottomHudController;
@@ -74,6 +75,12 @@ public class UIManager : MonoBehaviour
         bottomHudController?.SetSelectedButton(BottomHudView.ShopButtonIndex);
     }
 
+    public void ShowSettingsScreen()
+    {
+        // ShowScreen(settingPanel, false);
+        settingPanel.SetActive(true);
+    }
+
     public void StartGame()
     {
         ShowScreen(gameViewPanel, false);
@@ -99,6 +106,7 @@ public class UIManager : MonoBehaviour
         SetPanelActive(shopPanel, activePanel == shopPanel);
         SetPanelActive(gameViewPanel, activePanel == gameViewPanel);
         SetPanelActive(bottomHudPanel, showBottomHud);
+        SetPanelActive(settingPanel, activePanel == settingPanel);
     }
 
     private void SetPanelActive(GameObject panel, bool isActive)
