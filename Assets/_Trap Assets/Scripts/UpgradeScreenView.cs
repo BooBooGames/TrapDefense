@@ -28,6 +28,7 @@ public class UpgradeScreenView : MonoBehaviour
 
     [Header("Evolution")] public TextMeshProUGUI timelineText;
     public Image timeline1Image, timeline2Image;
+    public Button evolveButton;
     public TextMeshProUGUI descriptionText1, descriptionText2, evolutionCostText;
 
     private void Awake()
@@ -161,6 +162,51 @@ public class UpgradeScreenView : MonoBehaviour
         RefreshWeaponSlot(1, config, weapon2Image, weapon2Text, weapon2BuyButton, weapon2CostText, weapon2ButtonLabel);
         RefreshWeaponSlot(2, config, weapon3Image, weapon3Text, weapon3BuyButton, weapon3CostText, weapon3ButtonLabel);
         RefreshStatUpgrades();
+        RefreshEvolution(config);
+    }
+
+    private void RefreshEvolution(UpgradeScreenConfig config)
+    {
+        if (config == null)
+        {
+            return;
+        }
+
+        if (timeline1Image != null && config.timeline1Sprite != null)
+        {
+            timeline1Image.sprite = config.timeline1Sprite;
+        }
+
+        if (timeline2Image != null && config.timeline2Sprite != null)
+        {
+            timeline2Image.sprite = config.timeline2Sprite;
+        }
+
+        if (descriptionText1 != null)
+        {
+            descriptionText1.text = config.evolutionDescription1;
+        }
+
+        if (descriptionText2 != null)
+        {
+            descriptionText2.text = config.evolutionDescription2;
+        }
+
+        if (evolutionCostText != null)
+        {
+            evolutionCostText.text = config.evolutionCost.ToString();
+        }
+
+        if (evolveButton != null)
+        {
+            UpgradeResourceCost evolutionCost = new UpgradeResourceCost
+            {
+                coins = Mathf.Max(0, config.evolutionCost),
+                gears = 0,
+            };
+
+            evolveButton.interactable = PlayerUpgradeSystem.CanAfford(evolutionCost);
+        }
     }
 
     private void RefreshWeaponSlot(
