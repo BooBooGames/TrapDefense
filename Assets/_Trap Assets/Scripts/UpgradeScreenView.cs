@@ -26,6 +26,10 @@ public class UpgradeScreenView : MonoBehaviour
 
     public Button upgradeButton, evolutionButton;
 
+    [Header("Evolution")] public TextMeshProUGUI timelineText;
+    public Image timeline1Image, timeline2Image;
+    public TextMeshProUGUI descriptionText1, descriptionText2, evolutionCostText;
+
     private void Awake()
     {
         CacheButtonLabels();

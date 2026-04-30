@@ -36,6 +36,12 @@ public class UpgradeScreenConfig : ScriptableObject
     public BaseHealthUpgradeDefinition BaseHealth => baseHealth;
     public int WeaponCount => weapons != null ? weapons.Length : 0;
 
+
+    public int evolutionCost;
+    public Sprite timeline1Sprite, timeline2Sprite;
+    public string evolutionDescription1;
+    public string evolutionDescription2;
+
     public WeaponUnlockDefinition GetWeapon(int weaponIndex)
     {
         if (weapons == null || weaponIndex < 0 || weaponIndex >= weapons.Length)

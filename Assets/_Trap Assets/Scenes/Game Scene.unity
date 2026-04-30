@@ -1580,6 +1580,12 @@ MonoBehaviour:
   baseHealthUpgradeCostText: {fileID: 66920047}
   upgradeButton: {fileID: 1648035864}
   evolutionButton: {fileID: 1306381104}
+  timelineText: {fileID: 1347651369}
+  timeline1Image: {fileID: 383605442}
+  timeline2Image: {fileID: 225115018}
+  descriptionText1: {fileID: 633868750}
+  descriptionText2: {fileID: 1518806909}
+  evolutionCostText: {fileID: 1298506867}
 --- !u!1 &118156196
 GameObject:
   m_ObjectHideFlags: 0
@@ -2342,7 +2348,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &197298793
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16500,7 +16506,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1842302467
 RectTransform:
   m_ObjectHideFlags: 0

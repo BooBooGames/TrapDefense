@@ -43,3 +43,8 @@ MonoBehaviour:
     costBaseOffset: 1
     costMultiplier: 5
     maxLevel: 30
+  evolutionCost: 5000
+  timeline1Sprite: {fileID: 21300000, guid: 85c8d523d05da4679804e4cde11e75e6, type: 3}
+  timeline2Sprite: {fileID: 21300000, guid: 54ff50ef430b5492e95901276fde153a, type: 3}
+  evolutionDescription1: Evolve to unlock new traps! Evolving will reset your progress.
+  evolutionDescription2: Or win stone age
