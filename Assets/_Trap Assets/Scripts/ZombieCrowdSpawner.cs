@@ -181,6 +181,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
         runtime.Configure(entry.health);
         runtime.ConfigureRewards(entry.coinReward, entry.gemReward);
+        runtime.ConfigureKillEffect(entry.killEffectPrefab);
         runtime.Despawned += OnZombieDespawned;
         runtime.Killed += OnZombieKilled;
         runtime.Escaped += OnZombieEscaped;
@@ -217,6 +218,8 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
     private void OnZombieKilled(ZombieRuntime zombie)
     {
+        SpawnKillEffect(zombie);
+
         PlayerCurrencySystem.AddCoins(zombie.CoinReward);
         PlayerCurrencySystem.AddGems(zombie.GemReward);
 
@@ -224,6 +227,24 @@ public class ZombieCrowdSpawner : MonoBehaviour
         {
             PlayerXpSystem.Instance.AddXp(1);
         }
+    }
+
+
+    private void SpawnKillEffect(ZombieRuntime zombie)
+    {
+        if (zombie == null)
+        {
+            return;
+        }
+
+        ParticleSystem effectPrefab = zombie.KillEffectPrefab != null ? zombie.KillEffectPrefab : killEffectPrefab;
+        if (effectPrefab == null)
+        {
+            return;
+        }
+
+        ParticleSystem effectInstance = Instantiate(effectPrefab, zombie.transform.position, Quaternion.identity);
+        effectInstance.Play();
     }
 
     private void OnZombieEscaped(ZombieRuntime zombie)

@@ -12,11 +12,13 @@ public class ZombieRuntime : MonoBehaviour
     private float currentHealth;
     private int coinReward;
     private int gemReward;
+    private ParticleSystem killEffectPrefab;
 
     public float MaxHealth => maxHealth;
     public float CurrentHealth => currentHealth;
     public int CoinReward => coinReward;
     public int GemReward => gemReward;
+    public ParticleSystem KillEffectPrefab => killEffectPrefab;
 
     public event Action<ZombieRuntime> Despawned;
     public event Action<ZombieRuntime> Killed;
@@ -38,6 +40,11 @@ public class ZombieRuntime : MonoBehaviour
     {
         coinReward = Mathf.Max(0, configuredCoinReward);
         gemReward = Mathf.Max(0, configuredGemReward);
+    }
+
+    public void ConfigureKillEffect(ParticleSystem configuredKillEffectPrefab)
+    {
+        killEffectPrefab = configuredKillEffectPrefab;
     }
 
     public void ApplyDamage(float damage)

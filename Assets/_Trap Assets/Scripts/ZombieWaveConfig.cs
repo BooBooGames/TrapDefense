@@ -65,4 +65,5 @@ public class ZombieWaveEntry
     [Min(0)] public int coinReward = 1;
     [Min(0)] public int gemReward = 0;
     [Range(0.1f, 1f)] public float roadWidthUsage = 1f;
+    public ParticleSystem killEffectPrefab;
 }
