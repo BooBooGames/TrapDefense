@@ -117,6 +117,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8947951033465129516}
     m_Modifications:
+    - target: {fileID: 5150420171647225763, guid: b917c8c7e6bce4ec9bb570c057c8b175, type: 3}
+      propertyPath: rotationAxis.y
+      value: -360
+      objectReference: {fileID: 0}
     - target: {fileID: 6929178082917362614, guid: b917c8c7e6bce4ec9bb570c057c8b175, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -206,6 +210,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8947951033465129516}
     m_Modifications:
+    - target: {fileID: 3285695573625317315, guid: d706b370b70fa4338bed71b7fc0e2a74, type: 3}
+      propertyPath: rotationAxis.y
+      value: -360
+      objectReference: {fileID: 0}
     - target: {fileID: 4736893237013097872, guid: d706b370b70fa4338bed71b7fc0e2a74, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -334,6 +342,10 @@ PrefabInstance:
     - target: {fileID: 5499583725396163581, guid: e0cb8366c1fb0480baf9c0d13ee449e2, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6348545350234633206, guid: e0cb8366c1fb0480baf9c0d13ee449e2, type: 3}
+      propertyPath: rotationAxis.y
+      value: -360
       objectReference: {fileID: 0}
     - target: {fileID: 7791313502309475601, guid: e0cb8366c1fb0480baf9c0d13ee449e2, type: 3}
       propertyPath: m_Name

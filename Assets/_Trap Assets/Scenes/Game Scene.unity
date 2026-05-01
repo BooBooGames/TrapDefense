@@ -1601,6 +1601,7 @@ MonoBehaviour:
   fallbackZombieScale: {x: 0.6, y: 1.15, z: 0.6}
   fallbackZombieColor: {r: 0.3, g: 0.75, b: 0.36, a: 1}
   autoStartOnPlay: 0
+  killEffectPrefab: {fileID: 4571265055208692986, guid: d1fa738f6a106410bb74d30cc6bdc989, type: 3}
 --- !u!1 &114974696
 GameObject:
   m_ObjectHideFlags: 0

@@ -14,10 +14,15 @@ public class ZombieCrowdSpawner : MonoBehaviour
     [SerializeField] private Color fallbackZombieColor = new Color(0.3f, 0.75f, 0.36f, 1f);
     [SerializeField] private bool autoStartOnPlay = false;
 
+    public ParticleSystem killEffectPrefab;
+
     private int spawnedCount;
     private int aliveZombies;
     private int totalPlannedZombies;
     private int completedZombies;
+    private int completedWaves;
+    private int currentWavePlannedZombies;
+    private int currentWaveCompletedZombies;
     private int currentWaveNumber;
     private bool wavesRunning;
     private GameViewScreen gameViewScreen;
@@ -26,7 +31,23 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
     public int CurrentWaveNumber => currentWaveNumber;
     public int TotalWaves => levelConfig != null ? levelConfig.TotalWaves : 0;
-    public float OverallProgress => totalPlannedZombies > 0 ? completedZombies / (float)totalPlannedZombies : 0f;
+    public float OverallProgress
+    {
+        get
+        {
+            if (TotalWaves <= 0)
+            {
+                return 0f;
+            }
+
+            float completedWaveProgress = completedWaves;
+            float currentWaveProgress = currentWavePlannedZombies > 0
+                ? currentWaveCompletedZombies / (float)currentWavePlannedZombies
+                : 0f;
+
+            return Mathf.Clamp01((completedWaveProgress + currentWaveProgress) / TotalWaves);
+        }
+    }
 
     private void Start()
     {
@@ -45,6 +66,9 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
         totalPlannedZombies = CalculateTotalZombieCount();
         completedZombies = 0;
+        completedWaves = 0;
+        currentWavePlannedZombies = 0;
+        currentWaveCompletedZombies = 0;
         currentWaveNumber = 0;
         wavesRunning = true;
         if (gameViewScreen == null)
@@ -77,6 +101,8 @@ public class ZombieCrowdSpawner : MonoBehaviour
             }
 
             currentWaveNumber = waveIndex + 1;
+            currentWavePlannedZombies = wave.GetTotalZombieCount();
+            currentWaveCompletedZombies = 0;
             NotifyProgressChanged();
 
             if (sharedPath != null)
@@ -90,6 +116,11 @@ public class ZombieCrowdSpawner : MonoBehaviour
             {
                 yield return null;
             }
+
+            completedWaves = Mathf.Min(TotalWaves, completedWaves + 1);
+            currentWavePlannedZombies = 0;
+            currentWaveCompletedZombies = 0;
+            NotifyProgressChanged();
 
             if (waveIndex < waves.Length - 1 && wave.delayBeforeNextWave > 0f)
             {
@@ -180,6 +211,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
         zombie.Escaped -= OnZombieEscaped;
         aliveZombies = Mathf.Max(0, aliveZombies - 1);
         completedZombies = Mathf.Min(totalPlannedZombies, completedZombies + 1);
+        currentWaveCompletedZombies = Mathf.Min(currentWavePlannedZombies, currentWaveCompletedZombies + 1);
         NotifyProgressChanged();
     }
 
