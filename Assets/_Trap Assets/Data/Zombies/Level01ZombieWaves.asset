@@ -27,6 +27,7 @@ MonoBehaviour:
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
+      killEffectPrefab: {fileID: 4571265055208692986, guid: d1fa738f6a106410bb74d30cc6bdc989, type: 3}
   - roadWidth: 3.8
     spawnInterval: 0.42
     delayBeforeNextWave: 0
@@ -39,6 +40,7 @@ MonoBehaviour:
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
+      killEffectPrefab: {fileID: 4571265055208692986, guid: d1fa738f6a106410bb74d30cc6bdc989, type: 3}
   - roadWidth: 4
     spawnInterval: 0.39
     delayBeforeNextWave: 0
@@ -51,6 +53,7 @@ MonoBehaviour:
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
+      killEffectPrefab: {fileID: 4571265055208692986, guid: d1fa738f6a106410bb74d30cc6bdc989, type: 3}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 10
@@ -59,6 +62,7 @@ MonoBehaviour:
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 0.9
+      killEffectPrefab: {fileID: 0}
   - roadWidth: 4.2
     spawnInterval: 0.36
     delayBeforeNextWave: 0
@@ -71,6 +75,7 @@ MonoBehaviour:
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
+      killEffectPrefab: {fileID: 0}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 20
@@ -79,6 +84,7 @@ MonoBehaviour:
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 0.9
+      killEffectPrefab: {fileID: 0}
   - roadWidth: 4.4
     spawnInterval: 0.33
     delayBeforeNextWave: 0
@@ -91,6 +97,7 @@ MonoBehaviour:
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
+      killEffectPrefab: {fileID: 0}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 50
@@ -99,6 +106,7 @@ MonoBehaviour:
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 0.95
+      killEffectPrefab: {fileID: 0}
     - zombieTypeName: Tank
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 40
@@ -107,6 +115,7 @@ MonoBehaviour:
       coinReward: 3
       gemReward: 0
       roadWidthUsage: 0.95
+      killEffectPrefab: {fileID: 0}
   - roadWidth: 4.6
     spawnInterval: 0.3
     delayBeforeNextWave: 0
@@ -119,6 +128,7 @@ MonoBehaviour:
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
+      killEffectPrefab: {fileID: 0}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 120
@@ -127,6 +137,7 @@ MonoBehaviour:
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 0.9
+      killEffectPrefab: {fileID: 0}
     - zombieTypeName: Tenk
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 80
@@ -135,6 +146,7 @@ MonoBehaviour:
       coinReward: 3
       gemReward: 0
       roadWidthUsage: 0.9
+      killEffectPrefab: {fileID: 0}
   - roadWidth: 4.8
     spawnInterval: 0.3
     delayBeforeNextWave: 0
@@ -147,6 +159,7 @@ MonoBehaviour:
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 1
+      killEffectPrefab: {fileID: 0}
     - zombieTypeName: Tank
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 200
@@ -155,6 +168,7 @@ MonoBehaviour:
       coinReward: 3
       gemReward: 0
       roadWidthUsage: 0.9
+      killEffectPrefab: {fileID: 0}
   - roadWidth: 5
     spawnInterval: 0.29
     delayBeforeNextWave: 0
@@ -167,6 +181,7 @@ MonoBehaviour:
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
+      killEffectPrefab: {fileID: 0}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 255
@@ -175,6 +190,7 @@ MonoBehaviour:
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 1
+      killEffectPrefab: {fileID: 0}
     - zombieTypeName: Tank
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 255
@@ -183,6 +199,7 @@ MonoBehaviour:
       coinReward: 3
       gemReward: 0
       roadWidthUsage: 0.9
+      killEffectPrefab: {fileID: 0}
   - roadWidth: 5.2
     spawnInterval: 0.28
     delayBeforeNextWave: 0
@@ -195,6 +212,7 @@ MonoBehaviour:
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
+      killEffectPrefab: {fileID: 0}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 315
@@ -203,6 +221,7 @@ MonoBehaviour:
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 1
+      killEffectPrefab: {fileID: 0}
     - zombieTypeName: Tank
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 315
@@ -211,3 +230,4 @@ MonoBehaviour:
       coinReward: 3
       gemReward: 0
       roadWidthUsage: 0.9
+      killEffectPrefab: {fileID: 0}
