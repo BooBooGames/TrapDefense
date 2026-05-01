@@ -124,9 +124,10 @@ public class GameViewScreen : MonoBehaviour
         zombieCrowdSpawner?.StartWaves();
     }
 
-    public void InitializePlayerHealth(int baseHealth)
+    public void InitializePlayerHealth()
     {
-        maxPlayerHealth = Mathf.Max(1, baseHealth + playerHealthUpgradeBonus);
+        ApplyPersistentUpgradeState();
+        maxPlayerHealth = Mathf.Max(1, PlayerUpgradeSystem.CurrentBaseHealthValue);
         currentPlayerHealth = maxPlayerHealth;
         gameOverTriggered = false;
 

@@ -53,7 +53,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
         }
         if (gameViewScreen != null)
         {
-            gameViewScreen.InitializePlayerHealth(levelConfig.StartingPlayerHealth);
+            gameViewScreen.InitializePlayerHealth();
         }
         NotifyProgressChanged();
         StartCoroutine(RunWaveSequence());
