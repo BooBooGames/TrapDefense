@@ -21,7 +21,7 @@ public class ZombieRuntime : MonoBehaviour
     public ParticleSystem KillEffectPrefab => killEffectPrefab;
 
     public event Action<ZombieRuntime> Despawned;
-    public event Action<ZombieRuntime> Killed;
+    public event Action<ZombieRuntime, Vector3> Killed;
     public event Action<ZombieRuntime> Escaped;
 
     private void Awake()
@@ -83,7 +83,8 @@ public class ZombieRuntime : MonoBehaviour
         }
 
         killNotified = true;
-        Killed?.Invoke(this);
+        Vector3 deathPosition = transform.position;
+        Killed?.Invoke(this, deathPosition);
     }
 
     private void OnDestroy()

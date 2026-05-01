@@ -216,9 +216,9 @@ public class ZombieCrowdSpawner : MonoBehaviour
         NotifyProgressChanged();
     }
 
-    private void OnZombieKilled(ZombieRuntime zombie)
+    private void OnZombieKilled(ZombieRuntime zombie, Vector3 deathPosition)
     {
-        SpawnKillEffect(zombie);
+        SpawnKillEffect(zombie, deathPosition);
 
         PlayerCurrencySystem.AddCoins(zombie.CoinReward);
         PlayerCurrencySystem.AddGems(zombie.GemReward);
@@ -230,7 +230,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
     }
 
 
-    private void SpawnKillEffect(ZombieRuntime zombie)
+    private void SpawnKillEffect(ZombieRuntime zombie, Vector3 deathPosition)
     {
         if (zombie == null)
         {
@@ -243,7 +243,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
             return;
         }
 
-        ParticleSystem effectInstance = Instantiate(effectPrefab, zombie.transform.position, Quaternion.identity);
+        ParticleSystem effectInstance = Instantiate(effectPrefab, deathPosition, Quaternion.identity);
         effectInstance.Play();
     }
 
