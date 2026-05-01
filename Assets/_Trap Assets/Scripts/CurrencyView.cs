@@ -8,6 +8,7 @@ public class CurrencyView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinCounterLabel;
     [SerializeField] private TextMeshProUGUI gemsCounterLabel;
     [SerializeField] private Button settingsButton;
+    [SerializeField] private Image gameViewBGImage;
 
 
     private void Awake()
