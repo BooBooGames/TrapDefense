@@ -8,12 +8,12 @@ public class CurrencyView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinCounterLabel;
     [SerializeField] private TextMeshProUGUI gemsCounterLabel;
     [SerializeField] private Button settingsButton;
-    [SerializeField] private Image gameViewBGImage;
+    [SerializeField] private Image gameViewBGImage, upgradeScreenBGImage;
 
 
     private void Awake()
     {
-        AutoResolveReferences();
+        // AutoResolveReferences();
         PlayerCurrencySystem.Initialize(ParseLabelValue(coinCounterLabel), ParseLabelValue(gemsCounterLabel));
         Refresh(PlayerCurrencySystem.Coins, PlayerCurrencySystem.Gems);
         BindBottomHudButton(() => uiManager?.ShowSettingsScreen());
@@ -47,18 +47,39 @@ public class CurrencyView : MonoBehaviour
         }
     }
 
-    private void AutoResolveReferences()
+    public void SetGameViewBGImageVisible(bool isVisible)
     {
-        if (coinCounterLabel == null)
+        if (gameViewBGImage != null)
         {
-            coinCounterLabel = FindLabelByName("Coin count Text (TMP)");
-        }
-
-        if (gemsCounterLabel == null)
-        {
-            gemsCounterLabel = FindLabelByName("Gems count Text (TMP)");
+            gameViewBGImage.gameObject.SetActive(isVisible);
         }
     }
+
+    public void SetUpgradeScreenBGImageVisible(bool isVisible)
+    {
+        if (upgradeScreenBGImage != null)
+        {
+            upgradeScreenBGImage.gameObject.SetActive(isVisible);
+        }
+    }
+
+    /*     private void AutoResolveReferences()
+        {
+            if (coinCounterLabel == null)
+            {
+                coinCounterLabel = FindLabelByName("Coin count Text (TMP)");
+            }
+
+            if (gemsCounterLabel == null)
+            {
+                gemsCounterLabel = FindLabelByName("Gems count Text (TMP)");
+            }
+
+            if (gameViewBGImage == null)
+            {
+                gameViewBGImage = FindImageByName("Game view BG Image");
+            }
+        } */
 
     private TextMeshProUGUI FindLabelByName(string objectName)
     {
@@ -68,6 +89,20 @@ public class CurrencyView : MonoBehaviour
             if (labels[i] != null && labels[i].name == objectName)
             {
                 return labels[i];
+            }
+        }
+
+        return null;
+    }
+
+    private Image FindImageByName(string objectName)
+    {
+        Image[] images = FindObjectsByType<Image>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        for (int i = 0; i < images.Length; i++)
+        {
+            if (images[i] != null && images[i].name == objectName)
+            {
+                return images[i];
             }
         }
 

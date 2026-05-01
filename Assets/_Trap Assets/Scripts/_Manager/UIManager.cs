@@ -13,9 +13,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject bottomHudPanel;
     [SerializeField] private GameObject settingPanel;
     [SerializeField] private Button playButton;
+    [SerializeField] private CurrencyView currencyView;
 
     private BottomHudView bottomHudController;
     private GameViewScreen gameViewScreen;
+    private GameObject currentScreenPanel;
 
     private void Awake()
     {
@@ -38,6 +40,11 @@ public class UIManager : MonoBehaviour
             {
                 gameViewScreen = gameViewPanel.AddComponent<GameViewScreen>();
             }
+        }
+
+        if (currencyView == null)
+        {
+            currencyView = FindFirstObjectByType<CurrencyView>();
         }
 
         ShowHomeScreen();
@@ -77,8 +84,14 @@ public class UIManager : MonoBehaviour
 
     public void ShowSettingsScreen()
     {
-        // ShowScreen(settingPanel, false);
-        settingPanel.SetActive(true);
+        SetPanelActive(settingPanel, true);
+        UpdateGameViewBGImageVisibility();
+    }
+
+    public void CloseSettingsScreen()
+    {
+        SetPanelActive(settingPanel, false);
+        UpdateGameViewBGImageVisibility();
     }
 
     public void StartGame()
@@ -100,6 +113,8 @@ public class UIManager : MonoBehaviour
 
     private void ShowScreen(GameObject activePanel, bool showBottomHud)
     {
+        currentScreenPanel = activePanel;
+
         SetPanelActive(homeScreenPanel, activePanel == homeScreenPanel);
         SetPanelActive(upgradeScreenPanel, activePanel == upgradeScreenPanel);
         SetPanelActive(cardViewPanel, activePanel == cardViewPanel);
@@ -107,6 +122,7 @@ public class UIManager : MonoBehaviour
         SetPanelActive(gameViewPanel, activePanel == gameViewPanel);
         SetPanelActive(bottomHudPanel, showBottomHud);
         SetPanelActive(settingPanel, activePanel == settingPanel);
+        UpdateGameViewBGImageVisibility();
     }
 
     private void SetPanelActive(GameObject panel, bool isActive)
@@ -115,5 +131,13 @@ public class UIManager : MonoBehaviour
         {
             panel.SetActive(isActive);
         }
+    }
+
+    private void UpdateGameViewBGImageVisibility()
+    {
+        // bool isSettingsOpen = settingPanel != null && settingPanel.activeSelf;
+        bool shouldShowBGImage = /* !isSettingsOpen && */ currentScreenPanel == gameViewPanel || currentScreenPanel == homeScreenPanel;
+        currencyView?.SetGameViewBGImageVisible(shouldShowBGImage);
+        currencyView?.SetUpgradeScreenBGImageVisible(currentScreenPanel == upgradeScreenPanel);
     }
 }

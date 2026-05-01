@@ -60,6 +60,12 @@ public class SettingPanelView : MonoBehaviour
 
     public void OnCloseButtonClicked()
     {
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.CloseSettingsScreen();
+            return;
+        }
+
         gameObject.SetActive(false);
     }
 
