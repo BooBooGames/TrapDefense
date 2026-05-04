@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class ChestPreviewPanel : MonoBehaviour
 {
+    public Image iconImage;
     public TextMeshProUGUI coinRewardLabel, cardCountLabel, unlockTimeLabel, unlockGemsLabel;
     public Button unlockButton, OpenWithGemsButton, closeButton;
 

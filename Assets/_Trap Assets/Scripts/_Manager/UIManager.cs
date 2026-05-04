@@ -7,13 +7,14 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private GameObject gameViewPanel;
     [SerializeField] private GameObject homeScreenPanel;
-    [SerializeField] private GameObject upgradeScreenPanel;
     [SerializeField] private GameObject cardViewPanel;
+    [SerializeField] private GameObject upgradeScreenPanel;
     [SerializeField] private GameObject shopPanel;
+    [SerializeField] private CurrencyView currencyView;
     [SerializeField] private GameObject bottomHudPanel;
     [SerializeField] private GameObject settingPanel;
+    [SerializeField] private GameObject chestPreviewPanel;
     // [SerializeField] private Button playButton;
-    [SerializeField] private CurrencyView currencyView;
 
     private BottomHudView bottomHudController;
     private GameViewScreen gameViewScreen;
