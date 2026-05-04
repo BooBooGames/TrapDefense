@@ -12,6 +12,7 @@ public class PlayerXpSystem : MonoBehaviour
     [SerializeField] private CardInfo cardInfo1;
     [SerializeField] private CardInfo cardInfo2;
     [SerializeField] private CardInfo cardInfo3;
+    [SerializeField] private Button rerollButton;
     [SerializeField] private PowerCardCatalog powerCardCatalog;
     [SerializeField] private int[] xpTargets = { 10, 16, 26, 46, 75, 127, 255, 470, 970, 1430 };
 
@@ -39,6 +40,17 @@ public class PlayerXpSystem : MonoBehaviour
         Instance = this;
         SetCardPanelVisible(false);
         NotifyProgressChanged();
+        if (rerollButton != null)
+        {
+            rerollButton.onClick.AddListener(() =>
+            {
+                if (awaitingCardSelection)
+                {
+                    GenerateCardChoices();
+                    RefreshCardUi();
+                }
+            });
+        }
     }
 
     private void OnDestroy()

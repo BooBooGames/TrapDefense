@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject shopPanel;
     [SerializeField] private GameObject bottomHudPanel;
     [SerializeField] private GameObject settingPanel;
-    [SerializeField] private Button playButton;
+    // [SerializeField] private Button playButton;
     [SerializeField] private CurrencyView currencyView;
 
     private BottomHudView bottomHudController;
@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        BindFlowButtons();
+        // BindFlowButtons();
 
         if (bottomHudPanel != null)
         {
@@ -100,16 +100,16 @@ public class UIManager : MonoBehaviour
         gameViewScreen?.StartGameplay();
     }
 
-    private void BindFlowButtons()
-    {
-        if (playButton == null)
-        {
-            return;
-        }
+    /*  private void BindFlowButtons()
+     {
+         if (playButton == null)
+         {
+             return;
+         }
 
-        playButton.onClick.RemoveListener(StartGame);
-        playButton.onClick.AddListener(StartGame);
-    }
+         playButton.onClick.RemoveListener(StartGame);
+         playButton.onClick.AddListener(StartGame);
+     } */
 
     private void ShowScreen(GameObject activePanel, bool showBottomHud)
     {

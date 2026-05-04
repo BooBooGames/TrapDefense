@@ -123,6 +123,10 @@ public class ZombieCrowdSpawner : MonoBehaviour
             currentWaveCompletedZombies = 0;
             NotifyProgressChanged();
 
+            Debug.Log($"Wave {currentWaveNumber} completed. Total completed zombies: {completedZombies}/{totalPlannedZombies}");
+            if (currentWaveNumber == 4) gameViewScreen.ShowChest(1);
+            if (currentWaveNumber == 7) gameViewScreen.ShowChest(2);
+
             if (waveIndex < waves.Length - 1 && wave.delayBeforeNextWave > 0f)
             {
                 yield return new WaitForSeconds(wave.delayBeforeNextWave);

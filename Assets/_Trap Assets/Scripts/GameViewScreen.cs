@@ -9,6 +9,7 @@ public class GameViewScreen : MonoBehaviour
     [SerializeField] private ZombieCrowdSpawner zombieCrowdSpawner;
     [SerializeField] private Image waveProgressBarFill;
     [SerializeField] private TextMeshProUGUI waveProgressBarLabel;
+    [SerializeField] private GameObject chest1Image, chest2Image;
     [SerializeField] private Image gearCounterFill;
     [SerializeField] private TextMeshProUGUI gearCounterLabel;
     [SerializeField][Min(0.1f)] private float gearGenerationDuration = 5f;
@@ -479,5 +480,17 @@ public class GameViewScreen : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void ShowChest(int chestNumber)
+    {
+        if (chestNumber == 1 && chest1Image != null)
+        {
+            chest1Image.SetActive(true);
+        }
+        else if (chestNumber == 2 && chest2Image != null)
+        {
+            chest2Image.SetActive(true);
+        }
     }
 }
