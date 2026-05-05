@@ -9,6 +9,8 @@ public class SettingPanelView : MonoBehaviour
     public Sprite hapticOnSprite, hapticOffSprite;
     public Button closeButton, musicButton, soundButton, hapticButton;
     public Image musicButtonImage, soundButtonImage, hapticButtonImage;
+    public Button homeButton, restorePurchasesButton;
+    private bool openedFromGameView;
 
     private void Awake()
     {
@@ -36,10 +38,18 @@ public class SettingPanelView : MonoBehaviour
 
     private void BindButtons()
     {
-        closeButton.onClick.AddListener(OnCloseButtonClicked);
-        musicButton.onClick.AddListener(OnMusicButtonClicked);
-        soundButton.onClick.AddListener(OnSoundButtonClicked);
-        hapticButton.onClick.AddListener(OnHapticButtonClicked);
+        if (closeButton != null) closeButton.onClick.AddListener(OnCloseButtonClicked);
+        if (musicButton != null) musicButton.onClick.AddListener(OnMusicButtonClicked);
+        if (soundButton != null) soundButton.onClick.AddListener(OnSoundButtonClicked);
+        if (hapticButton != null) hapticButton.onClick.AddListener(OnHapticButtonClicked);
+        if (homeButton != null) homeButton.onClick.AddListener(OnHomeButtonClicked);
+    }
+
+    public void ConfigureOpenContext(bool isOpenedFromGameView)
+    {
+        openedFromGameView = isOpenedFromGameView;
+        SetButtonVisible(homeButton, openedFromGameView);
+        SetButtonVisible(restorePurchasesButton, openedFromGameView);
     }
 
     private void RefreshUI()
@@ -82,6 +92,24 @@ public class SettingPanelView : MonoBehaviour
     public void OnHapticButtonClicked()
     {
         GameSettingsSystem.ToggleHaptic();
+    }
+
+    public void OnHomeButtonClicked()
+    {
+        if (!openedFromGameView || UIManager.Instance == null)
+        {
+            return;
+        }
+
+        UIManager.Instance.EndGameAndShowHomeFromSettings();
+    }
+
+    private static void SetButtonVisible(Button button, bool isVisible)
+    {
+        if (button != null)
+        {
+            button.gameObject.SetActive(isVisible);
+        }
     }
 }
 

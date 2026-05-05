@@ -27,7 +27,9 @@ public static class PlayerCurrencySystem
         int resolvedCoins = saveData.hasSavedCoins
             ? Mathf.Max(0, saveData.coins)
             : Mathf.Max(isInitialized ? coins : 0, Mathf.Max(0, defaultCoins));
-        int resolvedGems = Mathf.Max(isInitialized ? gems : 0, Mathf.Max(0, defaultGems));
+        int resolvedGems = saveData.hasSavedGems
+            ? Mathf.Max(0, saveData.gems)
+            : Mathf.Max(isInitialized ? gems : 0, Mathf.Max(0, defaultGems));
 
         bool valuesChanged = !isInitialized || resolvedCoins != coins || resolvedGems != gems;
 
@@ -82,6 +84,7 @@ public static class PlayerCurrencySystem
 
         EnsureInitialized();
         gems = Mathf.Max(0, gems + amount);
+        SaveGems();
         NotifyCurrencyChanged();
     }
 
@@ -99,6 +102,7 @@ public static class PlayerCurrencySystem
         }
 
         gems -= amount;
+        SaveGems();
         NotifyCurrencyChanged();
         return true;
     }
@@ -116,6 +120,14 @@ public static class PlayerCurrencySystem
         SaveGameData saveData = GameSaveSystem.Load();
         saveData.coins = coins;
         saveData.hasSavedCoins = true;
+        GameSaveSystem.Save(saveData);
+    }
+
+    private static void SaveGems()
+    {
+        SaveGameData saveData = GameSaveSystem.Load();
+        saveData.gems = gems;
+        saveData.hasSavedGems = true;
         GameSaveSystem.Save(saveData);
     }
 

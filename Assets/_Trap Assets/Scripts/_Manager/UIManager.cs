@@ -18,7 +18,10 @@ public class UIManager : MonoBehaviour
 
     private BottomHudView bottomHudController;
     private GameViewScreen gameViewScreen;
+    private SettingPanelView settingPanelView;
     private GameObject currentScreenPanel;
+    private bool settingsOpenedFromGameView;
+    private float timeScaleBeforeSettings = 1f;
 
     private void Awake()
     {
@@ -46,6 +49,11 @@ public class UIManager : MonoBehaviour
         if (currencyView == null)
         {
             currencyView = FindFirstObjectByType<CurrencyView>();
+        }
+
+        if (settingPanel != null)
+        {
+            settingPanelView = settingPanel.GetComponentInChildren<SettingPanelView>(true);
         }
 
         ShowHomeScreen();
@@ -85,6 +93,15 @@ public class UIManager : MonoBehaviour
 
     public void ShowSettingsScreen()
     {
+        settingsOpenedFromGameView = currentScreenPanel == gameViewPanel;
+        settingPanelView?.ConfigureOpenContext(settingsOpenedFromGameView);
+
+        if (settingsOpenedFromGameView)
+        {
+            timeScaleBeforeSettings = Time.timeScale;
+            Time.timeScale = 0f;
+        }
+
         SetPanelActive(settingPanel, true);
         UpdateGameViewBGImageVisibility();
     }
@@ -92,7 +109,17 @@ public class UIManager : MonoBehaviour
     public void CloseSettingsScreen()
     {
         SetPanelActive(settingPanel, false);
+        ResumeGameIfSettingsPaused();
         UpdateGameViewBGImageVisibility();
+    }
+
+    public void EndGameAndShowHomeFromSettings()
+    {
+        SetPanelActive(settingPanel, false);
+        settingsOpenedFromGameView = false;
+        Time.timeScale = 1f;
+        gameViewScreen?.EndGameplay();
+        ShowHomeScreen();
     }
 
     public void StartGame()
@@ -140,5 +167,16 @@ public class UIManager : MonoBehaviour
         bool shouldShowBGImage = /* !isSettingsOpen && */ currentScreenPanel == gameViewPanel || currentScreenPanel == homeScreenPanel;
         currencyView?.SetGameViewBGImageVisible(shouldShowBGImage);
         currencyView?.SetUpgradeScreenBGImageVisible(currentScreenPanel == upgradeScreenPanel);
+    }
+
+    private void ResumeGameIfSettingsPaused()
+    {
+        if (!settingsOpenedFromGameView)
+        {
+            return;
+        }
+
+        settingsOpenedFromGameView = false;
+        Time.timeScale = timeScaleBeforeSettings <= 0f ? 1f : timeScaleBeforeSettings;
     }
 }

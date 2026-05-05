@@ -6,9 +6,12 @@ public class SaveGameData
 {
     public int coins;
     public bool hasSavedCoins;
+    public int gems;
+    public bool hasSavedGems;
     public bool[] unlockedWeaponStates;
     public int gearFlowLevel;
     public int baseHealthLevel;
+    public ChestSlotSaveData[] chestSlots;
 
     public bool musicEnabled = true;
     public bool soundEnabled = true;
@@ -18,6 +21,18 @@ public class SaveGameData
     // public int selectedWeaponLevel;
     // public int highestUnlockedWave;
     // public string[] unlockedUpgradeIds;
+}
+
+[Serializable]
+public class ChestSlotSaveData
+{
+    public bool hasChest;
+    public int chestType;
+    public int state;
+    public long unlockEndUtc;
+    public int coinsReward;
+    public int gemsReward;
+    public int cardsReward;
 }
 
 public static class GameSaveSystem

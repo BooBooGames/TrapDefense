@@ -9,13 +9,24 @@ public class GameViewScreen : MonoBehaviour
     [SerializeField] private ZombieCrowdSpawner zombieCrowdSpawner;
     [SerializeField] private Image waveProgressBarFill;
     [SerializeField] private TextMeshProUGUI waveProgressBarLabel;
-    [SerializeField] private GameObject chest1Image, chest2Image;
+    [SerializeField] private GameObject chest1TriggerImage, chest2TriggerImage;
     [SerializeField] private Image gearCounterFill;
     [SerializeField] private TextMeshProUGUI gearCounterLabel;
     [SerializeField][Min(0.1f)] private float gearGenerationDuration = 5f;
-    [SerializeField] private Button weaponUpgradeButton;
-    [SerializeField] private TextMeshProUGUI weaponUpgradeLevelLabel;
-    [SerializeField] private WeaponUpgradeController weaponUpgradeTarget;
+
+    [SerializeField] private Button defaultWeaponUpgradeButton;
+    [SerializeField] private TextMeshProUGUI defaultWeaponUpgradeLevelLabel, defaultRequiredGearsCostLabel;
+    [SerializeField] private WeaponUpgradeController defaultWeaponUpgradeTarget;
+
+    [SerializeField] private Button _1WeaponUpgradeButton;
+    [SerializeField] private TextMeshProUGUI _1WeaponUpgradeLevelLabel, _1RequiredGearsCostLabel;
+    [SerializeField] private WeaponUpgradeController _1WeaponUpgradeTarget;
+
+    [SerializeField] private Button _2WeaponUpgradeButton;
+    [SerializeField] private TextMeshProUGUI _2WeaponUpgradeLevelLabel, _2RequiredGearsCostLabel;
+    [SerializeField] private WeaponUpgradeController _2WeaponUpgradeTarget;
+
+
     [SerializeField] private Image healthBarFill;
     [SerializeField] private TextMeshProUGUI healthBarLabel;
     [SerializeField] private GameObject gameOverPanel;
@@ -58,10 +69,10 @@ public class GameViewScreen : MonoBehaviour
         ApplyPersistentUpgradeState();
         BindWeaponUpgradeUi();
 
-        if (weaponUpgradeTarget != null)
+        if (defaultWeaponUpgradeTarget != null)
         {
-            weaponUpgradeTarget.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
-            weaponUpgradeTarget.UpgradeStateChanged += HandleWeaponUpgradeStateChanged;
+            defaultWeaponUpgradeTarget.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
+            defaultWeaponUpgradeTarget.UpgradeStateChanged += HandleWeaponUpgradeStateChanged;
         }
 
         if (zombieCrowdSpawner != null)
@@ -76,9 +87,9 @@ public class GameViewScreen : MonoBehaviour
 
     private void OnDisable()
     {
-        if (weaponUpgradeTarget != null)
+        if (defaultWeaponUpgradeTarget != null)
         {
-            weaponUpgradeTarget.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
+            defaultWeaponUpgradeTarget.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
         }
 
         if (zombieCrowdSpawner != null)
@@ -123,6 +134,20 @@ public class GameViewScreen : MonoBehaviour
         }
 
         zombieCrowdSpawner?.StartWaves();
+    }
+
+    public void EndGameplay()
+    {
+        zombieCrowdSpawner?.StopWaves();
+        gameOverTriggered = false;
+        Time.timeScale = 1f;
+
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(false);
+        }
+
+        RefreshWaveProgress();
     }
 
     public void InitializePlayerHealth()
@@ -188,23 +213,23 @@ public class GameViewScreen : MonoBehaviour
 
     private void BindWeaponUpgradeUi()
     {
-        if (weaponUpgradeButton == null)
+        if (defaultWeaponUpgradeButton == null)
         {
             return;
         }
 
-        weaponUpgradeButton.onClick.RemoveListener(HandleWeaponUpgradeClicked);
-        weaponUpgradeButton.onClick.AddListener(HandleWeaponUpgradeClicked);
+        defaultWeaponUpgradeButton.onClick.RemoveListener(HandleWeaponUpgradeClicked);
+        defaultWeaponUpgradeButton.onClick.AddListener(HandleWeaponUpgradeClicked);
     }
 
     private void HandleWeaponUpgradeClicked()
     {
-        if (weaponUpgradeTarget == null)
+        if (defaultWeaponUpgradeTarget == null)
         {
             return;
         }
 
-        weaponUpgradeTarget.TryUpgrade(this);
+        defaultWeaponUpgradeTarget.TryUpgrade(this);
         RefreshWeaponUpgradeUi();
     }
 
@@ -285,24 +310,24 @@ public class GameViewScreen : MonoBehaviour
 
     private void RefreshWeaponUpgradeUi()
     {
-        if (weaponUpgradeLevelLabel != null)
+        if (defaultWeaponUpgradeLevelLabel != null)
         {
-            if (weaponUpgradeTarget == null)
+            if (defaultWeaponUpgradeTarget == null)
             {
-                weaponUpgradeLevelLabel.text = "Weapon Lv. 0/0";
+                defaultWeaponUpgradeLevelLabel.text = "Lv. 0/0";
             }
             else
             {
-                weaponUpgradeLevelLabel.text = $"Weapon Lv. {weaponUpgradeTarget.CurrentLevel}/{weaponUpgradeTarget.MaxLevel}";
+                defaultWeaponUpgradeLevelLabel.text = $"Lv. {defaultWeaponUpgradeTarget.CurrentLevel}/{defaultWeaponUpgradeTarget.MaxLevel}";
             }
         }
 
-        if (weaponUpgradeButton != null)
+        if (defaultWeaponUpgradeButton != null)
         {
-            weaponUpgradeButton.interactable =
-                weaponUpgradeTarget != null &&
-                weaponUpgradeTarget.CanUpgrade() &&
-                gearCount >= weaponUpgradeTarget.CurrentUpgradeCost;
+            defaultWeaponUpgradeButton.interactable =
+                defaultWeaponUpgradeTarget != null &&
+                defaultWeaponUpgradeTarget.CanUpgrade() &&
+                gearCount >= defaultWeaponUpgradeTarget.CurrentUpgradeCost;
         }
     }
 
@@ -482,15 +507,15 @@ public class GameViewScreen : MonoBehaviour
         return null;
     }
 
-    public void ShowChest(int chestNumber)
+    public void ShowChestTriggerImage(int waveNumber)
     {
-        if (chestNumber == 1 && chest1Image != null)
+        if (waveNumber == 4 && chest1TriggerImage != null)
         {
-            chest1Image.SetActive(true);
+            chest1TriggerImage.SetActive(true);
         }
-        else if (chestNumber == 2 && chest2Image != null)
+        else if (waveNumber == 8 && chest2TriggerImage != null)
         {
-            chest2Image.SetActive(true);
+            chest2TriggerImage.SetActive(true);
         }
     }
 }

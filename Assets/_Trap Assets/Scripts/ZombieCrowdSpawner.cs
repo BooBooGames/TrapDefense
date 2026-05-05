@@ -83,6 +83,27 @@ public class ZombieCrowdSpawner : MonoBehaviour
         StartCoroutine(RunWaveSequence());
     }
 
+    public void StopWaves()
+    {
+        StopAllCoroutines();
+        wavesRunning = false;
+
+        ZombieRuntime[] zombies = FindObjectsByType<ZombieRuntime>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        for (int i = 0; i < zombies.Length; i++)
+        {
+            if (zombies[i] != null)
+            {
+                Destroy(zombies[i].gameObject);
+            }
+        }
+
+        aliveZombies = 0;
+        currentWavePlannedZombies = 0;
+        currentWaveCompletedZombies = 0;
+        currentWaveNumber = 0;
+        NotifyProgressChanged();
+    }
+
     private IEnumerator RunWaveSequence()
     {
         WaveDefinition[] waves = levelConfig.Waves;
@@ -124,8 +145,8 @@ public class ZombieCrowdSpawner : MonoBehaviour
             NotifyProgressChanged();
 
             Debug.Log($"Wave {currentWaveNumber} completed. Total completed zombies: {completedZombies}/{totalPlannedZombies}");
-            if (currentWaveNumber == 4) gameViewScreen.ShowChest(1);
-            if (currentWaveNumber == 7) gameViewScreen.ShowChest(2);
+            HomeViewScreen.AwardChestForCompletedWave(currentWaveNumber);
+            gameViewScreen?.ShowChestTriggerImage(currentWaveNumber);
 
             if (waveIndex < waves.Length - 1 && wave.delayBeforeNextWave > 0f)
             {
