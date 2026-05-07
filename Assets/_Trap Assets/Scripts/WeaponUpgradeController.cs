@@ -8,6 +8,7 @@ public class WeaponUpgradeController : MonoBehaviour
     [SerializeField] private GameObject[] levelVisuals = new GameObject[9];
     [SerializeField] private WeaponUpgradeLevel[] upgradeLevels = new WeaponUpgradeLevel[9];
     [SerializeField][Min(1)] private int currentLevel = 1;
+    [SerializeField] private ParticleSystem weaponUpgradeEffect;
 
     public event Action<WeaponUpgradeController> UpgradeStateChanged;
 

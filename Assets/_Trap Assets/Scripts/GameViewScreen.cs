@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -41,12 +42,24 @@ public class GameViewScreen : MonoBehaviour
     [SerializeField][Min(0)] private int playerHealthUpgradeBonus;
     [SerializeField] private bool pauseOnGameOver = true;
 
+    private const float LifeIconPunchScale = 0.18f;
+    private const float LifeIconPunchDuration = 0.28f;
+    private const float WeaponButtonPressedScale = 0.92f;
+    private const float WeaponButtonPressInDuration = 0.08f;
+    private const float WeaponButtonPressOutDuration = 0.14f;
+
     private int gearCount;
     private float gearGenerationTimer;
     private int maxPlayerHealth;
     private int currentPlayerHealth;
     private int inGameCoins;
     private bool gameOverTriggered;
+    private Vector3 lifeIconBaseScale;
+    private bool lifeIconScaleCached;
+    private Tween lifeIconPunchTween;
+    private readonly Vector3[] weaponUpgradeButtonBaseScales = new Vector3[3];
+    private readonly bool[] weaponUpgradeButtonScaleCached = new bool[3];
+    private readonly Tween[] weaponUpgradeButtonTweens = new Tween[3];
 
     public int GearCount => gearCount;
     public int InGameCoins => inGameCoins;
@@ -96,6 +109,7 @@ public class GameViewScreen : MonoBehaviour
     {
         PlayerUpgradeSystem.UpgradeStateChanged -= HandlePlayerUpgradeStateChanged;
         BindWeaponUpgradeStateEvents(false);
+        StopUiFeedbackAnimations();
 
         if (zombieCrowdSpawner != null)
         {
@@ -229,6 +243,7 @@ public class GameViewScreen : MonoBehaviour
 
         currentPlayerHealth = Mathf.Max(0, currentPlayerHealth - amount);
         UpdatePlayerHealthUi();
+        PlayLifeIconDamageFeedback();
 
         if (currentPlayerHealth <= 0)
         {
@@ -277,6 +292,8 @@ public class GameViewScreen : MonoBehaviour
 
     private void HandleWeaponUpgradeClicked(int weaponIndex)
     {
+        PlayWeaponUpgradeButtonPressFeedback(weaponIndex);
+
         WeaponUpgradeController target = GetWeaponUpgradeTarget(weaponIndex);
         if (target == null || !PlayerUpgradeSystem.IsWeaponUnlocked(weaponIndex))
         {
@@ -535,6 +552,82 @@ public class GameViewScreen : MonoBehaviour
         if (healthBarLabel != null)
         {
             healthBarLabel.text = currentPlayerHealth.ToString();
+        }
+    }
+
+    private void PlayLifeIconDamageFeedback()
+    {
+        if (lifeIcon == null)
+        {
+            return;
+        }
+
+        Transform iconTransform = lifeIcon.transform;
+        if (!lifeIconScaleCached)
+        {
+            lifeIconBaseScale = iconTransform.localScale;
+            lifeIconScaleCached = true;
+        }
+
+        lifeIconPunchTween?.Kill();
+        iconTransform.localScale = lifeIconBaseScale;
+        lifeIconPunchTween = iconTransform
+            .DOPunchScale(Vector3.one * LifeIconPunchScale, LifeIconPunchDuration, 8, 0.7f)
+            .SetEase(Ease.OutQuad)
+            .SetUpdate(true);
+    }
+
+    private void PlayWeaponUpgradeButtonPressFeedback(int weaponIndex)
+    {
+        Button button = GetWeaponUpgradeButton(weaponIndex);
+        if (button == null)
+        {
+            return;
+        }
+
+        Transform buttonTransform = button.transform;
+        Vector3 baseScale = GetWeaponUpgradeButtonBaseScale(weaponIndex, buttonTransform);
+
+        weaponUpgradeButtonTweens[weaponIndex]?.Kill();
+        buttonTransform.localScale = baseScale;
+
+        weaponUpgradeButtonTweens[weaponIndex] = DOTween.Sequence()
+            .Append(buttonTransform.DOScale(baseScale * WeaponButtonPressedScale, WeaponButtonPressInDuration).SetEase(Ease.OutQuad))
+            .Append(buttonTransform.DOScale(baseScale, WeaponButtonPressOutDuration).SetEase(Ease.OutBack))
+            .SetUpdate(true);
+    }
+
+    private Vector3 GetWeaponUpgradeButtonBaseScale(int weaponIndex, Transform buttonTransform)
+    {
+        if (!weaponUpgradeButtonScaleCached[weaponIndex])
+        {
+            weaponUpgradeButtonBaseScales[weaponIndex] = buttonTransform.localScale;
+            weaponUpgradeButtonScaleCached[weaponIndex] = true;
+        }
+
+        return weaponUpgradeButtonBaseScales[weaponIndex];
+    }
+
+    private void StopUiFeedbackAnimations()
+    {
+        lifeIconPunchTween?.Kill();
+        lifeIconPunchTween = null;
+
+        if (lifeIcon != null && lifeIconScaleCached)
+        {
+            lifeIcon.transform.localScale = lifeIconBaseScale;
+        }
+
+        for (int i = 0; i < weaponUpgradeButtonTweens.Length; i++)
+        {
+            weaponUpgradeButtonTweens[i]?.Kill();
+            weaponUpgradeButtonTweens[i] = null;
+
+            Button button = GetWeaponUpgradeButton(i);
+            if (button != null && weaponUpgradeButtonScaleCached[i])
+            {
+                button.transform.localScale = weaponUpgradeButtonBaseScales[i];
+            }
         }
     }
 
