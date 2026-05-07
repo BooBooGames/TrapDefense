@@ -34,6 +34,7 @@ public class GameViewScreen : MonoBehaviour
 
 
     [SerializeField] private Image healthBarFill;
+    [SerializeField] private GameObject lifeIcon;
     [SerializeField] private TextMeshProUGUI healthBarLabel;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private UpgradeScreenConfig upgradeConfig;
@@ -126,6 +127,7 @@ public class GameViewScreen : MonoBehaviour
     public void StartGameplay()
     {
         ApplyPersistentUpgradeState();
+        EndPointTrigger.ResetAllGates();
         ResetInGameCoins();
         RefreshWeaponUpgradeUi();
 

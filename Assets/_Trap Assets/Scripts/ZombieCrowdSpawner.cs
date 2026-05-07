@@ -238,7 +238,6 @@ public class ZombieCrowdSpawner : MonoBehaviour
         runtime.ConfigureKillEffect(entry.killEffectPrefab);
         runtime.Despawned += OnZombieDespawned;
         runtime.Killed += OnZombieKilled;
-        runtime.Escaped += OnZombieEscaped;
 
         ZombiePathFollower follower = zombie.GetComponent<ZombiePathFollower>();
         if (follower == null)
@@ -263,7 +262,6 @@ public class ZombieCrowdSpawner : MonoBehaviour
     {
         zombie.Despawned -= OnZombieDespawned;
         zombie.Killed -= OnZombieKilled;
-        zombie.Escaped -= OnZombieEscaped;
         aliveZombies = Mathf.Max(0, aliveZombies - 1);
         completedZombies = Mathf.Min(totalPlannedZombies, completedZombies + 1);
         currentWaveCompletedZombies = Mathf.Min(currentWavePlannedZombies, currentWaveCompletedZombies + 1);
@@ -299,14 +297,6 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
         ParticleSystem effectInstance = Instantiate(effectPrefab, deathPosition, Quaternion.identity);
         effectInstance.Play();
-    }
-
-    private void OnZombieEscaped(ZombieRuntime zombie)
-    {
-        if (gameViewScreen != null)
-        {
-            gameViewScreen.DamagePlayer(1);
-        }
     }
 
     private GameObject CreateFallbackZombie()

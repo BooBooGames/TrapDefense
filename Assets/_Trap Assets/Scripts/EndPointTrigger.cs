@@ -3,36 +3,216 @@ using UnityEngine;
 
 public class EndPointTrigger : MonoBehaviour
 {
+    private static readonly List<EndPointTrigger> ActiveTriggers = new List<EndPointTrigger>();
+
     [SerializeField] private Collider triggerCollider;
+    [SerializeField] private GameViewScreen gameViewScreen;
     [SerializeField] private ParticleSystem gateBreakEffectPrefab;
     [SerializeField] private List<GameObject> gateVisuals = new List<GameObject>();
+    [SerializeField] private List<Collider> gateVisualColliders = new List<Collider>();
+    [SerializeField] private List<Rigidbody> gateVisualRigidbodies = new List<Rigidbody>();
+    [SerializeField][Min(1)] private int damagePerZombie = 1;
+    [SerializeField] private bool disableTriggerAfterGateBreak;
 
-    void Start()
+    private readonly HashSet<ZombieRuntime> damagedZombies = new HashSet<ZombieRuntime>();
+    private readonly List<Vector3> initialGatePositions = new List<Vector3>();
+    private readonly List<Quaternion> initialGateRotations = new List<Quaternion>();
+    private bool gateBroken;
+
+    private void Awake()
     {
+        CacheGatePhysicsReferences();
+        CacheInitialGateTransforms();
+        SetGatePhysicsEnabled(false);
+    }
 
+    private void OnEnable()
+    {
+        if (!ActiveTriggers.Contains(this))
+        {
+            ActiveTriggers.Add(this);
+        }
+    }
+
+    private void OnDisable()
+    {
+        ActiveTriggers.Remove(this);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent(out ZombieRuntime zombieRuntime))
+        if (!other.TryGetComponent(out ZombieRuntime zombieRuntime) || !damagedZombies.Add(zombieRuntime))
         {
-            if (gateBreakEffectPrefab != null)
+            return;
+        }
+
+        ResolveGameViewScreen()?.DamagePlayer(damagePerZombie);
+
+        if (!gateBroken)
+        {
+            BreakGate();
+        }
+    }
+
+    private void BreakGate()
+    {
+        gateBroken = true;
+
+        if (gateBreakEffectPrefab != null)
+        {
+            ParticleSystem effectInstance = Instantiate(gateBreakEffectPrefab, transform.position, Quaternion.identity);
+            effectInstance.Play();
+        }
+
+        SetGatePhysicsEnabled(true);
+
+        if (disableTriggerAfterGateBreak && triggerCollider != null)
+        {
+            triggerCollider.enabled = false;
+        }
+    }
+
+    private GameViewScreen ResolveGameViewScreen()
+    {
+        if (gameViewScreen == null)
+        {
+            gameViewScreen = GameViewScreen.Instance;
+        }
+
+        return gameViewScreen;
+    }
+
+    private void CacheGatePhysicsReferences()
+    {
+        if (gateVisuals == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < gateVisuals.Count; i++)
+        {
+            GameObject visual = gateVisuals[i];
+            if (visual == null)
             {
-                Instantiate(gateBreakEffectPrefab, transform.position, Quaternion.identity);
+                continue;
             }
 
-            foreach (var visual in gateVisuals)
+            if (i >= gateVisualColliders.Count || gateVisualColliders[i] == null)
             {
-                if (visual != null)
+                if (visual.TryGetComponent(out Collider gateCollider))
                 {
-                    visual.SetActive(false);
+                    AddOrSet(gateVisualColliders, i, gateCollider);
                 }
             }
 
-            if (triggerCollider != null)
+            if (i >= gateVisualRigidbodies.Count || gateVisualRigidbodies[i] == null)
             {
-                triggerCollider.enabled = false;
+                if (visual.TryGetComponent(out Rigidbody gateRigidbody))
+                {
+                    AddOrSet(gateVisualRigidbodies, i, gateRigidbody);
+                }
             }
+        }
+    }
+
+    private void SetGatePhysicsEnabled(bool isEnabled)
+    {
+        for (int i = 0; i < gateVisualColliders.Count; i++)
+        {
+            if (gateVisualColliders[i] != null)
+            {
+                gateVisualColliders[i].enabled = isEnabled;
+            }
+        }
+
+        for (int i = 0; i < gateVisualRigidbodies.Count; i++)
+        {
+            Rigidbody gateRigidbody = gateVisualRigidbodies[i];
+            if (gateRigidbody == null)
+            {
+                continue;
+            }
+
+            gateRigidbody.isKinematic = !isEnabled;
+            gateRigidbody.useGravity = isEnabled;
+            if (!isEnabled)
+            {
+                gateRigidbody.linearVelocity = Vector3.zero;
+                gateRigidbody.angularVelocity = Vector3.zero;
+            }
+            else
+            {
+                gateRigidbody.WakeUp();
+            }
+        }
+    }
+
+    private static void AddOrSet<T>(List<T> list, int index, T value)
+    {
+        while (list.Count <= index)
+        {
+            list.Add(default);
+        }
+
+        list[index] = value;
+    }
+
+    public void ResetGate()
+    {
+        gateBroken = false;
+        damagedZombies.Clear();
+        RestoreInitialGateTransforms();
+        SetGatePhysicsEnabled(false);
+
+        if (triggerCollider != null)
+        {
+            triggerCollider.enabled = true;
+        }
+    }
+
+    public static void ResetAllGates()
+    {
+        for (int i = 0; i < ActiveTriggers.Count; i++)
+        {
+            ActiveTriggers[i]?.ResetGate();
+        }
+    }
+
+    private void CacheInitialGateTransforms()
+    {
+        initialGatePositions.Clear();
+        initialGateRotations.Clear();
+
+        if (gateVisuals == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < gateVisuals.Count; i++)
+        {
+            Transform visualTransform = gateVisuals[i] != null ? gateVisuals[i].transform : null;
+            initialGatePositions.Add(visualTransform != null ? visualTransform.localPosition : Vector3.zero);
+            initialGateRotations.Add(visualTransform != null ? visualTransform.localRotation : Quaternion.identity);
+        }
+    }
+
+    private void RestoreInitialGateTransforms()
+    {
+        if (gateVisuals == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < gateVisuals.Count; i++)
+        {
+            Transform visualTransform = gateVisuals[i] != null ? gateVisuals[i].transform : null;
+            if (visualTransform == null || i >= initialGatePositions.Count || i >= initialGateRotations.Count)
+            {
+                continue;
+            }
+
+            visualTransform.localPosition = initialGatePositions[i];
+            visualTransform.localRotation = initialGateRotations[i];
         }
     }
 }
