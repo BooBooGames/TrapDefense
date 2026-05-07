@@ -11,8 +11,14 @@ public class CardInfo : MonoBehaviour
     public TextMeshProUGUI cardDescriptionText1, cardDescriptionText2, cardDescriptionText3, cardDescriptionText4, cardDescriptionText5;
     public Button selectButton;
 
-    public void Bind(PowerCardDefinition cardData, UnityEngine.Events.UnityAction onSelected)
+    public void Bind(PowerCardDefinition cardData, Sprite titleSprite, UnityEngine.Events.UnityAction onSelected)
     {
+        if (titleImage != null)
+        {
+            titleImage.sprite = titleSprite;
+            titleImage.enabled = titleSprite != null;
+        }
+
         if (cardTypeText != null)
         {
             cardTypeText.text = cardData != null ? cardData.cardType : string.Empty;

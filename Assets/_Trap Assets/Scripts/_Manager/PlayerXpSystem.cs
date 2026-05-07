@@ -182,7 +182,29 @@ public class PlayerXpSystem : MonoBehaviour
             return;
         }
 
-        cardInfo.Bind(choice.definition, () => SelectCard(choiceIndex));
+        cardInfo.Bind(choice.definition, GetTitleSprite(choice.definition), () => SelectCard(choiceIndex));
+    }
+
+    private Sprite GetTitleSprite(PowerCardDefinition cardData)
+    {
+        if (cardData == null || string.IsNullOrWhiteSpace(cardData.cardType))
+        {
+            return commonTitleImage;
+        }
+
+        switch (cardData.cardType.Trim().ToLowerInvariant())
+        {
+            case "common":
+                return commonTitleImage;
+            case "rare":
+                return rareTitleImage;
+            case "epic":
+                return epicTitleImage;
+            case "legendary":
+                return legendaryTitleImage;
+            default:
+                return commonTitleImage;
+        }
     }
 
     private void SetCardPanelVisible(bool isVisible)

@@ -3,7 +3,11 @@ using UnityEngine;
 
 public class ZombieRuntime : MonoBehaviour
 {
-    [SerializeField] [Min(1f)] private float maxHealth = 10f;
+    [SerializeField][Min(1f)] private float maxHealth = 10f;
+    [SerializeField] private Animator animator;
+    [SerializeField] private ZombiePathFollower pathFollower;
+    [SerializeField] private string deathAnimationStateName = "Death";
+    [SerializeField][Min(0f)] private float destroyDelayAfterDeath = 2f;
 
     private bool configured;
     private bool despawnNotified;
@@ -26,6 +30,16 @@ public class ZombieRuntime : MonoBehaviour
 
     private void Awake()
     {
+        if (animator == null)
+        {
+            animator = GetComponent<Animator>();
+        }
+
+        if (pathFollower == null)
+        {
+            pathFollower = GetComponent<ZombiePathFollower>();
+        }
+
         currentHealth = maxHealth;
     }
 
@@ -49,19 +63,40 @@ public class ZombieRuntime : MonoBehaviour
 
     public void ApplyDamage(float damage)
     {
+        if (killNotified || damage <= 0f)
+        {
+            return;
+        }
+
         currentHealth = Mathf.Max(0f, currentHealth - damage);
         if (currentHealth <= 0f)
         {
-            NotifyKilled();
-            Destroy(gameObject);
+            Die();
         }
     }
 
     public void Kill()
     {
+        if (killNotified)
+        {
+            return;
+        }
+
         currentHealth = 0f;
+        Die();
+    }
+
+    private void Die()
+    {
         NotifyKilled();
-        Destroy(gameObject);
+        pathFollower?.StopMovement();
+
+        if (animator != null && !string.IsNullOrWhiteSpace(deathAnimationStateName))
+        {
+            animator.Play(deathAnimationStateName, 0, 0f);
+        }
+
+        Destroy(gameObject, destroyDelayAfterDeath);
     }
 
     public void MarkEscaped()

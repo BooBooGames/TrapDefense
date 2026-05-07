@@ -12,6 +12,7 @@ public class ZombiePathFollower : MonoBehaviour
     private float travelledDistance;
     private float lateralOffset;
     private bool initialized;
+    private bool movementStopped;
     private Action<ZombiePathFollower> onReachedEnd;
 
     public void Initialize(ZombiePath assignedPath, float initialDistance, int seed, Action<ZombiePathFollower> reachedEndCallback = null)
@@ -21,6 +22,7 @@ public class ZombiePathFollower : MonoBehaviour
         lateralOffset = CreateStableOffset(seed);
         onReachedEnd = reachedEndCallback;
         initialized = true;
+        movementStopped = false;
 
         UpdateTransform();
     }
@@ -41,7 +43,7 @@ public class ZombiePathFollower : MonoBehaviour
 
     private void Update()
     {
-        if (path == null || !path.HasValidPath)
+        if (movementStopped || path == null || !path.HasValidPath)
         {
             return;
         }
@@ -56,6 +58,12 @@ public class ZombiePathFollower : MonoBehaviour
         }
 
         UpdateTransform();
+    }
+
+    public void StopMovement()
+    {
+        movementStopped = true;
+        onReachedEnd = null;
     }
 
     private void UpdateTransform()

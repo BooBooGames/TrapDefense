@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponRotator : MonoBehaviour
 {
+    private static readonly List<WeaponRotator> ActiveRotators = new List<WeaponRotator>();
     private static bool gameplayMotionEnabled;
 
     [Header("Timing")]
@@ -64,10 +66,9 @@ public class WeaponRotator : MonoBehaviour
             return;
         }
 
-        WeaponRotator[] rotators = FindObjectsByType<WeaponRotator>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        for (int i = 0; i < rotators.Length; i++)
+        for (int i = 0; i < ActiveRotators.Count; i++)
         {
-            rotators[i]?.RestartMotion(true);
+            ActiveRotators[i]?.RestartMotion(true);
         }
     }
 
@@ -101,7 +102,17 @@ public class WeaponRotator : MonoBehaviour
 
     private void OnEnable()
     {
+        if (!ActiveRotators.Contains(this))
+        {
+            ActiveRotators.Add(this);
+        }
+
         RestartMotion();
+    }
+
+    private void OnDisable()
+    {
+        ActiveRotators.Remove(this);
     }
 
     private void Update()

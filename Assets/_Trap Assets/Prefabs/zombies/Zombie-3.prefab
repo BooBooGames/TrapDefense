@@ -207,6 +207,8 @@ GameObject:
   - component: {fileID: 2045104214923475105}
   - component: {fileID: 6291762777729664165}
   - component: {fileID: 5778415049198143624}
+  - component: {fileID: 7784658825639484046}
+  - component: {fileID: -7207516172384487142}
   m_Layer: 0
   m_Name: Zombie-3
   m_TagString: Untagged
@@ -306,6 +308,40 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7784658825639484046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2614573586669108347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c6f7d313f94cb2b9dd17f7db0ab104, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  animator: {fileID: 8288850462609064653}
+  pathFollower: {fileID: -7207516172384487142}
+  deathAnimationStateName: Death
+  destroyDelayAfterDeath: 2
+--- !u!114 &-7207516172384487142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2614573586669108347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f23cf58d5454d12b46d8f6204c83002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  path: {fileID: 0}
+  moveSpeed: 2.5
+  roadWidthUsage: 1
+  verticalOffset: 0
+  orientToMovement: 1
 --- !u!1 &2902968613535201213
 GameObject:
   m_ObjectHideFlags: 0

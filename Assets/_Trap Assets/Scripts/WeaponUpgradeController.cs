@@ -41,12 +41,17 @@ public class WeaponUpgradeController : MonoBehaviour
 
     public bool TryUpgrade(GameViewScreen gameViewScreen)
     {
+        return TryUpgrade(gameViewScreen, CurrentUpgradeCost);
+    }
+
+    public bool TryUpgrade(GameViewScreen gameViewScreen, int gearCost)
+    {
         if (!CanUpgrade() || gameViewScreen == null)
         {
             return false;
         }
 
-        int upgradeCost = upgradeLevels[currentLevel].gearCost;
+        int upgradeCost = Mathf.Max(0, gearCost);
         if (!gameViewScreen.TrySpendGears(upgradeCost))
         {
             return false;

@@ -174,6 +174,8 @@ GameObject:
   - component: {fileID: 2045104214923475105}
   - component: {fileID: 6291762777729664165}
   - component: {fileID: 5778415049198143624}
+  - component: {fileID: -1299499153039504952}
+  - component: {fileID: 8241853486691046630}
   m_Layer: 0
   m_Name: Zombie-2
   m_TagString: Untagged
@@ -274,6 +276,40 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-1299499153039504952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2614573586669108347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c6f7d313f94cb2b9dd17f7db0ab104, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 10
+  animator: {fileID: 4518481854625965937}
+  pathFollower: {fileID: 8241853486691046630}
+  deathAnimationStateName: Death
+  destroyDelayAfterDeath: 2
+--- !u!114 &8241853486691046630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2614573586669108347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f23cf58d5454d12b46d8f6204c83002, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  path: {fileID: 0}
+  moveSpeed: 2.5
+  roadWidthUsage: 1
+  verticalOffset: 0
+  orientToMovement: 1
 --- !u!1 &3265371558899220611
 GameObject:
   m_ObjectHideFlags: 0
@@ -1252,10 +1288,40 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: aee7fe6a24c834e0fbff6ce9f449bab3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4518481854625965937}
   m_SourcePrefab: {fileID: 100100000, guid: aee7fe6a24c834e0fbff6ce9f449bab3, type: 3}
 --- !u!4 &70810846011869096 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: aee7fe6a24c834e0fbff6ce9f449bab3, type: 3}
   m_PrefabInstance: {fileID: 536257571954434115}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &842246498031246610 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: aee7fe6a24c834e0fbff6ce9f449bab3, type: 3}
+  m_PrefabInstance: {fileID: 536257571954434115}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &4518481854625965937
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842246498031246610}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d950d83e8fae14f41b97d89028b5d26c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

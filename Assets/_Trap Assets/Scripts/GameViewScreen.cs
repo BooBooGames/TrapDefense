@@ -53,7 +53,6 @@ public class GameViewScreen : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        // AutoResolveReferences();
         ApplyPersistentUpgradeState();
 
         if (zombieCrowdSpawner != null)
@@ -282,7 +281,8 @@ public class GameViewScreen : MonoBehaviour
             return;
         }
 
-        target.TryUpgrade(this);
+        WeaponUnlockDefinition weaponDefinition = PlayerUpgradeSystem.Config.GetWeapon(weaponIndex);
+        target.TryUpgrade(this, GetRequiredGearCost(target, weaponDefinition));
         RefreshWeaponUpgradeUi();
     }
 
@@ -373,20 +373,24 @@ public class GameViewScreen : MonoBehaviour
         {
             WeaponUpgradeController target = GetWeaponUpgradeTarget(i);
             Button button = GetWeaponUpgradeButton(i);
+            Image weaponIcon = GetWeaponIcon(i);
             TextMeshProUGUI levelLabel = GetWeaponUpgradeLevelLabel(i);
             TextMeshProUGUI costLabel = GetWeaponUpgradeCostLabel(i);
+            WeaponUnlockDefinition weaponDefinition = PlayerUpgradeSystem.Config.GetWeapon(i);
             bool isUnlocked = PlayerUpgradeSystem.IsWeaponUnlocked(i);
 
             SetWeaponSlotActive(button, target, isUnlocked);
-            RefreshWeaponSlotLabels(target, levelLabel, costLabel);
+            RefreshWeaponIcon(weaponIcon, weaponDefinition);
+            RefreshWeaponSlotLabels(target, weaponDefinition, levelLabel, costLabel);
 
             if (button != null)
             {
+                int requiredGearCost = GetRequiredGearCost(target, weaponDefinition);
                 button.interactable =
                     isUnlocked &&
                     target != null &&
                     target.CanUpgrade() &&
-                    gearCount >= target.CurrentUpgradeCost;
+                    gearCount >= requiredGearCost;
             }
         }
     }
@@ -431,6 +435,17 @@ public class GameViewScreen : MonoBehaviour
         };
     }
 
+    private Image GetWeaponIcon(int weaponIndex)
+    {
+        return weaponIndex switch
+        {
+            0 => defaultWeaponIcon,
+            1 => _1WeaponIcon,
+            2 => _2WeaponIcon,
+            _ => null,
+        };
+    }
+
     private TextMeshProUGUI GetWeaponUpgradeCostLabel(int weaponIndex)
     {
         return weaponIndex switch
@@ -468,6 +483,7 @@ public class GameViewScreen : MonoBehaviour
 
     private static void RefreshWeaponSlotLabels(
         WeaponUpgradeController target,
+        WeaponUnlockDefinition weaponDefinition,
         TextMeshProUGUI levelLabel,
         TextMeshProUGUI costLabel)
     {
@@ -479,9 +495,31 @@ public class GameViewScreen : MonoBehaviour
         if (costLabel != null)
         {
             costLabel.text = target != null && target.CanUpgrade()
-                ? target.CurrentUpgradeCost.ToString()
+                ? GetRequiredGearCost(target, weaponDefinition).ToString()
                 : "Max";
         }
+    }
+
+    private static void RefreshWeaponIcon(Image weaponIcon, WeaponUnlockDefinition weaponDefinition)
+    {
+        if (weaponIcon == null)
+        {
+            return;
+        }
+
+        Sprite weaponSprite = weaponDefinition != null ? weaponDefinition.weaponSprite : null;
+        weaponIcon.sprite = weaponSprite;
+        weaponIcon.enabled = weaponSprite != null;
+    }
+
+    private static int GetRequiredGearCost(WeaponUpgradeController target, WeaponUnlockDefinition weaponDefinition)
+    {
+        if (weaponDefinition != null && weaponDefinition.requiredGearCostForUpgrade > 0)
+        {
+            return weaponDefinition.requiredGearCostForUpgrade;
+        }
+
+        return target != null ? target.CurrentUpgradeCost : 0;
     }
 
     private void UpdatePlayerHealthUi()
@@ -544,138 +582,6 @@ public class GameViewScreen : MonoBehaviour
         }
 
         return int.TryParse(gearCounterLabel.text, out int parsedCount) ? Mathf.Max(0, parsedCount) : 0;
-    }
-
-    // private void AutoResolveReferences()
-    // {
-    //     if (zombieCrowdSpawner == null)
-    //     {
-    //         zombieCrowdSpawner = FindFirstObjectByType<ZombieCrowdSpawner>();
-    //     }
-
-    //     if (waveProgressBarLabel == null)
-    //     {
-    //         waveProgressBarLabel = FindLabelByName("Wave Count Text (TMP)");
-    //     }
-
-    //     if (waveProgressBarFill == null)
-    //     {
-    //         waveProgressBarFill = FindSiblingFillImage(waveProgressBarLabel);
-    //     }
-
-    //     if (gearCounterLabel == null)
-    //     {
-    //         gearCounterLabel = FindLabelByName("Gere count Text (TMP)") ?? FindLabelByName("Gear Count Text (TMP)");
-    //     }
-
-    //     if (gearCounterFill == null)
-    //     {
-    //         gearCounterFill = FindSiblingFillImage(gearCounterLabel);
-    //     }
-
-    //     if (weaponUpgradeButton == null)
-    //     {
-    //         weaponUpgradeButton = FindButtonByName("Weapon Upgrade");
-    //     }
-
-    //     if (weaponUpgradeLevelLabel == null && weaponUpgradeButton != null)
-    //     {
-    //         TextMeshProUGUI[] labels = weaponUpgradeButton.GetComponentsInChildren<TextMeshProUGUI>(true);
-    //         for (int i = 0; i < labels.Length; i++)
-    //         {
-    //             if (labels[i] != null && labels[i].transform.parent == weaponUpgradeButton.transform)
-    //             {
-    //                 weaponUpgradeLevelLabel = labels[i];
-    //                 break;
-    //             }
-    //         }
-
-    //         if (weaponUpgradeLevelLabel == null && labels.Length > 0)
-    //         {
-    //             weaponUpgradeLevelLabel = labels[0];
-    //         }
-    //     }
-
-    //     if (weaponUpgradeTarget == null)
-    //     {
-    //         weaponUpgradeTarget = FindFirstObjectByType<WeaponUpgradeController>();
-    //     }
-
-    //     if (healthBarLabel == null)
-    //     {
-    //         healthBarLabel = FindLabelByName("Health Count Text (TMP)");
-    //     }
-
-    //     if (healthBarFill == null)
-    //     {
-    //         healthBarFill = FindSiblingFillImage(healthBarLabel);
-    //     }
-
-    //     if (gameOverPanel == null)
-    //     {
-    //         gameOverPanel = FindGameObjectByName("Game Over Panel");
-    //     }
-    // }
-
-    private TextMeshProUGUI FindLabelByName(string objectName)
-    {
-        TextMeshProUGUI[] labels = GetComponentsInChildren<TextMeshProUGUI>(true);
-        for (int i = 0; i < labels.Length; i++)
-        {
-            if (labels[i] != null && labels[i].name == objectName)
-            {
-                return labels[i];
-            }
-        }
-
-        return null;
-    }
-
-    private Button FindButtonByName(string partialName)
-    {
-        Button[] buttons = GetComponentsInChildren<Button>(true);
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            if (buttons[i] != null && buttons[i].name.Contains(partialName))
-            {
-                return buttons[i];
-            }
-        }
-
-        return null;
-    }
-
-    private Image FindSiblingFillImage(Component referenceComponent)
-    {
-        if (referenceComponent == null || referenceComponent.transform.parent == null)
-        {
-            return null;
-        }
-
-        Image[] images = referenceComponent.transform.parent.GetComponentsInChildren<Image>(true);
-        for (int i = 0; i < images.Length; i++)
-        {
-            if (images[i] != null && images[i].name.Contains("Fill"))
-            {
-                return images[i];
-            }
-        }
-
-        return null;
-    }
-
-    private GameObject FindGameObjectByName(string objectName)
-    {
-        Transform[] transforms = FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        for (int i = 0; i < transforms.Length; i++)
-        {
-            if (transforms[i] != null && transforms[i].name == objectName)
-            {
-                return transforms[i].gameObject;
-            }
-        }
-
-        return null;
     }
 
     public void ShowChestTriggerImage(int waveNumber)
