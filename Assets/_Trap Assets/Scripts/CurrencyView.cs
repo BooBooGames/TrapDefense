@@ -1,3 +1,4 @@
+using System.Globalization;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,7 +39,7 @@ public class CurrencyView : MonoBehaviour
     {
         if (coinCounterLabel != null)
         {
-            coinCounterLabel.text = coins.ToString();
+            coinCounterLabel.text = CoinFormatter.FormatCoins(coins);
         }
 
         if (gemsCounterLabel != null)
@@ -116,7 +117,7 @@ public class CurrencyView : MonoBehaviour
             return 0;
         }
 
-        return int.TryParse(label.text, out int parsedValue) ? Mathf.Max(0, parsedValue) : 0;
+        return CoinFormatter.ParseCoins(label.text);
     }
 
     private void BindBottomHudButton(UnityEngine.Events.UnityAction callback)
@@ -126,5 +127,60 @@ public class CurrencyView : MonoBehaviour
             return;
         }
         settingsButton.onClick.AddListener(() => callback?.Invoke());
+    }
+}
+
+public static class CoinFormatter
+{
+    private static readonly string[] Suffixes = { "K", "M", "B" };
+
+    public static string FormatCoins(long amount)
+    {
+        long absoluteAmount = System.Math.Abs(amount);
+        if (absoluteAmount < 1000)
+        {
+            return amount.ToString(CultureInfo.InvariantCulture);
+        }
+
+        double value = absoluteAmount;
+        int suffixIndex = -1;
+
+        while (value >= 1000d && suffixIndex < Suffixes.Length - 1)
+        {
+            value /= 1000d;
+            suffixIndex++;
+        }
+
+        double displayValue = System.Math.Floor(value * 10d) / 10d;
+        string formattedValue = displayValue.ToString("0.#", CultureInfo.InvariantCulture);
+        return $"{(amount < 0 ? "-" : string.Empty)}{formattedValue}{Suffixes[suffixIndex]}";
+    }
+
+    public static int ParseCoins(string text)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return 0;
+        }
+
+        string trimmedText = text.Trim().Replace(",", string.Empty);
+        float multiplier = 1f;
+
+        for (int i = 0; i < Suffixes.Length; i++)
+        {
+            string suffix = Suffixes[i];
+            if (!trimmedText.EndsWith(suffix, System.StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            multiplier = Mathf.Pow(1000f, i + 1);
+            trimmedText = trimmedText.Substring(0, trimmedText.Length - suffix.Length);
+            break;
+        }
+
+        return float.TryParse(trimmedText, NumberStyles.Float, CultureInfo.InvariantCulture, out float parsedValue)
+            ? Mathf.Max(0, Mathf.RoundToInt(parsedValue * multiplier))
+            : 0;
     }
 }

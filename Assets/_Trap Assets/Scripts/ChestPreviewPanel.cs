@@ -30,7 +30,7 @@ public class ChestPreviewPanel : MonoBehaviour
 
         if (coinRewardLabel != null)
         {
-            coinRewardLabel.text = GetCoinsReward(chestData, slotData).ToString();
+            coinRewardLabel.text = CoinFormatter.FormatCoins(GetCoinsReward(chestData, slotData));
         }
 
         if (cardCountLabel != null)

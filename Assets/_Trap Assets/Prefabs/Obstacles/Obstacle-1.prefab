@@ -249,7 +249,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5499583725396163581}
-  - component: {fileID: 6725466057799789168}
   - component: {fileID: 6348545350234633206}
   m_Layer: 0
   m_Name: Obstacle-1
@@ -275,19 +274,6 @@ Transform:
   - {fileID: 4941025355540275783}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6725466057799789168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7791313502309475601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54b52aaf69a74bdbb583ece6af2db107, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damagePower: 1
 --- !u!114 &6348545350234633206
 MonoBehaviour:
   m_ObjectHideFlags: 0

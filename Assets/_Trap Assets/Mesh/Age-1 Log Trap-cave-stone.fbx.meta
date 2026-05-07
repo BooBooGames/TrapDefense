@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fda5ac27be7994894b6313f5c6d94fad
+guid: 7a2050e5cd1f7491ab8f0eac0c09b55f
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,43 +7,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Atlas_1A
-    second: {fileID: 2100000, guid: 7e5493fb631514329b76fc21f73a2d99, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Ground
-    second: {fileID: 2100000, guid: 813290ab0bc52407cb2a91d50384399a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Road_base
-    second: {fileID: 2100000, guid: 9e9e3aa9f62294811b0cd72fc2adea55, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Rock_Material_01.001
-    second: {fileID: 2100000, guid: 2061d7246d07943b7b5c9eebdd41e6df, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: Rope_mat
-    second: {fileID: 2100000, guid: 9ac803770301d404f9951689e277ac7c, type: 2}
+    second: {fileID: 2100000, guid: b5a1c67297ef7574cacd8f630921aa7f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Sand
-    second: {fileID: 2100000, guid: aa41b74fee9674cb7a0c18e9e589e52e, type: 2}
+    second: {fileID: 2100000, guid: 725196acddd9ccf459a8dbac7925e6f7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stone
+    second: {fileID: 2100000, guid: f6a892a7dd758439d8a7947203ce8229, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stone cave
+    second: {fileID: 2100000, guid: dafff8659a1384e6c803f3db55f4f510, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Wood_amt
-    second: {fileID: 2100000, guid: bf19e73d19eab44b28e2d1c8a16a101b, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: mountain
-    second: {fileID: 2100000, guid: 74c3cafd968ff47359207e6acf0aa0cd, type: 2}
+    second: {fileID: 2100000, guid: 3717415999f2a194ea0479ccc146d140, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

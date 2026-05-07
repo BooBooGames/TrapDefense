@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: UpgradeScreenConfig
   m_EditorClassIdentifier: 
   weapons:
-  - weaponName: Weapon 1
+  - weaponName: Log
     weaponSprite: {fileID: 21300000, guid: e3e3f6ee28b824ed5aad32c493c45e18, type: 3}
     unlockCost:
       coins: 0
       gears: 0
     unlockedByDefault: 1
-  - weaponName: Weapon 2
+  - weaponName: Ground Anchors
     weaponSprite: {fileID: 21300000, guid: e3e3f6ee28b824ed5aad32c493c45e18, type: 3}
     unlockCost:
       coins: 50
       gears: 0
     unlockedByDefault: 0
-  - weaponName: Weapon 3
+  - weaponName: Obsidian Arrow
     weaponSprite: {fileID: 21300000, guid: e3e3f6ee28b824ed5aad32c493c45e18, type: 3}
     unlockCost:
       coins: 100

@@ -4,9 +4,9 @@ using UnityEngine;
 public class ZombiePathFollower : MonoBehaviour
 {
     [SerializeField] private ZombiePath path;
-    [SerializeField] [Min(0.1f)] private float moveSpeed = 2.5f;
-    [SerializeField] [Range(0.1f, 1f)] private float roadWidthUsage = 1f;
-    [SerializeField] private float verticalOffset = 0.5f;
+    [SerializeField][Min(0.1f)] private float moveSpeed = 2.5f;
+    [SerializeField][Range(0.1f, 1f)] private float roadWidthUsage = 1f;
+    [SerializeField] private float verticalOffset = 0f;
     [SerializeField] private bool orientToMovement = true;
 
     private float travelledDistance;

@@ -7,6 +7,7 @@ public class GameViewScreen : MonoBehaviour
     public static GameViewScreen Instance { get; private set; }
 
     [SerializeField] private ZombieCrowdSpawner zombieCrowdSpawner;
+    public TextMeshProUGUI inGameCoinLabel;
     [SerializeField] private Image waveProgressBarFill;
     [SerializeField] private TextMeshProUGUI waveProgressBarLabel;
     [SerializeField] private GameObject chest1TriggerImage, chest2TriggerImage;
@@ -38,9 +39,11 @@ public class GameViewScreen : MonoBehaviour
     private float gearGenerationTimer;
     private int maxPlayerHealth;
     private int currentPlayerHealth;
+    private int inGameCoins;
     private bool gameOverTriggered;
 
     public int GearCount => gearCount;
+    public int InGameCoins => inGameCoins;
 
     private void Awake()
     {
@@ -55,6 +58,7 @@ public class GameViewScreen : MonoBehaviour
 
         gearCount = ParseInitialGearCount();
         UpdateGearUi(GetGearProgress());
+        RefreshInGameCoinLabel();
         RefreshWaveProgress();
         RefreshWeaponUpgradeUi();
 
@@ -68,12 +72,10 @@ public class GameViewScreen : MonoBehaviour
     {
         ApplyPersistentUpgradeState();
         BindWeaponUpgradeUi();
+        PlayerUpgradeSystem.UpgradeStateChanged -= HandlePlayerUpgradeStateChanged;
+        PlayerUpgradeSystem.UpgradeStateChanged += HandlePlayerUpgradeStateChanged;
 
-        if (defaultWeaponUpgradeTarget != null)
-        {
-            defaultWeaponUpgradeTarget.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
-            defaultWeaponUpgradeTarget.UpgradeStateChanged += HandleWeaponUpgradeStateChanged;
-        }
+        BindWeaponUpgradeStateEvents(true);
 
         if (zombieCrowdSpawner != null)
         {
@@ -87,10 +89,8 @@ public class GameViewScreen : MonoBehaviour
 
     private void OnDisable()
     {
-        if (defaultWeaponUpgradeTarget != null)
-        {
-            defaultWeaponUpgradeTarget.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
-        }
+        PlayerUpgradeSystem.UpgradeStateChanged -= HandlePlayerUpgradeStateChanged;
+        BindWeaponUpgradeStateEvents(false);
 
         if (zombieCrowdSpawner != null)
         {
@@ -122,6 +122,8 @@ public class GameViewScreen : MonoBehaviour
     public void StartGameplay()
     {
         ApplyPersistentUpgradeState();
+        ResetInGameCoins();
+        RefreshWeaponUpgradeUi();
 
         if (!gameOverTriggered)
         {
@@ -141,6 +143,7 @@ public class GameViewScreen : MonoBehaviour
         zombieCrowdSpawner?.StopWaves();
         gameOverTriggered = false;
         Time.timeScale = 1f;
+        ResetInGameCoins();
 
         if (gameOverPanel != null)
         {
@@ -168,6 +171,39 @@ public class GameViewScreen : MonoBehaviour
         }
 
         UpdatePlayerHealthUi();
+    }
+
+    public void AddInGameCoins(int amount)
+    {
+        if (amount <= 0 || gameOverTriggered)
+        {
+            return;
+        }
+
+        inGameCoins = Mathf.Max(0, inGameCoins + amount);
+        RefreshInGameCoinLabel();
+    }
+
+    public void HandleAllWavesCompleted()
+    {
+        if (gameOverTriggered)
+        {
+            return;
+        }
+
+        gameOverTriggered = true;
+
+        if (gameOverPanel != null)
+        {
+            gameOverPanel.SetActive(false);
+        }
+
+        UIManager.Instance?.ShowWinPreview(inGameCoins);
+
+        if (pauseOnGameOver)
+        {
+            Time.timeScale = 0f;
+        }
     }
 
     public void AddPlayerHealthUpgrade(int amount)
@@ -211,30 +247,48 @@ public class GameViewScreen : MonoBehaviour
         return true;
     }
 
-    private void BindWeaponUpgradeUi()
+    public void RefreshSceneWeaponUnlockState()
     {
-        if (defaultWeaponUpgradeButton == null)
-        {
-            return;
-        }
-
-        defaultWeaponUpgradeButton.onClick.RemoveListener(HandleWeaponUpgradeClicked);
-        defaultWeaponUpgradeButton.onClick.AddListener(HandleWeaponUpgradeClicked);
+        ApplyPersistentUpgradeState();
+        RefreshWeaponUpgradeUi();
     }
 
-    private void HandleWeaponUpgradeClicked()
+    private void BindWeaponUpgradeUi()
     {
-        if (defaultWeaponUpgradeTarget == null)
+        for (int i = 0; i < 3; i++)
+        {
+            Button button = GetWeaponUpgradeButton(i);
+            if (button == null)
+            {
+                continue;
+            }
+
+            int weaponIndex = i;
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(() => HandleWeaponUpgradeClicked(weaponIndex));
+        }
+    }
+
+    private void HandleWeaponUpgradeClicked(int weaponIndex)
+    {
+        WeaponUpgradeController target = GetWeaponUpgradeTarget(weaponIndex);
+        if (target == null || !PlayerUpgradeSystem.IsWeaponUnlocked(weaponIndex))
         {
             return;
         }
 
-        defaultWeaponUpgradeTarget.TryUpgrade(this);
+        target.TryUpgrade(this);
         RefreshWeaponUpgradeUi();
     }
 
     private void HandleWeaponUpgradeStateChanged(WeaponUpgradeController _)
     {
+        RefreshWeaponUpgradeUi();
+    }
+
+    private void HandlePlayerUpgradeStateChanged()
+    {
+        ApplyPersistentUpgradeState();
         RefreshWeaponUpgradeUi();
     }
 
@@ -310,24 +364,118 @@ public class GameViewScreen : MonoBehaviour
 
     private void RefreshWeaponUpgradeUi()
     {
-        if (defaultWeaponUpgradeLevelLabel != null)
+        for (int i = 0; i < 3; i++)
         {
-            if (defaultWeaponUpgradeTarget == null)
+            WeaponUpgradeController target = GetWeaponUpgradeTarget(i);
+            Button button = GetWeaponUpgradeButton(i);
+            TextMeshProUGUI levelLabel = GetWeaponUpgradeLevelLabel(i);
+            TextMeshProUGUI costLabel = GetWeaponUpgradeCostLabel(i);
+            bool isUnlocked = PlayerUpgradeSystem.IsWeaponUnlocked(i);
+
+            SetWeaponSlotActive(button, target, isUnlocked);
+            RefreshWeaponSlotLabels(target, levelLabel, costLabel);
+
+            if (button != null)
             {
-                defaultWeaponUpgradeLevelLabel.text = "Lv. 0/0";
-            }
-            else
-            {
-                defaultWeaponUpgradeLevelLabel.text = $"Lv. {defaultWeaponUpgradeTarget.CurrentLevel}/{defaultWeaponUpgradeTarget.MaxLevel}";
+                button.interactable =
+                    isUnlocked &&
+                    target != null &&
+                    target.CanUpgrade() &&
+                    gearCount >= target.CurrentUpgradeCost;
             }
         }
+    }
 
-        if (defaultWeaponUpgradeButton != null)
+    private void BindWeaponUpgradeStateEvents(bool shouldBind)
+    {
+        for (int i = 0; i < 3; i++)
         {
-            defaultWeaponUpgradeButton.interactable =
-                defaultWeaponUpgradeTarget != null &&
-                defaultWeaponUpgradeTarget.CanUpgrade() &&
-                gearCount >= defaultWeaponUpgradeTarget.CurrentUpgradeCost;
+            WeaponUpgradeController target = GetWeaponUpgradeTarget(i);
+            if (target == null)
+            {
+                continue;
+            }
+
+            target.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
+            if (shouldBind)
+            {
+                target.UpgradeStateChanged += HandleWeaponUpgradeStateChanged;
+            }
+        }
+    }
+
+    private Button GetWeaponUpgradeButton(int weaponIndex)
+    {
+        return weaponIndex switch
+        {
+            0 => defaultWeaponUpgradeButton,
+            1 => _1WeaponUpgradeButton,
+            2 => _2WeaponUpgradeButton,
+            _ => null,
+        };
+    }
+
+    private TextMeshProUGUI GetWeaponUpgradeLevelLabel(int weaponIndex)
+    {
+        return weaponIndex switch
+        {
+            0 => defaultWeaponUpgradeLevelLabel,
+            1 => _1WeaponUpgradeLevelLabel,
+            2 => _2WeaponUpgradeLevelLabel,
+            _ => null,
+        };
+    }
+
+    private TextMeshProUGUI GetWeaponUpgradeCostLabel(int weaponIndex)
+    {
+        return weaponIndex switch
+        {
+            0 => defaultRequiredGearsCostLabel,
+            1 => _1RequiredGearsCostLabel,
+            2 => _2RequiredGearsCostLabel,
+            _ => null,
+        };
+    }
+
+    private WeaponUpgradeController GetWeaponUpgradeTarget(int weaponIndex)
+    {
+        return weaponIndex switch
+        {
+            0 => defaultWeaponUpgradeTarget,
+            1 => _1WeaponUpgradeTarget,
+            2 => _2WeaponUpgradeTarget,
+            _ => null,
+        };
+    }
+
+    private static void SetWeaponSlotActive(Button button, WeaponUpgradeController target, bool isActive)
+    {
+        if (button != null)
+        {
+            button.gameObject.SetActive(isActive);
+        }
+
+        if (target != null)
+        {
+            target.gameObject.SetActive(isActive);
+        }
+    }
+
+    private static void RefreshWeaponSlotLabels(
+        WeaponUpgradeController target,
+        TextMeshProUGUI levelLabel,
+        TextMeshProUGUI costLabel)
+    {
+        if (levelLabel != null)
+        {
+            levelLabel.text = target == null ? "Lv. 0/0" : $"Lv. {target.CurrentLevel}/{target.MaxLevel}";
+        }
+
+        if (costLabel != null)
+        {
+            costLabel.text = target != null && target.CanUpgrade()
+                ? target.CurrentUpgradeCost.ToString()
+                : "Max";
         }
     }
 
@@ -349,7 +497,11 @@ public class GameViewScreen : MonoBehaviour
     {
         gameOverTriggered = true;
 
-        if (gameOverPanel != null)
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowFailPreview(inGameCoins);
+        }
+        else if (gameOverPanel != null)
         {
             gameOverPanel.SetActive(true);
         }
@@ -357,6 +509,20 @@ public class GameViewScreen : MonoBehaviour
         if (pauseOnGameOver)
         {
             Time.timeScale = 0f;
+        }
+    }
+
+    private void ResetInGameCoins()
+    {
+        inGameCoins = 0;
+        RefreshInGameCoinLabel();
+    }
+
+    private void RefreshInGameCoinLabel()
+    {
+        if (inGameCoinLabel != null)
+        {
+            inGameCoinLabel.text = CoinFormatter.FormatCoins(inGameCoins);
         }
     }
 

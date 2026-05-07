@@ -14,11 +14,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject bottomHudPanel;
     [SerializeField] private GameObject settingPanel;
     [SerializeField] private GameObject chestPreviewPanel;
+    [SerializeField] private GameObject winPreviewPanel;
+    [SerializeField] private GameObject failPreviewPanel;
     // [SerializeField] private Button playButton;
 
     private BottomHudView bottomHudController;
     private GameViewScreen gameViewScreen;
     private SettingPanelView settingPanelView;
+    private WinPreviewPanel winPreviewPanelView;
+    private FailPreviewPanel failPreviewPanelView;
     private GameObject currentScreenPanel;
     private bool settingsOpenedFromGameView;
     private float timeScaleBeforeSettings = 1f;
@@ -54,6 +58,16 @@ public class UIManager : MonoBehaviour
         if (settingPanel != null)
         {
             settingPanelView = settingPanel.GetComponentInChildren<SettingPanelView>(true);
+        }
+
+        if (winPreviewPanel != null)
+        {
+            winPreviewPanelView = winPreviewPanel.GetComponent<WinPreviewPanel>();
+        }
+
+        if (failPreviewPanel != null)
+        {
+            failPreviewPanelView = failPreviewPanel.GetComponent<FailPreviewPanel>();
         }
 
         ShowHomeScreen();
@@ -128,6 +142,29 @@ public class UIManager : MonoBehaviour
         gameViewScreen?.StartGameplay();
     }
 
+    public void RefreshGameSceneWeaponUnlockState()
+    {
+        gameViewScreen?.RefreshSceneWeaponUnlockState();
+    }
+
+    public void ShowWinPreview(int coins)
+    {
+        SetPanelActive(failPreviewPanel, false);
+        winPreviewPanelView?.Show(
+            coins,
+            () => CollectGameCoinsAndReturnHome(coins, 1, winPreviewPanelView.Hide),
+            () => CollectGameCoinsAndReturnHome(coins, 2, winPreviewPanelView.Hide));
+    }
+
+    public void ShowFailPreview(int coins)
+    {
+        SetPanelActive(winPreviewPanel, false);
+        failPreviewPanelView?.Show(
+            coins,
+            () => CollectGameCoinsAndReturnHome(coins, 1, failPreviewPanelView.Hide),
+            () => CollectGameCoinsAndReturnHome(coins, 2, failPreviewPanelView.Hide));
+    }
+
     /*  private void BindFlowButtons()
      {
          if (playButton == null)
@@ -150,6 +187,8 @@ public class UIManager : MonoBehaviour
         SetPanelActive(gameViewPanel, activePanel == gameViewPanel);
         SetPanelActive(bottomHudPanel, showBottomHud);
         SetPanelActive(settingPanel, activePanel == settingPanel);
+        SetPanelActive(winPreviewPanel, false);
+        SetPanelActive(failPreviewPanel, false);
         UpdateGameViewBGImageVisibility();
     }
 
@@ -178,5 +217,21 @@ public class UIManager : MonoBehaviour
 
         settingsOpenedFromGameView = false;
         Time.timeScale = timeScaleBeforeSettings <= 0f ? 1f : timeScaleBeforeSettings;
+    }
+
+    private void CollectGameCoinsAndReturnHome(int coins, int multiplier, UnityEngine.Events.UnityAction hidePanel)
+    {
+        hidePanel?.Invoke();
+
+        long collectedCoinTotal = (long)Mathf.Max(0, coins) * Mathf.Max(1, multiplier);
+        int collectedCoins = (int)System.Math.Min(collectedCoinTotal, int.MaxValue);
+        if (collectedCoins > 0)
+        {
+            PlayerCurrencySystem.AddCoins(collectedCoins);
+        }
+
+        Time.timeScale = 1f;
+        gameViewScreen?.EndGameplay();
+        ShowHomeScreen();
     }
 }

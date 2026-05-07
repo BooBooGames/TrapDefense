@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class WeaponUpgradeController : MonoBehaviour
 {
-    [SerializeField] private WeaponDamageSource[] damageSources;
+    [SerializeField][Min(1f)] private float damagePower = 1f;
     [SerializeField] private WeaponRotator[] speedTargets;
     [SerializeField] private GameObject[] levelVisuals = new GameObject[9];
     [SerializeField] private WeaponUpgradeLevel[] upgradeLevels = new WeaponUpgradeLevel[9];
@@ -13,6 +13,7 @@ public class WeaponUpgradeController : MonoBehaviour
 
     public int CurrentLevel => currentLevel;
     public int MaxLevel => upgradeLevels != null ? upgradeLevels.Length : 0;
+    public float DamagePower => damagePower;
 
     public int CurrentUpgradeCost
     {
@@ -65,14 +66,36 @@ public class WeaponUpgradeController : MonoBehaviour
 
         WeaponUpgradeLevel level = upgradeLevels[Mathf.Clamp(currentLevel - 1, 0, upgradeLevels.Length - 1)];
 
-        if (damageSources != null)
+        damagePower = Mathf.Max(1f, level.weaponPower);
+
+        if (speedTargets != null)
         {
-            for (int i = 0; i < damageSources.Length; i++)
+            for (int i = 0; i < speedTargets.Length; i++)
             {
-                if (damageSources[i] != null)
+                if (speedTargets[i] != null)
                 {
-                    damageSources[i].SetDamagePower(level.weaponPower);
+                    speedTargets[i].SetRotationSpeed(level.weaponSpeed);
+                    speedTargets[i].SetMovementSpeed(level.weaponSpeed);
                 }
+            }
+        }
+
+        if (levelVisuals != null && levelVisuals.Length > 0)
+        {
+            int activeVisualIndex = Mathf.Clamp(currentLevel - 1, 0, levelVisuals.Length - 1);
+            GameObject activeVisual = levelVisuals[activeVisualIndex];
+
+            for (int i = 0; i < levelVisuals.Length; i++)
+            {
+                if (levelVisuals[i] != null && levelVisuals[i] != activeVisual)
+                {
+                    levelVisuals[i].SetActive(false);
+                }
+            }
+
+            if (activeVisual != null)
+            {
+                activeVisual.SetActive(true);
             }
         }
 
@@ -82,21 +105,8 @@ public class WeaponUpgradeController : MonoBehaviour
             {
                 if (speedTargets[i] != null)
                 {
-                    speedTargets[i].SetRotationSpeed(level.weaponSpeed);
+                    speedTargets[i].RestartMotion(true);
                 }
-            }
-        }
-
-        if (levelVisuals != null && levelVisuals.Length > 0)
-        {
-            for (int i = 0; i < levelVisuals.Length; i++)
-            {
-                levelVisuals[i].SetActive(false);
-                if (levelVisuals[i] != null)
-                {
-                    Debug.Log($"Setting level visual {i} active: {i == currentLevel - 1}");
-                }
-                levelVisuals[currentLevel - 1].SetActive(true);
             }
         }
 

@@ -155,6 +155,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
         }
 
         wavesRunning = false;
+        gameViewScreen?.HandleAllWavesCompleted();
     }
 
     private IEnumerator SpawnWave(WaveDefinition wave)
@@ -245,11 +246,11 @@ public class ZombieCrowdSpawner : MonoBehaviour
             follower = zombie.AddComponent<ZombiePathFollower>();
         }
 
-        ZombieWeaponCollision weaponCollision = zombie.GetComponent<ZombieWeaponCollision>();
-        if (weaponCollision == null)
-        {
-            weaponCollision = zombie.AddComponent<ZombieWeaponCollision>();
-        }
+        /*  ZombieWeaponCollision weaponCollision = zombie.GetComponent<ZombieWeaponCollision>();
+         if (weaponCollision == null)
+         {
+             weaponCollision = zombie.AddComponent<ZombieWeaponCollision>();
+         } */
 
         follower.ConfigureMovement(entry.moveSpeed, entry.roadWidthUsage);
         follower.Initialize(sharedPath, initialDistance, spawnedCount + 1, _ => HandleZombieReachedEnd(runtime));
@@ -273,7 +274,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
     {
         SpawnKillEffect(zombie, deathPosition);
 
-        PlayerCurrencySystem.AddCoins(zombie.CoinReward);
+        gameViewScreen?.AddInGameCoins(zombie.CoinReward);
         PlayerCurrencySystem.AddGems(zombie.GemReward);
 
         if (PlayerXpSystem.Instance != null)

@@ -89,6 +89,7 @@ public class UpgradeScreenView : MonoBehaviour
     {
         if (PlayerUpgradeSystem.TryUnlockWeapon(1))
         {
+            UIManager.Instance?.RefreshGameSceneWeaponUnlockState();
             RefreshUi();
         }
     }
@@ -97,6 +98,7 @@ public class UpgradeScreenView : MonoBehaviour
     {
         if (PlayerUpgradeSystem.TryUnlockWeapon(2))
         {
+            UIManager.Instance?.RefreshGameSceneWeaponUnlockState();
             RefreshUi();
         }
     }
@@ -194,7 +196,7 @@ public class UpgradeScreenView : MonoBehaviour
 
         if (evolutionCostText != null)
         {
-            evolutionCostText.text = config.evolutionCost.ToString();
+            evolutionCostText.text = CoinFormatter.FormatCoins(config.evolutionCost);
         }
 
         if (evolveButton != null)
@@ -246,7 +248,7 @@ public class UpgradeScreenView : MonoBehaviour
 
         if (costLabel != null)
         {
-            costLabel.text = isUnlocked ? "Unlocked" : cost.coins.ToString();
+            costLabel.text = isUnlocked ? "Unlocked" : CoinFormatter.FormatCoins(cost.coins);
         }
 
         if (buttonLabel != null)
@@ -293,7 +295,7 @@ public class UpgradeScreenView : MonoBehaviour
 
         if (costLabel != null)
         {
-            costLabel.text = canUpgrade ? cost.coins.ToString() : "MAX";
+            costLabel.text = canUpgrade ? CoinFormatter.FormatCoins(cost.coins) : "MAX";
         }
     }
 

@@ -10,7 +10,7 @@ public class ZombiePath : MonoBehaviour
     [SerializeField][Min(0f)] private float boundaryPadding = 0.25f;
     [SerializeField] private bool smoothPath = true;
     [SerializeField][Min(4)] private int samplesPerSegment = 24;
-    [SerializeField] private Color pathColor = new Color(0.18f, 0.95f, 0.42f, 1f);
+    [SerializeField] private Color pathColor = Color.red;
 
     private readonly List<Vector3> sampledPoints = new List<Vector3>();
     private readonly List<Vector3> sampledForwards = new List<Vector3>();

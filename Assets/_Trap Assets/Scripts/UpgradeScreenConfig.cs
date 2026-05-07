@@ -155,12 +155,12 @@ public struct UpgradeResourceCost
     {
         if (coins > 0 && gears > 0)
         {
-            return $"{coins} Coins + {gears} Gears";
+            return $"{CoinFormatter.FormatCoins(coins)} Coins + {gears} Gears";
         }
 
         if (coins > 0)
         {
-            return $"{coins} Coins";
+            return $"{CoinFormatter.FormatCoins(coins)} Coins";
         }
 
         if (gears > 0)
