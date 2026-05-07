@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class CardInfo : MonoBehaviour
 {
+    public Image titleImage;
     public TextMeshProUGUI cardTypeText;
     public Image cardImage;
     public TextMeshProUGUI cardNameText;

@@ -29360,6 +29360,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardSelectionPanel: {fileID: 1263119498}
   xpBarFill: {fileID: 2072706855}
+  commonTitleImage: {fileID: 21300000, guid: 9102ce54eb74a4fb7a7ae735c1ad2baf, type: 3}
+  rareTitleImage: {fileID: 21300000, guid: 754c79e14c4c44672924c70001d25cb0, type: 3}
+  epicTitleImage: {fileID: 21300000, guid: ef64452bd30384f3786e605b92abf7a2, type: 3}
+  legendaryTitleImage: {fileID: 21300000, guid: 9f40cd04ad79d409580633d013d10347, type: 3}
   cardInfo1: {fileID: 2104680362}
   cardInfo2: {fileID: 726796405}
   cardInfo3: {fileID: 1122774227}

@@ -9,6 +9,7 @@ public class PlayerXpSystem : MonoBehaviour
 
     [SerializeField] private GameObject cardSelectionPanel;
     [SerializeField] private Image xpBarFill;
+    public Sprite commonTitleImage, rareTitleImage, epicTitleImage, legendaryTitleImage;
     [SerializeField] private CardInfo cardInfo1;
     [SerializeField] private CardInfo cardInfo2;
     [SerializeField] private CardInfo cardInfo3;
