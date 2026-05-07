@@ -16,14 +16,19 @@ public class GameViewScreen : MonoBehaviour
     [SerializeField][Min(0.1f)] private float gearGenerationDuration = 5f;
 
     [SerializeField] private Button defaultWeaponUpgradeButton;
+    [SerializeField] private Image defaultWeaponIcon;
     [SerializeField] private TextMeshProUGUI defaultWeaponUpgradeLevelLabel, defaultRequiredGearsCostLabel;
     [SerializeField] private WeaponUpgradeController defaultWeaponUpgradeTarget;
 
     [SerializeField] private Button _1WeaponUpgradeButton;
+    [SerializeField] private Image _1WeaponIcon;
+
     [SerializeField] private TextMeshProUGUI _1WeaponUpgradeLevelLabel, _1RequiredGearsCostLabel;
     [SerializeField] private WeaponUpgradeController _1WeaponUpgradeTarget;
 
     [SerializeField] private Button _2WeaponUpgradeButton;
+    [SerializeField] private Image _2WeaponIcon;
+
     [SerializeField] private TextMeshProUGUI _2WeaponUpgradeLevelLabel, _2RequiredGearsCostLabel;
     [SerializeField] private WeaponUpgradeController _2WeaponUpgradeTarget;
 

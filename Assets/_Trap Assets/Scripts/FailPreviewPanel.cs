@@ -7,9 +7,11 @@ using UnityEngine.UI;
 public class FailPreviewPanel : MonoBehaviour
 {
     [FormerlySerializedAs("coinRewardLabel")] public TextMeshProUGUI inGameCoinLabel;
-    public Button collectButton, rvCollectButton;
+    [FormerlySerializedAs("collectButton")] public Button tryAgainButton;
+    public Button rvCollectButton;
 
     public void Show(int coins, UnityAction onCollect, UnityAction onRewardedCollect)
+
     {
         gameObject.SetActive(true);
 
@@ -18,8 +20,12 @@ public class FailPreviewPanel : MonoBehaviour
             inGameCoinLabel.text = CoinFormatter.FormatCoins(coins);
         }
 
-        SetButton(collectButton, onCollect);
+        SetButton(tryAgainButton, onCollect);
         SetButton(rvCollectButton, onRewardedCollect);
+        /*  if (rvCollectButton != null)
+         {
+             rvCollectButton.gameObject.SetActive(false);
+         } */
     }
 
     public void Hide()

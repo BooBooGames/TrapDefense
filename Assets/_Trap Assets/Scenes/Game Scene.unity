@@ -17270,14 +17270,17 @@ MonoBehaviour:
   gearCounterLabel: {fileID: 143279825}
   gearGenerationDuration: 5
   defaultWeaponUpgradeButton: {fileID: 1540456779}
+  defaultWeaponIcon: {fileID: 1867184855}
   defaultWeaponUpgradeLevelLabel: {fileID: 372675668}
   defaultRequiredGearsCostLabel: {fileID: 867490164}
   defaultWeaponUpgradeTarget: {fileID: 147509384509898964}
   _1WeaponUpgradeButton: {fileID: 1563284079}
+  _1WeaponIcon: {fileID: 1438190952}
   _1WeaponUpgradeLevelLabel: {fileID: 1747671047}
   _1RequiredGearsCostLabel: {fileID: 88039345}
   _1WeaponUpgradeTarget: {fileID: 147509384438317594}
   _2WeaponUpgradeButton: {fileID: 403617878}
+  _2WeaponIcon: {fileID: 1259772918}
   _2WeaponUpgradeLevelLabel: {fileID: 565275370}
   _2RequiredGearsCostLabel: {fileID: 698542633}
   _2WeaponUpgradeTarget: {fileID: 147509383903308040}
@@ -18985,7 +18988,7 @@ GameObject:
   - component: {fileID: 1259772919}
   - component: {fileID: 1259772918}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19008,7 +19011,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1259772918
 MonoBehaviour:
@@ -22153,7 +22156,7 @@ GameObject:
   - component: {fileID: 1438190953}
   - component: {fileID: 1438190952}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22176,7 +22179,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1438190952
 MonoBehaviour:
@@ -26966,7 +26969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inGameCoinLabel: {fileID: 389259613}
-  collectButton: {fileID: 434715239}
+  tryAgainButton: {fileID: 434715239}
   rvCollectButton: {fileID: 2120774644}
 --- !u!1 &1706680862
 GameObject:
@@ -29375,7 +29378,7 @@ GameObject:
   - component: {fileID: 1867184856}
   - component: {fileID: 1867184855}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Icon Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29398,7 +29401,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1867184855
 MonoBehaviour:
@@ -29420,7 +29423,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6d8f5f31bc30a490fb25db33aa87c717, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 53b3e2b7ee4214771b00b4a29c79457e, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -33841,7 +33844,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &423572671856591106
 GameObject:
   m_ObjectHideFlags: 0
@@ -33879,7 +33882,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!33 &443021679239649620
 MeshFilter:
   m_ObjectHideFlags: 0

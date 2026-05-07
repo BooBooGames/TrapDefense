@@ -141,6 +141,7 @@ public class WeaponUnlockDefinition
     public Sprite weaponSprite;
     public UpgradeResourceCost unlockCost;
     public bool unlockedByDefault;
+    public int requiredGearCostForUpgrade;
 }
 
 [Serializable]

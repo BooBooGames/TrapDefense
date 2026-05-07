@@ -17,7 +17,7 @@ MonoBehaviour:
     displayName: Common Chest
     unlockDurationSeconds: 300
     unlockGemCost: 5
-    icon: {fileID: 21300000, guid: 7b505ff5c8b7f4e23a14d08cf4f65f85, type: 3}
+    icon: {fileID: 21300000, guid: 3a609f706780f474682ce303a4a6823b, type: 3}
     rewards:
       coins: 25
       gems: 0
@@ -26,7 +26,7 @@ MonoBehaviour:
     displayName: Rare Chest
     unlockDurationSeconds: 900
     unlockGemCost: 12
-    icon: {fileID: 21300000, guid: 7b505ff5c8b7f4e23a14d08cf4f65f85, type: 3}
+    icon: {fileID: 21300000, guid: 3a609f706780f474682ce303a4a6823b, type: 3}
     rewards:
       coins: 60
       gems: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
     displayName: Epic Chest
     unlockDurationSeconds: 1800
     unlockGemCost: 25
-    icon: {fileID: 21300000, guid: 7b505ff5c8b7f4e23a14d08cf4f65f85, type: 3}
+    icon: {fileID: 21300000, guid: 9ae9c77d6c2b34666b884927d73e721f, type: 3}
     rewards:
       coins: 140
       gems: 3
@@ -44,7 +44,7 @@ MonoBehaviour:
     displayName: Magic Chest
     unlockDurationSeconds: 3600
     unlockGemCost: 45
-    icon: {fileID: 21300000, guid: 7b505ff5c8b7f4e23a14d08cf4f65f85, type: 3}
+    icon: {fileID: 21300000, guid: 9ae9c77d6c2b34666b884927d73e721f, type: 3}
     rewards:
       coins: 300
       gems: 8

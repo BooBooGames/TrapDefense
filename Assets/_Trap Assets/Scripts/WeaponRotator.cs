@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class WeaponRotator : MonoBehaviour
 {
+    private static bool gameplayMotionEnabled;
+
     [Header("Timing")]
     [SerializeField] private bool useUnscaledTime;
 
@@ -48,6 +50,27 @@ public class WeaponRotator : MonoBehaviour
         movementSpeed = Mathf.Max(0f, newMovementSpeed);
     }
 
+    public static void SetGameplayMotionEnabled(bool isEnabled)
+    {
+        if (gameplayMotionEnabled == isEnabled)
+        {
+            return;
+        }
+
+        gameplayMotionEnabled = isEnabled;
+
+        if (!isEnabled)
+        {
+            return;
+        }
+
+        WeaponRotator[] rotators = FindObjectsByType<WeaponRotator>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        for (int i = 0; i < rotators.Length; i++)
+        {
+            rotators[i]?.RestartMotion(true);
+        }
+    }
+
     public void RestartMotion()
     {
         RestartMotion(false);
@@ -83,6 +106,11 @@ public class WeaponRotator : MonoBehaviour
 
     private void Update()
     {
+        if (!gameplayMotionEnabled)
+        {
+            return;
+        }
+
         float deltaTime = useUnscaledTime ? Time.unscaledDeltaTime : Time.deltaTime;
 
         if (rotationEnabled)

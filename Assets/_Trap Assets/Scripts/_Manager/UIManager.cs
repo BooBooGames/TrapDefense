@@ -83,6 +83,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowHomeScreen()
     {
+        WeaponRotator.SetGameplayMotionEnabled(false);
         ShowScreen(homeScreenPanel, true);
         bottomHudController?.SetSelectedButton(BottomHudView.HomeButtonIndex);
     }
@@ -114,6 +115,7 @@ public class UIManager : MonoBehaviour
         {
             timeScaleBeforeSettings = Time.timeScale;
             Time.timeScale = 0f;
+            WeaponRotator.SetGameplayMotionEnabled(false);
         }
 
         SetPanelActive(settingPanel, true);
@@ -131,14 +133,13 @@ public class UIManager : MonoBehaviour
     {
         SetPanelActive(settingPanel, false);
         settingsOpenedFromGameView = false;
-        Time.timeScale = 1f;
-        gameViewScreen?.EndGameplay();
-        ShowHomeScreen();
+        ShowFailPreview(gameViewScreen != null ? gameViewScreen.InGameCoins : 0);
     }
 
     public void StartGame()
     {
         ShowScreen(gameViewPanel, false);
+        WeaponRotator.SetGameplayMotionEnabled(true);
         gameViewScreen?.StartGameplay();
     }
 
@@ -149,6 +150,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowWinPreview(int coins)
     {
+        WeaponRotator.SetGameplayMotionEnabled(false);
         SetPanelActive(failPreviewPanel, false);
         winPreviewPanelView?.Show(
             coins,
@@ -158,6 +160,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowFailPreview(int coins)
     {
+        WeaponRotator.SetGameplayMotionEnabled(false);
         SetPanelActive(winPreviewPanel, false);
         failPreviewPanelView?.Show(
             coins,
@@ -217,6 +220,7 @@ public class UIManager : MonoBehaviour
 
         settingsOpenedFromGameView = false;
         Time.timeScale = timeScaleBeforeSettings <= 0f ? 1f : timeScaleBeforeSettings;
+        WeaponRotator.SetGameplayMotionEnabled(currentScreenPanel == gameViewPanel);
     }
 
     private void CollectGameCoinsAndReturnHome(int coins, int multiplier, UnityEngine.Events.UnityAction hidePanel)
