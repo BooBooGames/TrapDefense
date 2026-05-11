@@ -16,18 +16,6 @@ public class WeaponUpgradeController : MonoBehaviour
     public int MaxLevel => upgradeLevels != null ? upgradeLevels.Length : 0;
     public float DamagePower => damagePower;
 
-    public int CurrentUpgradeCost
-    {
-        get
-        {
-            if (!CanUpgrade())
-            {
-                return 0;
-            }
-
-            return upgradeLevels[currentLevel].gearCost;
-        }
-    }
 
     private void Awake()
     {
@@ -38,11 +26,6 @@ public class WeaponUpgradeController : MonoBehaviour
     public bool CanUpgrade()
     {
         return upgradeLevels != null && currentLevel < upgradeLevels.Length;
-    }
-
-    public bool TryUpgrade(GameViewScreen gameViewScreen)
-    {
-        return TryUpgrade(gameViewScreen, CurrentUpgradeCost);
     }
 
     public bool TryUpgrade(GameViewScreen gameViewScreen, int gearCost)
@@ -135,7 +118,6 @@ public class WeaponUpgradeController : MonoBehaviour
 [Serializable]
 public class WeaponUpgradeLevel
 {
-    [Min(0)] public int gearCost;
     [Min(1f)] public float weaponPower = 1f;
     [Min(0f)] public float weaponSpeed = 0f;
 }

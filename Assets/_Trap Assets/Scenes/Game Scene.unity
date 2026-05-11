@@ -16016,6 +16016,108 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 925163129}
   m_CullTransparentMesh: 1
+--- !u!1001 &929149751
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1504815685}
+    m_Modifications:
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7535425815186896372, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_Name
+      value: Canvas UI Particle Effects
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+--- !u!224 &929149752 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+  m_PrefabInstance: {fileID: 929149751}
+  m_PrefabAsset: {fileID: 0}
 --- !u!64 &950518770
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -18629,7 +18731,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1157064127
 RectTransform:
   m_ObjectHideFlags: 0
@@ -25112,6 +25214,7 @@ RectTransform:
   - {fileID: 442763287}
   - {fileID: 68127248}
   - {fileID: 1705609161}
+  - {fileID: 929149752}
   - {fileID: 795310819}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -36003,32 +36106,23 @@ MonoBehaviour:
   - {fileID: 6770420273840917530}
   - {fileID: 6770420273840917530}
   upgradeLevels:
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 90
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 93
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 96
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 99
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 102
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 105
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 108
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 111
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 114
   currentLevel: 1
   weaponUpgradeEffect: {fileID: 314794086}
@@ -36060,32 +36154,23 @@ MonoBehaviour:
   - {fileID: 2146921304115122468}
   - {fileID: 2146921304115122468}
   upgradeLevels:
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 6
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 6.5
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 7
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 7.5
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 8
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 8.5
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 9
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 9.5
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 10
   currentLevel: 1
   weaponUpgradeEffect: {fileID: 2052257921}
@@ -36117,32 +36202,23 @@ MonoBehaviour:
   - {fileID: 1063435552}
   - {fileID: 1063435552}
   upgradeLevels:
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 90
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 93
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 96
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 99
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 102
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 105
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 108
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 111
-  - gearCost: 3
-    weaponPower: 1
+  - weaponPower: 1
     weaponSpeed: 114
   currentLevel: 1
   weaponUpgradeEffect: {fileID: 155428237}

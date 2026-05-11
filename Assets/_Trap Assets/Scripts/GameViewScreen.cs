@@ -533,12 +533,7 @@ public class GameViewScreen : MonoBehaviour
 
     private static int GetRequiredGearCost(WeaponUpgradeController target, WeaponUnlockDefinition weaponDefinition)
     {
-        if (weaponDefinition != null && weaponDefinition.requiredGearCostForUpgrade > 0)
-        {
-            return weaponDefinition.requiredGearCostForUpgrade;
-        }
-
-        return target != null ? target.CurrentUpgradeCost : 0;
+        return weaponDefinition.requiredGearCostForUpgrade;
     }
 
     private void UpdatePlayerHealthUi()
