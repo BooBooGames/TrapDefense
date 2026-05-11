@@ -63,6 +63,7 @@ public class GameViewScreen : MonoBehaviour
 
     public int GearCount => gearCount;
     public int InGameCoins => inGameCoins;
+    public Vector3 GearCounterLabelPosition => gearCounterLabel != null ? gearCounterLabel.transform.position : Vector3.zero;
 
     private void Awake()
     {
@@ -266,6 +267,17 @@ public class GameViewScreen : MonoBehaviour
         gearCount -= amount;
         UpdateGearUi(GetGearProgress());
         return true;
+    }
+
+    public void AddGears(int amount)
+    {
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        gearCount = Mathf.Max(0, gearCount + amount);
+        UpdateGearUi(GetGearProgress());
     }
 
     public void RefreshSceneWeaponUnlockState()

@@ -16104,6 +16104,114 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2416339832313960145, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _radius
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416339832313960145, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _playMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416339832313960145, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _attractorTarget
+      value: 
+      objectReference: {fileID: 1478321376}
+    - target: {fileID: 2416339832313960145, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _sizeOverLifetime.mainCurve.m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416339832313960145, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _sizeOverLifetime.mainCurve.m_CurveMin.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416339832313960145, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _sizeOverLifetime.mainCurve.m_CurveMin.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416339832313960145, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _sizeOverLifetime.mainCurve.m_CurveMin.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2416339832313960145, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _sizeOverLifetime.mainCurve.m_CurveMin.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5261223921228553446, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _rate
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _radius
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _playMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 1c9d0997d0c74464eb3ae8d7b4723889, type: 3}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _attractorTarget
+      value: 
+      objectReference: {fileID: 1466820995}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _particleTrailRenderer
+      value: 
+      objectReference: {fileID: 929149753}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _sizeOverLifetime.mainCurve.m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _startSize.mainCurve.m_ConstantMax
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _trailColorOverLifetime.m_ColorMax.a
+      value: 0.31764707
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _trailColorOverLifetime.m_ColorMax.b
+      value: 0.6179246
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _trailColorOverLifetime.m_ColorMax.g
+      value: 0.6179246
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _trailColorOverLifetime.m_ColorMax.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _sizeOverLifetime.mainCurve.m_CurveMin.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _sizeOverLifetime.mainCurve.m_CurveMin.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _sizeOverLifetime.mainCurve.m_CurveMin.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _sizeOverLifetime.mainCurve.m_CurveMin.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6327099237284795626, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: _onLastParticleFinish.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1430228152}
+    - target: {fileID: 6974827733882974602, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7535425815186896372, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
       propertyPath: m_Name
       value: Canvas UI Particle Effects
@@ -16118,6 +16226,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 46600323475080553, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
   m_PrefabInstance: {fileID: 929149751}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &929149753 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7639726215515411815, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+  m_PrefabInstance: {fileID: 929149751}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cdcbea113a9c4099991e8fe2c9706b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!64 &950518770
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -23804,6 +23923,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1424772753}
   m_CullTransparentMesh: 1
+--- !u!1 &1430228152 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2509778308643446986, guid: 68a34c9fc6bc04ed8b123e854d31557b, type: 3}
+  m_PrefabInstance: {fileID: 929149751}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1438190950
 GameObject:
   m_ObjectHideFlags: 0

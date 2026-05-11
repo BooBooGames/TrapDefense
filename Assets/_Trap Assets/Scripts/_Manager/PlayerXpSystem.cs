@@ -7,6 +7,10 @@ public class PlayerXpSystem : MonoBehaviour
 {
     public static PlayerXpSystem Instance { get; private set; }
 
+    private const string PocketGearsCardName = "Pocket Gears";
+    private const string PocketGearsCardId = "2";
+    private const int PocketGearsRewardAmount = 3;
+
     [SerializeField] private GameObject cardSelectionPanel;
     [SerializeField] private Image xpBarFill;
     public Sprite commonTitleImage, rareTitleImage, epicTitleImage, legendaryTitleImage;
@@ -92,6 +96,7 @@ public class PlayerXpSystem : MonoBehaviour
         PowerCardChoice chosenCard = currentChoices[choiceIndex];
         selectedCards.Add(chosenCard);
         CardSelected?.Invoke(chosenCard);
+        ApplySelectedCardEffect(chosenCard);
 
         awaitingCardSelection = false;
         currentChoices.Clear();
@@ -183,6 +188,37 @@ public class PlayerXpSystem : MonoBehaviour
         }
 
         cardInfo.Bind(choice.definition, GetTitleSprite(choice.definition), () => SelectCard(choiceIndex));
+    }
+
+    private void ApplySelectedCardEffect(PowerCardChoice chosenCard)
+    {
+        if (!IsPocketGearsCard(chosenCard))
+        {
+            return;
+        }
+
+        GameViewScreen gameViewScreen = GameViewScreen.Instance;
+        if (gameViewScreen == null)
+        {
+            return;
+        }
+
+        Vector3 gearCounterPosition = gameViewScreen.GearCounterLabelPosition;
+        UIParticleEffectsManager.Instance?.PlayGearEffect(gearCounterPosition);
+        gameViewScreen.AddGears(PocketGearsRewardAmount);
+    }
+
+    private static bool IsPocketGearsCard(PowerCardChoice chosenCard)
+    {
+        if (chosenCard == null)
+        {
+            return false;
+        }
+
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, PocketGearsCardId, StringComparison.OrdinalIgnoreCase) ||
+            (definition != null && string.Equals(definition.cardId, PocketGearsCardId, StringComparison.OrdinalIgnoreCase)) ||
+            (definition != null && string.Equals(definition.cardName, PocketGearsCardName, StringComparison.OrdinalIgnoreCase));
     }
 
     private Sprite GetTitleSprite(PowerCardDefinition cardData)
@@ -279,5 +315,4 @@ public class PowerCardChoice
     public string cardId;
     public PowerCardDefinition definition;
 }
-
 

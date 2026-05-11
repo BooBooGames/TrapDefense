@@ -48,7 +48,8 @@ public class UIParticleEffectsManager : MonoBehaviour
 
     public void PlayGearEffect(Vector3 effectPosition)
     {
-        PlayParticleEffect(gearEffect, effectPosition);
+        // PlayParticleEffect(gearEffect, effectPosition);
+        PlayParticleEffect(gearEffect, Vector3.zero);
     }
 
     public void PlayHealthEffect(Vector3 effectPosition)
