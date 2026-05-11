@@ -60,7 +60,19 @@ public class WeaponUpgradeController : MonoBehaviour
 
         currentLevel++;
         ApplyCurrentLevelState();
+        PlayUpgradeEffect();
         return true;
+    }
+
+    private void PlayUpgradeEffect()
+    {
+        if (weaponUpgradeEffect == null)
+        {
+            return;
+        }
+
+        weaponUpgradeEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        weaponUpgradeEffect.Play();
     }
 
     private void ApplyCurrentLevelState()
