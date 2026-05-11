@@ -14,21 +14,6 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: ATLAS_MAP.002
     second: {fileID: 2100000, guid: 574e5e45a2ca942e3959518af8d27ead, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Atlas_D
-    second: {fileID: 2100000, guid: 8c454823ad87b42f180c4fe13135ad6f, type: 2}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Atlas_1A_D
-    second: {fileID: 2800000, guid: ad9be5cae01c24ae29b87c9665e156f3, type: 3}
-  - first:
-      type: UnityEngine:Texture2D
-      assembly: UnityEngine.CoreModule
-      name: Atlas_1A_D 6
-    second: {fileID: 2800000, guid: 18fc8e3c3111b4b9cb6e0a75772f42e4, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -57,8 +42,8 @@ ModelImporter:
     clipAnimations:
     - serializedVersion: 16
       name: Death
-      takeName: root|Death
-      internalID: 912637600557147624
+      takeName: root|root|Death
+      internalID: 1966795204158174380
       firstFrame: 0
       lastFrame: 79
       wrapMode: 0
@@ -85,9 +70,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: root|Idle
-      takeName: root|Idle
-      internalID: 1055271325313466987
+      name: root|root|Idle
+      takeName: root|root|Idle
+      internalID: 3698776293111495678
       firstFrame: 0
       lastFrame: 160
       wrapMode: 0
@@ -96,7 +81,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -115,8 +100,8 @@ ModelImporter:
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Run
-      takeName: root|Run
-      internalID: 5420418217189406925
+      takeName: root|root|Run
+      internalID: -6122315939031170255
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -143,9 +128,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: root|T_pose
-      takeName: root|T_pose
-      internalID: -9057718637012370421
+      name: root|root|T_pose
+      takeName: root|root|T_pose
+      internalID: -6412307215565427483
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0

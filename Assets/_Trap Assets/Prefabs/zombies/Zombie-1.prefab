@@ -1221,6 +1221,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1692909300125341232}
     m_Modifications:
+    - target: {fileID: -8700617353114198275, guid: aee7fe6a24c834e0fbff6ce9f449bab3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: aee7fe6a24c834e0fbff6ce9f449bab3, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5
@@ -1285,9 +1289,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3085805208625105932, guid: aee7fe6a24c834e0fbff6ce9f449bab3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 65702495048144492, guid: aee7fe6a24c834e0fbff6ce9f449bab3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: aee7fe6a24c834e0fbff6ce9f449bab3, type: 3}
       propertyPath: m_Name
       value: Animation
+      objectReference: {fileID: 0}
+    - target: {fileID: 4644641957633875736, guid: aee7fe6a24c834e0fbff6ce9f449bab3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

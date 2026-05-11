@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -96,8 +97,8 @@ public class UIManager : MonoBehaviour
 
     public void ShowCardScreen()
     {
-        ShowScreen(cardViewPanel, true);
-        bottomHudController?.SetSelectedButton(BottomHudView.CardButtonIndex);
+        /*  ShowScreen(cardViewPanel, true);
+         bottomHudController?.SetSelectedButton(BottomHudView.CardButtonIndex); */
     }
 
     public void ShowShopScreen()
@@ -235,7 +236,6 @@ public class UIManager : MonoBehaviour
         }
 
         Time.timeScale = 1f;
-        gameViewScreen?.EndGameplay();
-        ShowHomeScreen();
+        SceneManager.LoadScene(0);
     }
 }

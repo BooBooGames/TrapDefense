@@ -684,6 +684,7 @@ public class GameViewScreen : MonoBehaviour
         if (waveNumber == 4 && chest1TriggerImage != null)
         {
             chest1TriggerImage.SetActive(true);
+
         }
         else if (waveNumber == 8 && chest2TriggerImage != null)
         {
