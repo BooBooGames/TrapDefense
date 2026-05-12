@@ -91,6 +91,7 @@ public class UpgradeScreenView : MonoBehaviour
         {
             UIManager.Instance?.RefreshGameSceneWeaponUnlockState();
             RefreshUi();
+            SoundManager.Instance.PlayButtonClickSound();
         }
     }
 
@@ -100,6 +101,7 @@ public class UpgradeScreenView : MonoBehaviour
         {
             UIManager.Instance?.RefreshGameSceneWeaponUnlockState();
             RefreshUi();
+            SoundManager.Instance.PlayButtonClickSound();
         }
     }
 
@@ -108,6 +110,7 @@ public class UpgradeScreenView : MonoBehaviour
         if (PlayerUpgradeSystem.TryUpgradeGearFlow())
         {
             RefreshUi();
+            SoundManager.Instance.PlayButtonClickSound();
         }
     }
 
@@ -116,6 +119,7 @@ public class UpgradeScreenView : MonoBehaviour
         if (PlayerUpgradeSystem.TryUpgradeBaseHealth())
         {
             RefreshUi();
+            SoundManager.Instance.PlayButtonClickSound();
         }
     }
 
@@ -123,11 +127,13 @@ public class UpgradeScreenView : MonoBehaviour
     private void HandleUpgradeTabClicked()
     {
         ShowUpgradeBackground();
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     private void HandleEvolutionTabClicked()
     {
         ShowEvolutionBackground();
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     private void ShowUpgradeBackground()

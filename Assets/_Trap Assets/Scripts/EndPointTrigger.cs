@@ -4,10 +4,11 @@ using UnityEngine;
 public class EndPointTrigger : MonoBehaviour
 {
     private static readonly List<EndPointTrigger> ActiveTriggers = new List<EndPointTrigger>();
+    private static bool baseInvulnerable;
 
     [SerializeField] private Collider triggerCollider;
     [SerializeField] private GameViewScreen gameViewScreen;
-    [SerializeField] private ParticleSystem gateBreakEffectPrefab;
+    [SerializeField] private ParticleSystem gateBreakEffectPrefab, baseZoneWallEffectPrefab;
     [SerializeField] private List<GameObject> gateVisuals = new List<GameObject>();
     [SerializeField] private List<Collider> gateVisualColliders = new List<Collider>();
     [SerializeField] private List<Rigidbody> gateVisualRigidbodies = new List<Rigidbody>();
@@ -17,6 +18,7 @@ public class EndPointTrigger : MonoBehaviour
     private readonly HashSet<ZombieRuntime> damagedZombies = new HashSet<ZombieRuntime>();
     private readonly List<Vector3> initialGatePositions = new List<Vector3>();
     private readonly List<Quaternion> initialGateRotations = new List<Quaternion>();
+    private ParticleSystem baseZoneWallEffectInstance;
     private bool gateBroken;
 
     private void Awake()
@@ -32,16 +34,32 @@ public class EndPointTrigger : MonoBehaviour
         {
             ActiveTriggers.Add(this);
         }
+
+        if (baseInvulnerable)
+        {
+            SetBaseZoneWallEffectActive(true);
+        }
     }
 
     private void OnDisable()
     {
+        SetBaseZoneWallEffectActive(false);
         ActiveTriggers.Remove(this);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.TryGetComponent(out ZombieRuntime zombieRuntime) || !damagedZombies.Add(zombieRuntime))
+        if (!other.TryGetComponent(out ZombieRuntime zombieRuntime))
+        {
+            return;
+        }
+
+        if (baseInvulnerable)
+        {
+            return;
+        }
+
+        if (!damagedZombies.Add(zombieRuntime))
         {
             return;
         }
@@ -175,6 +193,42 @@ public class EndPointTrigger : MonoBehaviour
         for (int i = 0; i < ActiveTriggers.Count; i++)
         {
             ActiveTriggers[i]?.ResetGate();
+        }
+    }
+
+    public static void SetBaseInvulnerable(bool isInvulnerable)
+    {
+        baseInvulnerable = isInvulnerable;
+
+        for (int i = 0; i < ActiveTriggers.Count; i++)
+        {
+            ActiveTriggers[i]?.SetBaseZoneWallEffectActive(isInvulnerable);
+        }
+    }
+
+    private void SetBaseZoneWallEffectActive(bool isActive)
+    {
+        if (baseZoneWallEffectPrefab == null)
+        {
+            return;
+        }
+
+        if (isActive)
+        {
+            if (baseZoneWallEffectInstance == null)
+            {
+                baseZoneWallEffectInstance = Instantiate(baseZoneWallEffectPrefab, transform.position, Quaternion.identity, transform);
+            }
+
+            baseZoneWallEffectInstance.gameObject.SetActive(true);
+            baseZoneWallEffectInstance.Play();
+            return;
+        }
+
+        if (baseZoneWallEffectInstance != null)
+        {
+            baseZoneWallEffectInstance.Stop();
+            baseZoneWallEffectInstance.gameObject.SetActive(false);
         }
     }
 

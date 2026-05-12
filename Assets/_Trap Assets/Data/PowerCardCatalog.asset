@@ -58,7 +58,7 @@ MonoBehaviour:
     - -10% for 2s
   - cardId: 8
     cardType: Epic
-    cardName: Invurnability Pulse
+    cardName: Invulnerability Pulse
     cardImage: {fileID: 21300000, guid: 468426658927144c0b43cf391a66fa1b, type: 3}
     descriptions:
     - Every 30s

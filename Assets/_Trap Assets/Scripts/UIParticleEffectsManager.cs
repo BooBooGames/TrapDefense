@@ -10,14 +10,14 @@ public class UIParticleEffectsManager : MonoBehaviour
 
     [SerializeField] public RectTransform center;
 
-    [SerializeField] RectTransform coinEffect, gearEffect, healthEffect, confettiBurst;
+    [SerializeField] ParticleImage coinEffect, gearEffect, healthEffect, confettiBurst;
     public ParticleImage upgradeProgressBarEffect, fullScreenConfetti;
 
     [SerializeField] TextMeshProUGUI rewardCountText;
     [SerializeField] RectTransform rewardCountTextRT;
     float checkTimeOut = 3f;
 
-    public ParticleImage cashBurstEffect;
+    public ParticleImage coinSpendEffect;
 
     private void Awake()
     {
@@ -54,7 +54,8 @@ public class UIParticleEffectsManager : MonoBehaviour
 
     public void PlayHealthEffect(Vector3 effectPosition)
     {
-        PlayParticleEffect(healthEffect, effectPosition);
+        // PlayParticleEffect(healthEffect, effectPosition);
+        PlayParticleEffect(healthEffect, center.position);
     }
 
     // cash busrt effect on button press
@@ -65,12 +66,18 @@ public class UIParticleEffectsManager : MonoBehaviour
         PlayParticleEffect(confettiBurst, effectPosTransform.position);
     }
 
-    void PlayParticleEffect(RectTransform effectRT, Vector3 effectPosition)
+    public void PlayCoinSpendEffect(Vector3 effectPosition)
     {
-        Debug.Log("PlayParticleEffect at " + effectRT.name);
-        effectRT.position = effectPosition;
-        effectRT.gameObject.SetActive(false);
-        effectRT.gameObject.SetActive(true);
+        PlayParticleEffect(coinSpendEffect, effectPosition);
+    }
+
+    void PlayParticleEffect(ParticleImage effect, Vector3 effectPosition)
+    {
+        Debug.Log("PlayParticleEffect at " + effect.name);
+        effect.transform.position = effectPosition;
+        effect.Play();
+        /*  effect.gameObject.SetActive(false);
+         effect.gameObject.SetActive(true); */
     }
 
     public void ShowRewardCountText(int cashAmount, int gemsAmount, int ticketsAmount, Vector3 pos)
@@ -109,22 +116,22 @@ public class UIParticleEffectsManager : MonoBehaviour
         fullScreenConfetti.gameObject.SetActive(true);
     }
 
-    public void StopProgressBarAndCashEffect()
-    {
-        upgradeProgressBarEffect.transform.SetParent(coinEffect.transform.parent);
-        cashBurstEffect.Stop();
-        upgradeProgressBarEffect.Stop();
-    }
+    /*     public void StopProgressBarAndCashEffect()
+        {
+            upgradeProgressBarEffect.transform.SetParent(coinEffect.transform.parent);
+            cashBurstEffect.Stop();
+            upgradeProgressBarEffect.Stop();
+        } */
 
-    public void PlayProgressBarAndCashEffect()
-    {
-        if (cashBurstEffect.particles.Count < 30)
-        {
-            cashBurstEffect.Play();
-        }
-        if (upgradeProgressBarEffect.particles.Count < 70)
-        {
-            upgradeProgressBarEffect.Play();
-        }
-    }
+    /*  public void PlayProgressBarAndCashEffect()
+     {
+         if (cashBurstEffect.particles.Count < 30)
+         {
+             cashBurstEffect.Play();
+         }
+         if (upgradeProgressBarEffect.particles.Count < 70)
+         {
+             upgradeProgressBarEffect.Play();
+         }
+     } */
 }

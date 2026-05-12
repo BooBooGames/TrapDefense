@@ -17,7 +17,11 @@ public class CurrencyView : MonoBehaviour
         // AutoResolveReferences();
         PlayerCurrencySystem.Initialize(ParseLabelValue(coinCounterLabel), ParseLabelValue(gemsCounterLabel));
         Refresh(PlayerCurrencySystem.Coins, PlayerCurrencySystem.Gems);
-        BindBottomHudButton(() => uiManager?.ShowSettingsScreen());
+        BindBottomHudButton(() =>
+        {
+            uiManager?.ShowSettingsScreen();
+            SoundManager.Instance.PlayButtonClickSound();
+        });
     }
 
     private void OnEnable()

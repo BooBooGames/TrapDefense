@@ -29,6 +29,7 @@ public class HomeViewScreen : MonoBehaviour
             playButton.onClick.AddListener(() =>
             {
                 UIManager.Instance.StartGame();
+                SoundManager.Instance.PlayButtonClickSound();
             });
         }
 

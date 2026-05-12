@@ -87,12 +87,14 @@ public class UIManager : MonoBehaviour
         WeaponRotator.SetGameplayMotionEnabled(false);
         ShowScreen(homeScreenPanel, true);
         bottomHudController?.SetSelectedButton(BottomHudView.HomeButtonIndex);
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void ShowUpgradeScreen()
     {
         ShowScreen(upgradeScreenPanel, true);
         bottomHudController?.SetSelectedButton(BottomHudView.UpgradeButtonIndex);
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void ShowCardScreen()

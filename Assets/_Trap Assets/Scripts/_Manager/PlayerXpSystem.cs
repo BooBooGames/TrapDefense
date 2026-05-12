@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,6 +11,16 @@ public class PlayerXpSystem : MonoBehaviour
     private const string PocketGearsCardName = "Pocket Gears";
     private const string PocketGearsCardId = "2";
     private const int PocketGearsRewardAmount = 3;
+    private const string MinorHealCardName = "Minor Heal";
+    private const int MinorHealRewardAmount = 5;
+    private const string AngelBlessingCardName = "Angel Blessing";
+    private const int AngelBlessingRewardAmount = 5;
+    private const string InvulnerabilityPulseCardName = "Invulnerability Pulse";
+    private const float InvulnerabilityPulseDuration = 5f;
+    private const float InvulnerabilityPulseCooldown = 30f;
+    private const string WaveBonusCardName = "Wave Bonus";
+    private const string WaveBonusCardId = "6";
+    private const int WaveBonusRewardAmount = 5;
 
     [SerializeField] private GameObject cardSelectionPanel;
     [SerializeField] private Image xpBarFill;
@@ -28,6 +39,10 @@ public class PlayerXpSystem : MonoBehaviour
     private int currentTargetIndex;
     private bool awaitingCardSelection;
     private bool pausedByCardSelection;
+    private bool angelBlessingActive;
+    private bool waveBonusActive;
+    private bool invulnerabilityPulseActive;
+    private Coroutine invulnerabilityPulseCoroutine;
     private float previousTimeScale = 1f;
 
     public event Action<float, int, int> XpProgressChanged;
@@ -53,6 +68,7 @@ public class PlayerXpSystem : MonoBehaviour
                 {
                     GenerateCardChoices();
                     RefreshCardUi();
+                    SoundManager.Instance.PlayButtonClickSound();
                 }
             });
         }
@@ -64,6 +80,8 @@ public class PlayerXpSystem : MonoBehaviour
         {
             Instance = null;
         }
+
+        EndPointTrigger.SetBaseInvulnerable(false);
     }
 
     public void AddXp(int amount)
@@ -105,6 +123,7 @@ public class PlayerXpSystem : MonoBehaviour
         RefreshCardUi();
         SetCardPanelVisible(false);
         NotifyProgressChanged();
+        SoundManager.Instance.PlayButtonClickSound();
         return true;
     }
 
@@ -113,6 +132,19 @@ public class PlayerXpSystem : MonoBehaviour
         if (xpBarFill != null)
         {
             xpBarFill.fillAmount = Mathf.Clamp01(progress);
+        }
+    }
+
+    public void AwardWaveCompletionBonus()
+    {
+        if (angelBlessingActive)
+        {
+            AddHealthWithEffect(AngelBlessingRewardAmount);
+        }
+
+        if (waveBonusActive)
+        {
+            AddGearsWithEffect(WaveBonusRewardAmount);
         }
     }
 
@@ -192,20 +224,36 @@ public class PlayerXpSystem : MonoBehaviour
 
     private void ApplySelectedCardEffect(PowerCardChoice chosenCard)
     {
+        if (IsInvulnerabilityPulseCard(chosenCard))
+        {
+            ActivateInvulnerabilityPulse();
+            return;
+        }
+
+        if (IsAngelBlessingCard(chosenCard))
+        {
+            angelBlessingActive = true;
+            return;
+        }
+
+        if (IsWaveBonusCard(chosenCard))
+        {
+            waveBonusActive = true;
+            return;
+        }
+
+        if (IsMinorHealCard(chosenCard))
+        {
+            AddHealthWithEffect(MinorHealRewardAmount);
+            return;
+        }
+
         if (!IsPocketGearsCard(chosenCard))
         {
             return;
         }
 
-        GameViewScreen gameViewScreen = GameViewScreen.Instance;
-        if (gameViewScreen == null)
-        {
-            return;
-        }
-
-        Vector3 gearCounterPosition = gameViewScreen.GearCounterLabelPosition;
-        UIParticleEffectsManager.Instance?.PlayGearEffect(gearCounterPosition);
-        gameViewScreen.AddGears(PocketGearsRewardAmount);
+        AddGearsWithEffect(PocketGearsRewardAmount);
     }
 
     private static bool IsPocketGearsCard(PowerCardChoice chosenCard)
@@ -219,6 +267,93 @@ public class PlayerXpSystem : MonoBehaviour
         return string.Equals(chosenCard.cardId, PocketGearsCardId, StringComparison.OrdinalIgnoreCase) ||
             (definition != null && string.Equals(definition.cardId, PocketGearsCardId, StringComparison.OrdinalIgnoreCase)) ||
             (definition != null && string.Equals(definition.cardName, PocketGearsCardName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static bool IsMinorHealCard(PowerCardChoice chosenCard)
+    {
+        return HasCardName(chosenCard, MinorHealCardName);
+    }
+
+    private static bool IsAngelBlessingCard(PowerCardChoice chosenCard)
+    {
+        return HasCardName(chosenCard, AngelBlessingCardName);
+    }
+
+    private static bool IsInvulnerabilityPulseCard(PowerCardChoice chosenCard)
+    {
+        return HasCardName(chosenCard, InvulnerabilityPulseCardName);
+    }
+
+    private static bool IsWaveBonusCard(PowerCardChoice chosenCard)
+    {
+        if (chosenCard == null)
+        {
+            return false;
+        }
+
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, WaveBonusCardId, StringComparison.OrdinalIgnoreCase) ||
+            (definition != null && string.Equals(definition.cardId, WaveBonusCardId, StringComparison.OrdinalIgnoreCase)) ||
+            (definition != null && string.Equals(definition.cardName, WaveBonusCardName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static bool HasCardName(PowerCardChoice chosenCard, string cardName)
+    {
+        return chosenCard != null &&
+            chosenCard.definition != null &&
+            string.Equals(chosenCard.definition.cardName, cardName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static void AddGearsWithEffect(int amount)
+    {
+        GameViewScreen gameViewScreen = GameViewScreen.Instance;
+        if (gameViewScreen == null)
+        {
+            return;
+        }
+
+        Vector3 gearCounterPosition = gameViewScreen.GearCounterLabelPosition;
+        UIParticleEffectsManager.Instance?.PlayGearEffect(gearCounterPosition);
+        gameViewScreen.AddGears(amount);
+    }
+
+    private static void AddHealthWithEffect(int amount)
+    {
+        GameViewScreen gameViewScreen = GameViewScreen.Instance;
+        if (gameViewScreen == null)
+        {
+            return;
+        }
+
+        Vector3 healthBarPosition = gameViewScreen.HealthBarLabelPosition;
+        UIParticleEffectsManager.Instance?.PlayHealthEffect(healthBarPosition);
+        gameViewScreen.AddHealth(amount);
+    }
+
+    private void ActivateInvulnerabilityPulse()
+    {
+        if (invulnerabilityPulseActive)
+        {
+            return;
+        }
+
+        invulnerabilityPulseActive = true;
+        invulnerabilityPulseCoroutine = StartCoroutine(RunInvulnerabilityPulseCycle());
+    }
+
+    private IEnumerator RunInvulnerabilityPulseCycle()
+    {
+        while (invulnerabilityPulseActive)
+        {
+            EndPointTrigger.SetBaseInvulnerable(true);
+            yield return new WaitForSeconds(InvulnerabilityPulseDuration);
+
+            EndPointTrigger.SetBaseInvulnerable(false);
+            yield return new WaitForSeconds(InvulnerabilityPulseCooldown);
+        }
+
+        EndPointTrigger.SetBaseInvulnerable(false);
+        invulnerabilityPulseCoroutine = null;
     }
 
     private Sprite GetTitleSprite(PowerCardDefinition cardData)
@@ -315,4 +450,3 @@ public class PowerCardChoice
     public string cardId;
     public PowerCardDefinition definition;
 }
-

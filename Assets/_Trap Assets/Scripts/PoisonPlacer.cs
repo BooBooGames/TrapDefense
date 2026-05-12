@@ -16,7 +16,7 @@ public class PoisonPlacer : MonoBehaviour
 
     private void Start()
     {
-        poisonBtn.onClick.AddListener(() => 
+        poisonBtn.onClick.AddListener(() =>
         {
             ArmPoison();
             poisonBtn.gameObject.SetActive(false);
@@ -25,7 +25,7 @@ public class PoisonPlacer : MonoBehaviour
 
     void Update()
     {
-       
+
 
         if (!poisonModeActive) return;
 
@@ -49,7 +49,7 @@ public class PoisonPlacer : MonoBehaviour
     void ArmPoison()
     {
         poisonModeActive = true;
-        Debug.Log("Poison mode armed — tap the ground!");
+        Debug.Log("Poison mode armed ï¿½ tap the ground!");
 
         // Optional: show UI indicator to player that poison is armed
         // UIManager.instance.ShowPoisonArmedIcon(true);
@@ -70,7 +70,7 @@ public class PoisonPlacer : MonoBehaviour
         }
         else
         {
-            Debug.Log("No ground hit — aim at the ground.");
+            Debug.Log("No ground hit ï¿½ aim at the ground.");
         }
     }
 

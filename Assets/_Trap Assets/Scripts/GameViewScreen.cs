@@ -64,6 +64,7 @@ public class GameViewScreen : MonoBehaviour
     public int GearCount => gearCount;
     public int InGameCoins => inGameCoins;
     public Vector3 GearCounterLabelPosition => gearCounterLabel != null ? gearCounterLabel.transform.position : Vector3.zero;
+    public Vector3 HealthBarLabelPosition => healthBarLabel != null ? healthBarLabel.transform.position : Vector3.zero;
 
     private void Awake()
     {
@@ -235,6 +236,22 @@ public class GameViewScreen : MonoBehaviour
         UpdatePlayerHealthUi();
     }
 
+    public void AddHealth(int amount)
+    {
+        if (amount <= 0 || gameOverTriggered)
+        {
+            return;
+        }
+
+        int maxHealth = Mathf.Max(1, PlayerUpgradeSystem.CurrentBaseHealthValue);
+        maxPlayerHealth = maxHealth;
+
+        int remainingHealth = Mathf.Max(0, maxHealth - currentPlayerHealth);
+        int healthToAdd = Mathf.Min(amount, remainingHealth);
+        currentPlayerHealth = Mathf.Min(maxHealth, currentPlayerHealth + healthToAdd);
+        UpdatePlayerHealthUi();
+    }
+
     public void DamagePlayer(int amount)
     {
         if (gameOverTriggered || amount <= 0)
@@ -315,6 +332,7 @@ public class GameViewScreen : MonoBehaviour
         WeaponUnlockDefinition weaponDefinition = PlayerUpgradeSystem.Config.GetWeapon(weaponIndex);
         target.TryUpgrade(this, GetRequiredGearCost(target, weaponDefinition));
         RefreshWeaponUpgradeUi();
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     private void HandleWeaponUpgradeStateChanged(WeaponUpgradeController _)
