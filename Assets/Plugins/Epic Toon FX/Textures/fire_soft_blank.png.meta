@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 155f67fd8750f8e4e83c8efb1731f3a0
-timeCreated: 1445446960
+guid: 4984ee10e316e1d469a3c2df8a9ab134
+timeCreated: 1446086199
 licenseType: Store
 TextureImporter:
   fileIDToRecycleName: {}
@@ -30,7 +30,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: 2
+    aniso: -1
     mipBias: -1
     wrapMode: -1
   nPOTScale: 1
@@ -60,5 +60,5 @@ AssetOrigin:
   productId: 57772
   packageName: Epic Toon FX
   packageVersion: 1.81
-  assetPath: Assets/Epic Toon FX/Textures/circle.png
+  assetPath: Assets/Epic Toon FX/Textures/fire_soft_blank.png
   uploadId: 567564
