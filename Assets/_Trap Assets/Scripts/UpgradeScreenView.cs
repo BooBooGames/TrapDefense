@@ -89,6 +89,7 @@ public class UpgradeScreenView : MonoBehaviour
     {
         if (PlayerUpgradeSystem.TryUnlockWeapon(1))
         {
+            PlayUpgradeSpendEffect(weapon2BuyButton);
             UIManager.Instance?.RefreshGameSceneWeaponUnlockState();
             RefreshUi();
             SoundManager.Instance.PlayButtonClickSound();
@@ -99,6 +100,7 @@ public class UpgradeScreenView : MonoBehaviour
     {
         if (PlayerUpgradeSystem.TryUnlockWeapon(2))
         {
+            PlayUpgradeSpendEffect(weapon3BuyButton);
             UIManager.Instance?.RefreshGameSceneWeaponUnlockState();
             RefreshUi();
             SoundManager.Instance.PlayButtonClickSound();
@@ -109,6 +111,7 @@ public class UpgradeScreenView : MonoBehaviour
     {
         if (PlayerUpgradeSystem.TryUpgradeGearFlow())
         {
+            PlayUpgradeSpendEffect(gearFlowUpgradeButton);
             RefreshUi();
             SoundManager.Instance.PlayButtonClickSound();
         }
@@ -118,9 +121,20 @@ public class UpgradeScreenView : MonoBehaviour
     {
         if (PlayerUpgradeSystem.TryUpgradeBaseHealth())
         {
+            PlayUpgradeSpendEffect(baseHealthUpgradeButton);
             RefreshUi();
             SoundManager.Instance.PlayButtonClickSound();
         }
+    }
+
+    private static void PlayUpgradeSpendEffect(Button upgradeButton)
+    {
+        if (upgradeButton == null)
+        {
+            return;
+        }
+
+        UIParticleEffectsManager.Instance?.PlayCoinSpendEffect(upgradeButton.transform.position);
     }
 
 
