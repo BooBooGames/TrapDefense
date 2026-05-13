@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject chestPreviewPanel;
     [SerializeField] private GameObject winPreviewPanel;
     [SerializeField] private GameObject failPreviewPanel;
+    [SerializeField] private GameObject cardUpgradePanel;
+    [SerializeField] private GameObject ageChangePanel;
     // [SerializeField] private Button playButton;
 
     private BottomHudView bottomHudController;
@@ -99,8 +101,8 @@ public class UIManager : MonoBehaviour
 
     public void ShowCardScreen()
     {
-        /*  ShowScreen(cardViewPanel, true);
-         bottomHudController?.SetSelectedButton(BottomHudView.CardButtonIndex); */
+        ShowScreen(cardUpgradePanel, true);
+        bottomHudController?.SetSelectedButton(BottomHudView.CardButtonIndex);
     }
 
     public void ShowShopScreen()
@@ -195,6 +197,9 @@ public class UIManager : MonoBehaviour
         SetPanelActive(settingPanel, activePanel == settingPanel);
         SetPanelActive(winPreviewPanel, false);
         SetPanelActive(failPreviewPanel, false);
+        SetPanelActive(chestPreviewPanel, false);
+        SetPanelActive(cardUpgradePanel, activePanel == cardUpgradePanel);
+        SetPanelActive(ageChangePanel, false);
         UpdateGameViewBGImageVisibility();
     }
 
