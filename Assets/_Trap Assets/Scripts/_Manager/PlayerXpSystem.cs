@@ -11,6 +11,8 @@ public class PlayerXpSystem : MonoBehaviour
     private const string PocketGearsCardName = "Pocket Gears";
     private const string PocketGearsCardId = "2";
     private const int PocketGearsRewardAmount = 3;
+    private const string TrapAcceleratorCardName = "Trap Accelerator";
+    private const float TrapAcceleratorSpeedMultiplier = 1.08f;
     private const string MinorHealCardName = "Minor Heal";
     private const int MinorHealRewardAmount = 5;
     private const string AngelBlessingCardName = "Angel Blessing";
@@ -224,6 +226,12 @@ public class PlayerXpSystem : MonoBehaviour
 
     private void ApplySelectedCardEffect(PowerCardChoice chosenCard)
     {
+        if (IsTrapAcceleratorCard(chosenCard))
+        {
+            WeaponUpgradeController.ApplySpeedMultiplierToCurrentTraps(TrapAcceleratorSpeedMultiplier);
+            return;
+        }
+
         if (IsInvulnerabilityPulseCard(chosenCard))
         {
             ActivateInvulnerabilityPulse();
@@ -267,6 +275,11 @@ public class PlayerXpSystem : MonoBehaviour
         return string.Equals(chosenCard.cardId, PocketGearsCardId, StringComparison.OrdinalIgnoreCase) ||
             (definition != null && string.Equals(definition.cardId, PocketGearsCardId, StringComparison.OrdinalIgnoreCase)) ||
             (definition != null && string.Equals(definition.cardName, PocketGearsCardName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static bool IsTrapAcceleratorCard(PowerCardChoice chosenCard)
+    {
+        return HasCardName(chosenCard, TrapAcceleratorCardName);
     }
 
     private static bool IsMinorHealCard(PowerCardChoice chosenCard)

@@ -10,6 +10,8 @@ public class WeaponUpgradeController : MonoBehaviour
     [SerializeField][Min(1)] private int currentLevel = 1;
     [SerializeField] private ParticleSystem weaponUpgradeEffect;
 
+    private float speedMultiplier = 1f;
+
     public event Action<WeaponUpgradeController> UpgradeStateChanged;
 
     public int CurrentLevel => currentLevel;
@@ -47,6 +49,24 @@ public class WeaponUpgradeController : MonoBehaviour
         return true;
     }
 
+    public void ApplySpeedMultiplier(float multiplier)
+    {
+        speedMultiplier *= Mathf.Max(0f, multiplier);
+        ApplyCurrentLevelState();
+    }
+
+    public static void ApplySpeedMultiplierToCurrentTraps(float multiplier)
+    {
+        WeaponUpgradeController[] upgradeControllers = FindObjectsByType<WeaponUpgradeController>(
+            FindObjectsInactive.Exclude,
+            FindObjectsSortMode.None);
+
+        for (int i = 0; i < upgradeControllers.Length; i++)
+        {
+            upgradeControllers[i]?.ApplySpeedMultiplier(multiplier);
+        }
+    }
+
     private void PlayUpgradeEffect()
     {
         if (weaponUpgradeEffect == null)
@@ -71,12 +91,13 @@ public class WeaponUpgradeController : MonoBehaviour
 
         if (speedTargets != null)
         {
+            float effectiveWeaponSpeed = level.weaponSpeed * speedMultiplier;
             for (int i = 0; i < speedTargets.Length; i++)
             {
                 if (speedTargets[i] != null)
                 {
-                    speedTargets[i].SetRotationSpeed(level.weaponSpeed);
-                    speedTargets[i].SetMovementSpeed(level.weaponSpeed);
+                    speedTargets[i].SetRotationSpeed(effectiveWeaponSpeed);
+                    speedTargets[i].SetMovementSpeed(effectiveWeaponSpeed);
                 }
             }
         }
