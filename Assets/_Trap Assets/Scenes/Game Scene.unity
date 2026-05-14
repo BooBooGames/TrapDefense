@@ -26622,7 +26622,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daf7ebfbd9e6c43f09ae38cf2ca3773e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zombieCrowdSpawner: {fileID: 0}
   inGameCoinLabel: {fileID: 175535317}
   waveProgressBarFill: {fileID: 615452615}
   waveProgressBarLabel: {fileID: 1233902817}
@@ -26635,22 +26634,18 @@ MonoBehaviour:
   defaultWeaponIcon: {fileID: 1867184855}
   defaultWeaponUpgradeLevelLabel: {fileID: 372675668}
   defaultRequiredGearsCostLabel: {fileID: 867490164}
-  defaultWeaponUpgradeTarget: {fileID: 0}
   _1WeaponUpgradeButton: {fileID: 1563284079}
   _1WeaponIcon: {fileID: 1438190952}
   _1WeaponUpgradeLevelLabel: {fileID: 1747671047}
   _1RequiredGearsCostLabel: {fileID: 88039345}
-  _1WeaponUpgradeTarget: {fileID: 0}
   _2WeaponUpgradeButton: {fileID: 403617878}
   _2WeaponIcon: {fileID: 1259772918}
   _2WeaponUpgradeLevelLabel: {fileID: 565275370}
   _2RequiredGearsCostLabel: {fileID: 698542633}
-  _2WeaponUpgradeTarget: {fileID: 0}
   healthBarFill: {fileID: 85751924}
   lifeIcon: {fileID: 1984952964}
   healthBarLabel: {fileID: 1466820996}
   gameOverPanel: {fileID: 1657989071}
-  upgradeConfig: {fileID: 0}
   playerHealthUpgradeBonus: 0
   pauseOnGameOver: 1
 --- !u!1 &1159452809

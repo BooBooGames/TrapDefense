@@ -7,17 +7,17 @@ public class EndPointTrigger : MonoBehaviour
     private static bool baseInvulnerable;
 
     [SerializeField] private Collider triggerCollider;
-    [SerializeField] private ParticleSystem gateBreakEffectPrefab, baseZoneWallEffectPrefab;
+    [SerializeField] private ParticleSystem gateBreakEffectPrefab;
     [SerializeField] private List<GameObject> gateVisuals = new List<GameObject>();
     [SerializeField] private List<Collider> gateVisualColliders = new List<Collider>();
     [SerializeField] private List<Rigidbody> gateVisualRigidbodies = new List<Rigidbody>();
     [SerializeField][Min(1)] private int damagePerZombie = 1;
     [SerializeField] private bool disableTriggerAfterGateBreak;
+    [SerializeField] private GameObject baseZoneShieldEffect;
 
     private readonly HashSet<ZombieRuntime> damagedZombies = new HashSet<ZombieRuntime>();
     private readonly List<Vector3> initialGatePositions = new List<Vector3>();
     private readonly List<Quaternion> initialGateRotations = new List<Quaternion>();
-    private ParticleSystem baseZoneWallEffectInstance;
     private bool gateBroken;
 
     private void Awake()
@@ -185,20 +185,15 @@ public class EndPointTrigger : MonoBehaviour
     {
         if (isActive)
         {
-            if (baseZoneWallEffectInstance == null)
-            {
-                baseZoneWallEffectInstance = Instantiate(baseZoneWallEffectPrefab, transform.position, Quaternion.identity, transform);
-            }
-
-            baseZoneWallEffectInstance.gameObject.SetActive(true);
-            baseZoneWallEffectInstance.Play();
+            baseZoneShieldEffect.gameObject.SetActive(true);
+            // baseZoneShieldEffect.Play();
             return;
         }
 
-        if (baseZoneWallEffectInstance != null)
+        if (baseZoneShieldEffect != null)
         {
-            baseZoneWallEffectInstance.Stop();
-            baseZoneWallEffectInstance.gameObject.SetActive(false);
+            // baseZoneShieldEffect.Stop();
+            baseZoneShieldEffect.gameObject.SetActive(false);
         }
     }
 
