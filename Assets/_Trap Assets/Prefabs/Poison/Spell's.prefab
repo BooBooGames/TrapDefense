@@ -1,0 +1,89 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8248267485987248663
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6161352063240532365}
+  - component: {fileID: 8240600406368448821}
+  m_Layer: 0
+  m_Name: Spell's
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6161352063240532365
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8248267485987248663}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.75288, y: -0, z: 7.49163}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8240600406368448821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8248267485987248663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaf9002442da71340b4bc7c37e5053d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpellPlacer
+  spells:
+  - spellBtn: {fileID: 0}
+    spellType: 0
+    spellParticle: {fileID: 0}
+    effectPrefab: {fileID: 492523169263651756, guid: 6b4ee2ef2fff1014ba246adda6ff9fc0, type: 3}
+    spellRadius: 2
+    spellDuration: 5
+    fadeDuration: 2
+    damagePerTick: 1
+    tickInterval: 0.5
+    iceDuration: 0
+    shockFreezeTime: 0
+    shockRunTime: 0
+    isArmed: 0
+  - spellBtn: {fileID: 0}
+    spellType: 1
+    spellParticle: {fileID: 0}
+    effectPrefab: {fileID: 6262241374213919440, guid: 08cca6b766b1dc142a29e116c75e3b58, type: 3}
+    spellRadius: 1
+    spellDuration: 0
+    fadeDuration: 2
+    damagePerTick: 0
+    tickInterval: 0
+    iceDuration: 0
+    shockFreezeTime: 0
+    shockRunTime: 0
+    isArmed: 0
+  - spellBtn: {fileID: 0}
+    spellType: 2
+    spellParticle: {fileID: 0}
+    effectPrefab: {fileID: 1724243991040466, guid: f3377962368b1df43ae045f46ddaf9cd, type: 3}
+    spellRadius: 2
+    spellDuration: 5
+    fadeDuration: 1
+    damagePerTick: 1
+    tickInterval: 0.5
+    iceDuration: 0
+    shockFreezeTime: 0
+    shockRunTime: 0
+    isArmed: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 public class ZombiePathFollower : MonoBehaviour
@@ -12,10 +12,13 @@ public class ZombiePathFollower : MonoBehaviour
     private float travelledDistance;
     private float lateralOffset;
     private bool initialized;
-    private bool movementStopped;
+    private bool movementStopped;  // permanent (death)
+    private bool movementPaused;   // temporary (ice / shock)
+
     private Action<ZombiePathFollower> onReachedEnd;
 
-    public void Initialize(ZombiePath assignedPath, float initialDistance, int seed, Action<ZombiePathFollower> reachedEndCallback = null)
+    public void Initialize(ZombiePath assignedPath, float initialDistance, int seed,
+                           Action<ZombiePathFollower> reachedEndCallback = null)
     {
         path = assignedPath;
         travelledDistance = initialDistance;
@@ -23,30 +26,39 @@ public class ZombiePathFollower : MonoBehaviour
         onReachedEnd = reachedEndCallback;
         initialized = true;
         movementStopped = false;
-
+        movementPaused = false;
         UpdateTransform();
     }
 
-    public void ConfigureMovement(float configuredMoveSpeed, float configuredRoadWidthUsage)
+    public void ConfigureMovement(float speed, float widthUsage)
     {
-        moveSpeed = Mathf.Max(0.1f, configuredMoveSpeed);
-        roadWidthUsage = Mathf.Clamp(configuredRoadWidthUsage, 0.1f, 1f);
+        moveSpeed = Mathf.Max(0.1f, speed);
+        roadWidthUsage = Mathf.Clamp(widthUsage, 0.1f, 1f);
     }
+
+    /// <summary>Permanent stop used on death.</summary>
+    public void StopMovement()
+    {
+        movementStopped = true;
+        movementPaused = false;
+        onReachedEnd = null;
+    }
+
+    /// <summary>Temporary pause used by Ice / Shock.</summary>
+    public void PauseMovement() => movementPaused = true;
+
+    /// <summary>Resume after a temporary pause.</summary>
+    public void ResumeMovement() => movementPaused = false;
 
     private void Start()
     {
         if (!initialized)
-        {
             Initialize(path, 0f, Mathf.Abs(GetInstanceID()));
-        }
     }
 
     private void Update()
     {
-        if (movementStopped || path == null || !path.HasValidPath)
-        {
-            return;
-        }
+        if (movementStopped || movementPaused || path == null || !path.HasValidPath) return;
 
         travelledDistance += moveSpeed * Time.deltaTime;
 
@@ -60,21 +72,11 @@ public class ZombiePathFollower : MonoBehaviour
         UpdateTransform();
     }
 
-    public void StopMovement()
-    {
-        movementStopped = true;
-        onReachedEnd = null;
-    }
-
     private void UpdateTransform()
     {
-        if (path == null || !path.HasValidPath)
-        {
-            return;
-        }
+        if (path == null || !path.HasValidPath) return;
 
-        Vector3 pathPosition;
-        Vector3 forward;
+        Vector3 pathPosition, forward;
 
         if (travelledDistance < 0f)
         {
@@ -86,36 +88,23 @@ public class ZombiePathFollower : MonoBehaviour
             path.EvaluateAtDistance(travelledDistance, out pathPosition, out forward);
         }
 
-        Vector3 normalizedForward = forward.sqrMagnitude > 0.0001f ? forward.normalized : transform.forward;
-        Vector3 right = Vector3.Cross(Vector3.up, normalizedForward).normalized;
+        Vector3 fwd = forward.sqrMagnitude > 0.0001f ? forward.normalized : transform.forward;
+        Vector3 right = Vector3.Cross(Vector3.up, fwd).normalized;
 
-        transform.position = pathPosition + (right * lateralOffset) + (Vector3.up * verticalOffset);
+        transform.position = pathPosition + right * lateralOffset + Vector3.up * verticalOffset;
 
-        if (orientToMovement && normalizedForward.sqrMagnitude > 0.0001f)
-        {
-            transform.rotation = Quaternion.LookRotation(normalizedForward, Vector3.up);
-        }
+        if (orientToMovement && fwd.sqrMagnitude > 0.0001f)
+            transform.rotation = Quaternion.LookRotation(fwd, Vector3.up);
     }
 
     private float CreateStableOffset(int seed)
     {
-        float allowedHalfWidth = GetAllowedHalfWidth();
-        if (allowedHalfWidth <= Mathf.Epsilon)
-        {
-            return 0f;
-        }
-
-        float normalized = Mathf.Repeat(seed * 0.61803398875f, 1f);
-        return Mathf.Lerp(-allowedHalfWidth, allowedHalfWidth, normalized);
+        float half = GetAllowedHalfWidth();
+        if (half <= Mathf.Epsilon) return 0f;
+        float n = Mathf.Repeat(seed * 0.61803398875f, 1f);
+        return Mathf.Lerp(-half, half, n);
     }
 
     private float GetAllowedHalfWidth()
-    {
-        if (path != null)
-        {
-            return Mathf.Max(0f, path.UsableHalfWidth * roadWidthUsage);
-        }
-
-        return 0f;
-    }
+        => path != null ? Mathf.Max(0f, path.UsableHalfWidth * roadWidthUsage) : 0f;
 }
