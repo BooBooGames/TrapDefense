@@ -7,7 +7,6 @@ public class EndPointTrigger : MonoBehaviour
     private static bool baseInvulnerable;
 
     [SerializeField] private Collider triggerCollider;
-    [SerializeField] private GameViewScreen gameViewScreen;
     [SerializeField] private ParticleSystem gateBreakEffectPrefab, baseZoneWallEffectPrefab;
     [SerializeField] private List<GameObject> gateVisuals = new List<GameObject>();
     [SerializeField] private List<Collider> gateVisualColliders = new List<Collider>();
@@ -64,7 +63,7 @@ public class EndPointTrigger : MonoBehaviour
             return;
         }
 
-        ResolveGameViewScreen()?.DamagePlayer(damagePerZombie);
+        ResolveGameViewScreen().DamagePlayer(damagePerZombie);
 
         if (!gateBroken)
         {
@@ -76,15 +75,12 @@ public class EndPointTrigger : MonoBehaviour
     {
         gateBroken = true;
 
-        if (gateBreakEffectPrefab != null)
-        {
-            ParticleSystem effectInstance = Instantiate(gateBreakEffectPrefab, transform.position, Quaternion.identity);
-            effectInstance.Play();
-        }
+        ParticleSystem effectInstance = Instantiate(gateBreakEffectPrefab, transform.position, Quaternion.identity);
+        effectInstance.Play();
 
         SetGatePhysicsEnabled(true);
 
-        if (disableTriggerAfterGateBreak && triggerCollider != null)
+        if (disableTriggerAfterGateBreak)
         {
             triggerCollider.enabled = false;
         }
@@ -92,28 +88,14 @@ public class EndPointTrigger : MonoBehaviour
 
     private GameViewScreen ResolveGameViewScreen()
     {
-        if (gameViewScreen == null)
-        {
-            gameViewScreen = GameViewScreen.Instance;
-        }
-
-        return gameViewScreen;
+        return GameViewScreen.Instance;
     }
 
     private void CacheGatePhysicsReferences()
     {
-        if (gateVisuals == null)
-        {
-            return;
-        }
-
         for (int i = 0; i < gateVisuals.Count; i++)
         {
             GameObject visual = gateVisuals[i];
-            if (visual == null)
-            {
-                continue;
-            }
 
             if (i >= gateVisualColliders.Count || gateVisualColliders[i] == null)
             {
@@ -146,10 +128,6 @@ public class EndPointTrigger : MonoBehaviour
         for (int i = 0; i < gateVisualRigidbodies.Count; i++)
         {
             Rigidbody gateRigidbody = gateVisualRigidbodies[i];
-            if (gateRigidbody == null)
-            {
-                continue;
-            }
 
             gateRigidbody.isKinematic = !isEnabled;
             gateRigidbody.useGravity = isEnabled;
@@ -182,17 +160,14 @@ public class EndPointTrigger : MonoBehaviour
         RestoreInitialGateTransforms();
         SetGatePhysicsEnabled(false);
 
-        if (triggerCollider != null)
-        {
-            triggerCollider.enabled = true;
-        }
+        triggerCollider.enabled = true;
     }
 
     public static void ResetAllGates()
     {
         for (int i = 0; i < ActiveTriggers.Count; i++)
         {
-            ActiveTriggers[i]?.ResetGate();
+            ActiveTriggers[i].ResetGate();
         }
     }
 
@@ -202,17 +177,12 @@ public class EndPointTrigger : MonoBehaviour
 
         for (int i = 0; i < ActiveTriggers.Count; i++)
         {
-            ActiveTriggers[i]?.SetBaseZoneWallEffectActive(isInvulnerable);
+            ActiveTriggers[i].SetBaseZoneWallEffectActive(isInvulnerable);
         }
     }
 
     private void SetBaseZoneWallEffectActive(bool isActive)
     {
-        if (baseZoneWallEffectPrefab == null)
-        {
-            return;
-        }
-
         if (isActive)
         {
             if (baseZoneWallEffectInstance == null)
@@ -237,30 +207,20 @@ public class EndPointTrigger : MonoBehaviour
         initialGatePositions.Clear();
         initialGateRotations.Clear();
 
-        if (gateVisuals == null)
-        {
-            return;
-        }
-
         for (int i = 0; i < gateVisuals.Count; i++)
         {
-            Transform visualTransform = gateVisuals[i] != null ? gateVisuals[i].transform : null;
-            initialGatePositions.Add(visualTransform != null ? visualTransform.localPosition : Vector3.zero);
-            initialGateRotations.Add(visualTransform != null ? visualTransform.localRotation : Quaternion.identity);
+            Transform visualTransform = gateVisuals[i].transform;
+            initialGatePositions.Add(visualTransform.localPosition);
+            initialGateRotations.Add(visualTransform.localRotation);
         }
     }
 
     private void RestoreInitialGateTransforms()
     {
-        if (gateVisuals == null)
-        {
-            return;
-        }
-
         for (int i = 0; i < gateVisuals.Count; i++)
         {
-            Transform visualTransform = gateVisuals[i] != null ? gateVisuals[i].transform : null;
-            if (visualTransform == null || i >= initialGatePositions.Count || i >= initialGateRotations.Count)
+            Transform visualTransform = gateVisuals[i].transform;
+            if (i >= initialGatePositions.Count || i >= initialGateRotations.Count)
             {
                 continue;
             }

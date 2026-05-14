@@ -19,7 +19,7 @@ public class CurrencyView : MonoBehaviour
         Refresh(PlayerCurrencySystem.Coins, PlayerCurrencySystem.Gems);
         BindBottomHudButton(() =>
         {
-            uiManager?.ShowSettingsScreen();
+            uiManager.ShowSettingsScreen();
             SoundManager.Instance.PlayButtonClickSound();
         });
     }
@@ -41,31 +41,18 @@ public class CurrencyView : MonoBehaviour
 
     private void Refresh(int coins, int gems)
     {
-        if (coinCounterLabel != null)
-        {
-            coinCounterLabel.text = CoinFormatter.FormatCoins(coins);
-        }
-
-        if (gemsCounterLabel != null)
-        {
-            gemsCounterLabel.text = gems.ToString();
-        }
+        coinCounterLabel.text = CoinFormatter.FormatCoins(coins);
+        gemsCounterLabel.text = gems.ToString();
     }
 
     public void SetGameViewBGImageVisible(bool isVisible)
     {
-        if (gameViewBGImage != null)
-        {
-            gameViewBGImage.gameObject.SetActive(isVisible);
-        }
+        gameViewBGImage.gameObject.SetActive(isVisible);
     }
 
     public void SetUpgradeScreenBGImageVisible(bool isVisible)
     {
-        if (upgradeScreenBGImage != null)
-        {
-            upgradeScreenBGImage.gameObject.SetActive(isVisible);
-        }
+        upgradeScreenBGImage.gameObject.SetActive(isVisible);
     }
 
     /*     private void AutoResolveReferences()
@@ -116,21 +103,12 @@ public class CurrencyView : MonoBehaviour
 
     private int ParseLabelValue(TextMeshProUGUI label)
     {
-        if (label == null)
-        {
-            return 0;
-        }
-
         return CoinFormatter.ParseCoins(label.text);
     }
 
     private void BindBottomHudButton(UnityEngine.Events.UnityAction callback)
     {
-        if (settingsButton == null)
-        {
-            return;
-        }
-        settingsButton.onClick.AddListener(() => callback?.Invoke());
+        settingsButton.onClick.AddListener(callback);
     }
 }
 

@@ -7,7 +7,9 @@ public class GameViewScreen : MonoBehaviour
 {
     public static GameViewScreen Instance { get; private set; }
 
-    [SerializeField] private ZombieCrowdSpawner zombieCrowdSpawner;
+    ZombieCrowdSpawner zombieCrowdSpawner;
+    UpgradeScreenConfig upgradeConfig;
+
     public TextMeshProUGUI inGameCoinLabel;
     [SerializeField] private Image waveProgressBarFill;
     [SerializeField] private TextMeshProUGUI waveProgressBarLabel;
@@ -19,26 +21,23 @@ public class GameViewScreen : MonoBehaviour
     [SerializeField] private Button defaultWeaponUpgradeButton;
     [SerializeField] private Image defaultWeaponIcon;
     [SerializeField] private TextMeshProUGUI defaultWeaponUpgradeLevelLabel, defaultRequiredGearsCostLabel;
-    [SerializeField] private WeaponUpgradeController defaultWeaponUpgradeTarget;
 
     [SerializeField] private Button _1WeaponUpgradeButton;
     [SerializeField] private Image _1WeaponIcon;
 
     [SerializeField] private TextMeshProUGUI _1WeaponUpgradeLevelLabel, _1RequiredGearsCostLabel;
-    [SerializeField] private WeaponUpgradeController _1WeaponUpgradeTarget;
 
     [SerializeField] private Button _2WeaponUpgradeButton;
     [SerializeField] private Image _2WeaponIcon;
 
     [SerializeField] private TextMeshProUGUI _2WeaponUpgradeLevelLabel, _2RequiredGearsCostLabel;
-    [SerializeField] private WeaponUpgradeController _2WeaponUpgradeTarget;
+
 
 
     [SerializeField] private Image healthBarFill;
     [SerializeField] private GameObject lifeIcon;
     [SerializeField] private TextMeshProUGUI healthBarLabel;
     [SerializeField] private GameObject gameOverPanel;
-    [SerializeField] private UpgradeScreenConfig upgradeConfig;
     [SerializeField][Min(0)] private int playerHealthUpgradeBonus;
     [SerializeField] private bool pauseOnGameOver = true;
 
@@ -63,18 +62,18 @@ public class GameViewScreen : MonoBehaviour
 
     public int GearCount => gearCount;
     public int InGameCoins => inGameCoins;
-    public Vector3 GearCounterLabelPosition => gearCounterLabel != null ? gearCounterLabel.transform.position : Vector3.zero;
-    public Vector3 HealthBarLabelPosition => healthBarLabel != null ? healthBarLabel.transform.position : Vector3.zero;
+    public Vector3 GearCounterLabelPosition => gearCounterLabel.transform.position;
+    public Vector3 HealthBarLabelPosition => healthBarLabel.transform.position;
 
     private void Awake()
     {
+        zombieCrowdSpawner = LevelManager.Instance.activeLevelInstance.crowdSpawner;
+        upgradeConfig = LevelManager.Instance.activeLevelInstance.upgradeScreenConfig;
+
         Instance = this;
         ApplyPersistentUpgradeState();
 
-        if (zombieCrowdSpawner != null)
-        {
-            zombieCrowdSpawner.SetGameViewScreen(this);
-        }
+        zombieCrowdSpawner.SetGameViewScreen(this);
 
         gearCount = ParseInitialGearCount();
         UpdateGearUi(GetGearProgress());
@@ -82,10 +81,7 @@ public class GameViewScreen : MonoBehaviour
         RefreshWaveProgress();
         RefreshWeaponUpgradeUi();
 
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(false);
-        }
+        gameOverPanel.SetActive(false);
     }
 
     private void OnEnable()
@@ -97,11 +93,8 @@ public class GameViewScreen : MonoBehaviour
 
         BindWeaponUpgradeStateEvents(true);
 
-        if (zombieCrowdSpawner != null)
-        {
-            zombieCrowdSpawner.ProgressChanged -= HandleWaveProgressChanged;
-            zombieCrowdSpawner.ProgressChanged += HandleWaveProgressChanged;
-        }
+        zombieCrowdSpawner.ProgressChanged -= HandleWaveProgressChanged;
+        zombieCrowdSpawner.ProgressChanged += HandleWaveProgressChanged;
 
         RefreshWaveProgress();
         RefreshWeaponUpgradeUi();
@@ -113,10 +106,7 @@ public class GameViewScreen : MonoBehaviour
         BindWeaponUpgradeStateEvents(false);
         StopUiFeedbackAnimations();
 
-        if (zombieCrowdSpawner != null)
-        {
-            zombieCrowdSpawner.ProgressChanged -= HandleWaveProgressChanged;
-        }
+        zombieCrowdSpawner.ProgressChanged -= HandleWaveProgressChanged;
     }
 
     private void OnDestroy()
@@ -152,25 +142,19 @@ public class GameViewScreen : MonoBehaviour
             Time.timeScale = 1f;
         }
 
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(false);
-        }
+        gameOverPanel.SetActive(false);
 
-        zombieCrowdSpawner?.StartWaves();
+        zombieCrowdSpawner.StartWaves();
     }
 
     public void EndGameplay()
     {
-        zombieCrowdSpawner?.StopWaves();
+        zombieCrowdSpawner.StopWaves();
         gameOverTriggered = false;
         Time.timeScale = 1f;
         ResetInGameCoins();
 
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(false);
-        }
+        gameOverPanel.SetActive(false);
 
         RefreshWaveProgress();
     }
@@ -182,10 +166,7 @@ public class GameViewScreen : MonoBehaviour
         currentPlayerHealth = maxPlayerHealth;
         gameOverTriggered = false;
 
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(false);
-        }
+        gameOverPanel.SetActive(false);
 
         if (pauseOnGameOver)
         {
@@ -215,12 +196,9 @@ public class GameViewScreen : MonoBehaviour
 
         gameOverTriggered = true;
 
-        if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(false);
-        }
+        gameOverPanel.SetActive(false);
 
-        UIManager.Instance?.ShowWinPreview(inGameCoins);
+        UIManager.Instance.ShowWinPreview(inGameCoins);
 
         if (pauseOnGameOver)
         {
@@ -308,11 +286,6 @@ public class GameViewScreen : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             Button button = GetWeaponUpgradeButton(i);
-            if (button == null)
-            {
-                continue;
-            }
-
             int weaponIndex = i;
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => HandleWeaponUpgradeClicked(weaponIndex));
@@ -324,7 +297,7 @@ public class GameViewScreen : MonoBehaviour
         PlayWeaponUpgradeButtonPressFeedback(weaponIndex);
 
         WeaponUpgradeController target = GetWeaponUpgradeTarget(weaponIndex);
-        if (target == null || !PlayerUpgradeSystem.IsWeaponUnlocked(weaponIndex))
+        if (!PlayerUpgradeSystem.IsWeaponUnlocked(weaponIndex))
         {
             return;
         }
@@ -348,26 +321,14 @@ public class GameViewScreen : MonoBehaviour
 
     private void HandleWaveProgressChanged(int currentWave, int totalWaves, float overallProgress)
     {
-        if (waveProgressBarFill != null)
-        {
-            waveProgressBarFill.fillAmount = Mathf.Clamp01(overallProgress);
-        }
+        waveProgressBarFill.fillAmount = Mathf.Clamp01(overallProgress);
 
-        if (waveProgressBarLabel != null)
-        {
-            int displayedWave = totalWaves > 0 ? Mathf.Clamp(Mathf.Max(currentWave, 1), 1, totalWaves) : 0;
-            waveProgressBarLabel.text = totalWaves > 0 ? $"Wave {displayedWave}/{totalWaves}" : "Wave 0/0";
-        }
+        int displayedWave = totalWaves > 0 ? Mathf.Clamp(Mathf.Max(currentWave, 1), 1, totalWaves) : 0;
+        waveProgressBarLabel.text = totalWaves > 0 ? $"Wave {displayedWave}/{totalWaves}" : "Wave 0/0";
     }
 
     private void RefreshWaveProgress()
     {
-        if (zombieCrowdSpawner == null)
-        {
-            HandleWaveProgressChanged(0, 0, 0f);
-            return;
-        }
-
         HandleWaveProgressChanged(
             zombieCrowdSpawner.CurrentWaveNumber,
             zombieCrowdSpawner.TotalWaves,
@@ -384,34 +345,13 @@ public class GameViewScreen : MonoBehaviour
 
     private UpgradeScreenConfig ResolveUpgradeConfig()
     {
-        if (upgradeConfig != null)
-        {
-            return upgradeConfig;
-        }
-
-        UpgradeScreenView[] upgradeViews = Resources.FindObjectsOfTypeAll<UpgradeScreenView>();
-        for (int i = 0; i < upgradeViews.Length; i++)
-        {
-            if (upgradeViews[i] != null && upgradeViews[i].ConfigAsset != null)
-            {
-                return upgradeViews[i].ConfigAsset;
-            }
-        }
-
-        return null;
+        return upgradeConfig;
     }
 
     private void UpdateGearUi(float progress)
     {
-        if (gearCounterFill != null)
-        {
-            gearCounterFill.fillAmount = Mathf.Clamp01(progress);
-        }
-
-        if (gearCounterLabel != null)
-        {
-            gearCounterLabel.text = gearCount.ToString();
-        }
+        gearCounterFill.fillAmount = Mathf.Clamp01(progress);
+        gearCounterLabel.text = gearCount.ToString();
 
         RefreshWeaponUpgradeUi();
     }
@@ -432,15 +372,11 @@ public class GameViewScreen : MonoBehaviour
             RefreshWeaponIcon(weaponIcon, weaponDefinition);
             RefreshWeaponSlotLabels(target, weaponDefinition, levelLabel, costLabel);
 
-            if (button != null)
-            {
-                int requiredGearCost = GetRequiredGearCost(target, weaponDefinition);
-                button.interactable =
-                    isUnlocked &&
-                    target != null &&
-                    target.CanUpgrade() &&
-                    gearCount >= requiredGearCost;
-            }
+            int requiredGearCost = GetRequiredGearCost(target, weaponDefinition);
+            button.interactable =
+                isUnlocked &&
+                target.CanUpgrade() &&
+                gearCount >= requiredGearCost;
         }
     }
 
@@ -449,11 +385,6 @@ public class GameViewScreen : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             WeaponUpgradeController target = GetWeaponUpgradeTarget(i);
-            if (target == null)
-            {
-                continue;
-            }
-
             target.UpgradeStateChanged -= HandleWeaponUpgradeStateChanged;
             if (shouldBind)
             {
@@ -510,24 +441,17 @@ public class GameViewScreen : MonoBehaviour
     {
         return weaponIndex switch
         {
-            0 => defaultWeaponUpgradeTarget,
-            1 => _1WeaponUpgradeTarget,
-            2 => _2WeaponUpgradeTarget,
+            0 => LevelManager.Instance.activeLevelInstance.defaultWeaponUpgradeTarget,
+            1 => LevelManager.Instance.activeLevelInstance._1WeaponUpgradeTarget,
+            2 => LevelManager.Instance.activeLevelInstance._2WeaponUpgradeTarget,
             _ => null,
         };
     }
 
     private static void SetWeaponSlotActive(Button button, WeaponUpgradeController target, bool isActive)
     {
-        if (button != null)
-        {
-            button.gameObject.SetActive(isActive);
-        }
-
-        if (target != null)
-        {
-            target.gameObject.SetActive(isActive);
-        }
+        button.gameObject.SetActive(isActive);
+        target.gameObject.SetActive(isActive);
     }
 
     private static void RefreshWeaponSlotLabels(
@@ -536,27 +460,15 @@ public class GameViewScreen : MonoBehaviour
         TextMeshProUGUI levelLabel,
         TextMeshProUGUI costLabel)
     {
-        if (levelLabel != null)
-        {
-            levelLabel.text = target == null ? "Lv. 0/0" : $"Lv. {target.CurrentLevel}/{target.MaxLevel}";
-        }
-
-        if (costLabel != null)
-        {
-            costLabel.text = target != null && target.CanUpgrade()
-                ? GetRequiredGearCost(target, weaponDefinition).ToString()
-                : "Max";
-        }
+        levelLabel.text = $"Lv. {target.CurrentLevel}/{target.MaxLevel}";
+        costLabel.text = target.CanUpgrade()
+            ? GetRequiredGearCost(target, weaponDefinition).ToString()
+            : "Max";
     }
 
     private static void RefreshWeaponIcon(Image weaponIcon, WeaponUnlockDefinition weaponDefinition)
     {
-        if (weaponIcon == null)
-        {
-            return;
-        }
-
-        Sprite weaponSprite = weaponDefinition != null ? weaponDefinition.weaponSprite : null;
+        Sprite weaponSprite = weaponDefinition.weaponSprite;
         weaponIcon.sprite = weaponSprite;
         weaponIcon.enabled = weaponSprite != null;
     }
@@ -568,25 +480,13 @@ public class GameViewScreen : MonoBehaviour
 
     private void UpdatePlayerHealthUi()
     {
-        if (healthBarFill != null)
-        {
-            float progress = maxPlayerHealth > 0 ? currentPlayerHealth / (float)maxPlayerHealth : 0f;
-            healthBarFill.fillAmount = Mathf.Clamp01(progress);
-        }
-
-        if (healthBarLabel != null)
-        {
-            healthBarLabel.text = currentPlayerHealth.ToString();
-        }
+        float progress = maxPlayerHealth > 0 ? currentPlayerHealth / (float)maxPlayerHealth : 0f;
+        healthBarFill.fillAmount = Mathf.Clamp01(progress);
+        healthBarLabel.text = currentPlayerHealth.ToString();
     }
 
     private void PlayLifeIconDamageFeedback()
     {
-        if (lifeIcon == null)
-        {
-            return;
-        }
-
         Transform iconTransform = lifeIcon.transform;
         if (!lifeIconScaleCached)
         {
@@ -605,11 +505,6 @@ public class GameViewScreen : MonoBehaviour
     private void PlayWeaponUpgradeButtonPressFeedback(int weaponIndex)
     {
         Button button = GetWeaponUpgradeButton(weaponIndex);
-        if (button == null)
-        {
-            return;
-        }
-
         Transform buttonTransform = button.transform;
         Vector3 baseScale = GetWeaponUpgradeButtonBaseScale(weaponIndex, buttonTransform);
 
@@ -638,7 +533,7 @@ public class GameViewScreen : MonoBehaviour
         lifeIconPunchTween?.Kill();
         lifeIconPunchTween = null;
 
-        if (lifeIcon != null && lifeIconScaleCached)
+        if (lifeIconScaleCached)
         {
             lifeIcon.transform.localScale = lifeIconBaseScale;
         }
@@ -649,7 +544,7 @@ public class GameViewScreen : MonoBehaviour
             weaponUpgradeButtonTweens[i] = null;
 
             Button button = GetWeaponUpgradeButton(i);
-            if (button != null && weaponUpgradeButtonScaleCached[i])
+            if (weaponUpgradeButtonScaleCached[i])
             {
                 button.transform.localScale = weaponUpgradeButtonBaseScales[i];
             }
@@ -660,14 +555,7 @@ public class GameViewScreen : MonoBehaviour
     {
         gameOverTriggered = true;
 
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.ShowFailPreview(inGameCoins);
-        }
-        else if (gameOverPanel != null)
-        {
-            gameOverPanel.SetActive(true);
-        }
+        UIManager.Instance.ShowFailPreview(inGameCoins);
 
         if (pauseOnGameOver)
         {
@@ -683,10 +571,7 @@ public class GameViewScreen : MonoBehaviour
 
     private void RefreshInGameCoinLabel()
     {
-        if (inGameCoinLabel != null)
-        {
-            inGameCoinLabel.text = CoinFormatter.FormatCoins(inGameCoins);
-        }
+        inGameCoinLabel.text = CoinFormatter.FormatCoins(inGameCoins);
     }
 
     private float GetGearProgress()
@@ -696,22 +581,17 @@ public class GameViewScreen : MonoBehaviour
 
     private int ParseInitialGearCount()
     {
-        if (gearCounterLabel == null)
-        {
-            return 0;
-        }
-
         return int.TryParse(gearCounterLabel.text, out int parsedCount) ? Mathf.Max(0, parsedCount) : 0;
     }
 
     public void ShowChestTriggerImage(int waveNumber)
     {
-        if (waveNumber == 4 && chest1TriggerImage != null)
+        if (waveNumber == 4)
         {
             chest1TriggerImage.SetActive(true);
 
         }
-        else if (waveNumber == 8 && chest2TriggerImage != null)
+        else if (waveNumber == 8)
         {
             chest2TriggerImage.SetActive(true);
         }

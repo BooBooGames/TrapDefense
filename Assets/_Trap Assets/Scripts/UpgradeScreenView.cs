@@ -76,11 +76,6 @@ public class UpgradeScreenView : MonoBehaviour
 
     private void BindButton(Button button, UnityEngine.Events.UnityAction callback)
     {
-        if (button == null)
-        {
-            return;
-        }
-
         button.onClick.RemoveListener(callback);
         button.onClick.AddListener(callback);
     }
@@ -90,7 +85,7 @@ public class UpgradeScreenView : MonoBehaviour
         if (PlayerUpgradeSystem.TryUnlockWeapon(1))
         {
             PlayUpgradeSpendEffect(weapon2BuyButton);
-            UIManager.Instance?.RefreshGameSceneWeaponUnlockState();
+            UIManager.Instance.RefreshGameSceneWeaponUnlockState();
             RefreshUi();
             SoundManager.Instance.PlayButtonClickSound();
         }
@@ -101,7 +96,7 @@ public class UpgradeScreenView : MonoBehaviour
         if (PlayerUpgradeSystem.TryUnlockWeapon(2))
         {
             PlayUpgradeSpendEffect(weapon3BuyButton);
-            UIManager.Instance?.RefreshGameSceneWeaponUnlockState();
+            UIManager.Instance.RefreshGameSceneWeaponUnlockState();
             RefreshUi();
             SoundManager.Instance.PlayButtonClickSound();
         }
@@ -129,12 +124,7 @@ public class UpgradeScreenView : MonoBehaviour
 
     private static void PlayUpgradeSpendEffect(Button upgradeButton)
     {
-        if (upgradeButton == null)
-        {
-            return;
-        }
-
-        UIParticleEffectsManager.Instance?.PlayCoinSpendEffect(upgradeButton.transform.position);
+        UIParticleEffectsManager.Instance.PlayCoinSpendEffect(upgradeButton.transform.position);
     }
 
 
@@ -152,28 +142,14 @@ public class UpgradeScreenView : MonoBehaviour
 
     private void ShowUpgradeBackground()
     {
-        if (upgradesBG != null)
-        {
-            upgradesBG.SetActive(true);
-        }
-
-        if (evolutionBG != null)
-        {
-            evolutionBG.SetActive(false);
-        }
+        upgradesBG.SetActive(true);
+        evolutionBG.SetActive(false);
     }
 
     private void ShowEvolutionBackground()
     {
-        if (evolutionBG != null)
-        {
-            evolutionBG.SetActive(true);
-        }
-
-        if (upgradesBG != null)
-        {
-            upgradesBG.SetActive(false);
-        }
+        evolutionBG.SetActive(true);
+        upgradesBG.SetActive(false);
     }
     private void RefreshUi()
     {
@@ -189,46 +165,19 @@ public class UpgradeScreenView : MonoBehaviour
 
     private void RefreshEvolution(UpgradeScreenConfig config)
     {
-        if (config == null)
-        {
-            return;
-        }
+        timeline1Image.sprite = config.timeline1Sprite;
+        timeline2Image.sprite = config.timeline2Sprite;
+        descriptionText1.text = config.evolutionDescription1;
+        descriptionText2.text = config.evolutionDescription2;
+        evolutionCostText.text = CoinFormatter.FormatCoins(config.evolutionCost);
 
-        if (timeline1Image != null && config.timeline1Sprite != null)
+        UpgradeResourceCost evolutionCost = new UpgradeResourceCost
         {
-            timeline1Image.sprite = config.timeline1Sprite;
-        }
+            coins = Mathf.Max(0, config.evolutionCost),
+            gears = 0,
+        };
 
-        if (timeline2Image != null && config.timeline2Sprite != null)
-        {
-            timeline2Image.sprite = config.timeline2Sprite;
-        }
-
-        if (descriptionText1 != null)
-        {
-            descriptionText1.text = config.evolutionDescription1;
-        }
-
-        if (descriptionText2 != null)
-        {
-            descriptionText2.text = config.evolutionDescription2;
-        }
-
-        if (evolutionCostText != null)
-        {
-            evolutionCostText.text = CoinFormatter.FormatCoins(config.evolutionCost);
-        }
-
-        if (evolveButton != null)
-        {
-            UpgradeResourceCost evolutionCost = new UpgradeResourceCost
-            {
-                coins = Mathf.Max(0, config.evolutionCost),
-                gears = 0,
-            };
-
-            evolveButton.interactable = PlayerUpgradeSystem.CanAfford(evolutionCost);
-        }
+        evolveButton.interactable = PlayerUpgradeSystem.CanAfford(evolutionCost);
     }
 
     private void RefreshWeaponSlot(
@@ -241,20 +190,8 @@ public class UpgradeScreenView : MonoBehaviour
         TextMeshProUGUI buttonLabel)
     {
         WeaponUnlockDefinition weapon = config.GetWeapon(weaponIndex);
-        if (weapon == null)
-        {
-            return;
-        }
-
-        if (weaponImage != null && weapon.weaponSprite != null)
-        {
-            weaponImage.sprite = weapon.weaponSprite;
-        }
-
-        if (weaponNameLabel != null)
-        {
-            weaponNameLabel.text = weapon.weaponName;
-        }
+        weaponImage.sprite = weapon.weaponSprite;
+        weaponNameLabel.text = weapon.weaponName;
 
         if (unlockButton == null)
         {
@@ -275,19 +212,13 @@ public class UpgradeScreenView : MonoBehaviour
         {
             buttonLabel.text = isUnlocked ? "Unlocked" : "Unlock";
         }
+
     }
 
     private void RefreshStatUpgrades()
     {
-        if (gearFlowText != null)
-        {
-            gearFlowText.text = $"{PlayerUpgradeSystem.CurrentGearFlowValue:0.00}s";
-        }
-
-        if (baseHealthText != null)
-        {
-            baseHealthText.text = PlayerUpgradeSystem.CurrentBaseHealthValue.ToString();
-        }
+        gearFlowText.text = $"{PlayerUpgradeSystem.CurrentGearFlowValue:0.00}s";
+        baseHealthText.text = PlayerUpgradeSystem.CurrentBaseHealthValue.ToString();
 
         RefreshUpgradeButton(
             gearFlowUpgradeButton,
@@ -308,15 +239,8 @@ public class UpgradeScreenView : MonoBehaviour
         bool canUpgrade,
         UpgradeResourceCost cost)
     {
-        if (button != null)
-        {
-            button.interactable = canUpgrade && PlayerUpgradeSystem.CanAfford(cost);
-        }
-
-        if (costLabel != null)
-        {
-            costLabel.text = canUpgrade ? CoinFormatter.FormatCoins(cost.coins) : "MAX";
-        }
+        button.interactable = canUpgrade && PlayerUpgradeSystem.CanAfford(cost);
+        costLabel.text = canUpgrade ? CoinFormatter.FormatCoins(cost.coins) : "MAX";
     }
 
     private void CacheButtonLabels()
@@ -327,15 +251,10 @@ public class UpgradeScreenView : MonoBehaviour
 
     private TextMeshProUGUI FindButtonLabel(Button button, TextMeshProUGUI excludedLabel)
     {
-        if (button == null)
-        {
-            return null;
-        }
-
         TextMeshProUGUI[] labels = button.GetComponentsInChildren<TextMeshProUGUI>(true);
         for (int i = 0; i < labels.Length; i++)
         {
-            if (labels[i] != null && labels[i] != excludedLabel)
+            if (labels[i] != excludedLabel)
             {
                 return labels[i];
             }

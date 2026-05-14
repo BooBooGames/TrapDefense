@@ -14,11 +14,7 @@ public class FailPreviewPanel : MonoBehaviour
 
     {
         gameObject.SetActive(true);
-
-        if (inGameCoinLabel != null)
-        {
-            inGameCoinLabel.text = CoinFormatter.FormatCoins(coins);
-        }
+        inGameCoinLabel.text = CoinFormatter.FormatCoins(coins);
 
         SetButton(tryAgainButton, onCollect);
         SetButton(rvCollectButton, onRewardedCollect);
@@ -35,15 +31,7 @@ public class FailPreviewPanel : MonoBehaviour
 
     private static void SetButton(Button button, UnityAction callback)
     {
-        if (button == null)
-        {
-            return;
-        }
-
         button.onClick.RemoveAllListeners();
-        if (callback != null)
-        {
-            button.onClick.AddListener(callback);
-        }
+        button.onClick.AddListener(callback);
     }
 }

@@ -13,27 +13,15 @@ public class CardInfo : MonoBehaviour
 
     public void Bind(PowerCardDefinition cardData, Sprite titleSprite, UnityEngine.Events.UnityAction onSelected)
     {
-        if (titleImage != null)
-        {
-            titleImage.sprite = titleSprite;
-            titleImage.enabled = titleSprite != null;
-        }
+        titleImage.sprite = titleSprite;
+        titleImage.enabled = titleSprite != null;
 
-        if (cardTypeText != null)
-        {
-            cardTypeText.text = cardData != null ? cardData.cardType : string.Empty;
-        }
+        cardTypeText.text = cardData.cardType;
 
-        if (cardNameText != null)
-        {
-            cardNameText.text = cardData != null ? cardData.cardName : string.Empty;
-        }
+        cardNameText.text = cardData.cardName;
 
-        if (cardImage != null)
-        {
-            cardImage.sprite = cardData != null ? cardData.cardImage : null;
-            cardImage.enabled = cardData != null && cardData.cardImage != null;
-        }
+        cardImage.sprite = cardData.cardImage;
+        cardImage.enabled = cardData.cardImage != null;
 
         TextMeshProUGUI[] descriptionLabels =
         {
@@ -44,27 +32,16 @@ public class CardInfo : MonoBehaviour
             cardDescriptionText5
         };
 
-        string[] descriptions = cardData != null ? cardData.GetDescriptions() : System.Array.Empty<string>();
+        string[] descriptions = cardData.GetDescriptions();
         for (int i = 0; i < descriptionLabels.Length; i++)
         {
             TextMeshProUGUI label = descriptionLabels[i];
-            if (label == null)
-            {
-                continue;
-            }
-
             bool hasDescription = i < descriptions.Length && !string.IsNullOrWhiteSpace(descriptions[i]);
             label.gameObject.SetActive(hasDescription);
             label.text = hasDescription ? descriptions[i] : string.Empty;
         }
 
-        if (selectButton != null)
-        {
-            selectButton.onClick.RemoveAllListeners();
-            if (onSelected != null)
-            {
-                selectButton.onClick.AddListener(onSelected);
-            }
-        }
+        selectButton.onClick.RemoveAllListeners();
+        selectButton.onClick.AddListener(onSelected);
     }
 }

@@ -35,43 +35,11 @@ public class UIManager : MonoBehaviour
         Instance = this;
         // BindFlowButtons();
 
-        if (bottomHudPanel != null)
-        {
-            bottomHudController = bottomHudPanel.GetComponent<BottomHudView>();
-            if (bottomHudController == null)
-            {
-                bottomHudController = bottomHudPanel.AddComponent<BottomHudView>();
-            }
-        }
-
-        if (gameViewPanel != null)
-        {
-            gameViewScreen = gameViewPanel.GetComponent<GameViewScreen>();
-            if (gameViewScreen == null)
-            {
-                gameViewScreen = gameViewPanel.AddComponent<GameViewScreen>();
-            }
-        }
-
-        if (currencyView == null)
-        {
-            currencyView = FindFirstObjectByType<CurrencyView>();
-        }
-
-        if (settingPanel != null)
-        {
-            settingPanelView = settingPanel.GetComponentInChildren<SettingPanelView>(true);
-        }
-
-        if (winPreviewPanel != null)
-        {
-            winPreviewPanelView = winPreviewPanel.GetComponent<WinPreviewPanel>();
-        }
-
-        if (failPreviewPanel != null)
-        {
-            failPreviewPanelView = failPreviewPanel.GetComponent<FailPreviewPanel>();
-        }
+        bottomHudController = bottomHudPanel.GetComponent<BottomHudView>();
+        gameViewScreen = gameViewPanel.GetComponent<GameViewScreen>();
+        settingPanelView = settingPanel.GetComponentInChildren<SettingPanelView>(true);
+        winPreviewPanelView = winPreviewPanel.GetComponent<WinPreviewPanel>();
+        failPreviewPanelView = failPreviewPanel.GetComponent<FailPreviewPanel>();
 
         ShowHomeScreen();
     }
@@ -88,33 +56,33 @@ public class UIManager : MonoBehaviour
     {
         WeaponRotator.SetGameplayMotionEnabled(false);
         ShowScreen(homeScreenPanel, true);
-        bottomHudController?.SetSelectedButton(BottomHudView.HomeButtonIndex);
+        bottomHudController.SetSelectedButton(BottomHudView.HomeButtonIndex);
         SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void ShowUpgradeScreen()
     {
         ShowScreen(upgradeScreenPanel, true);
-        bottomHudController?.SetSelectedButton(BottomHudView.UpgradeButtonIndex);
+        bottomHudController.SetSelectedButton(BottomHudView.UpgradeButtonIndex);
         SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void ShowCardScreen()
     {
         ShowScreen(cardUpgradePanel, true);
-        bottomHudController?.SetSelectedButton(BottomHudView.CardButtonIndex);
+        bottomHudController.SetSelectedButton(BottomHudView.CardButtonIndex);
     }
 
     public void ShowShopScreen()
     {
         ShowScreen(shopPanel, true);
-        bottomHudController?.SetSelectedButton(BottomHudView.ShopButtonIndex);
+        bottomHudController.SetSelectedButton(BottomHudView.ShopButtonIndex);
     }
 
     public void ShowSettingsScreen()
     {
         settingsOpenedFromGameView = currentScreenPanel == gameViewPanel;
-        settingPanelView?.ConfigureOpenContext(settingsOpenedFromGameView);
+        settingPanelView.ConfigureOpenContext(settingsOpenedFromGameView);
 
         if (settingsOpenedFromGameView)
         {
@@ -138,36 +106,36 @@ public class UIManager : MonoBehaviour
     {
         SetPanelActive(settingPanel, false);
         settingsOpenedFromGameView = false;
-        ShowFailPreview(gameViewScreen != null ? gameViewScreen.InGameCoins : 0);
+        ShowFailPreview(gameViewScreen.InGameCoins);
     }
 
     public void StartGame()
     {
         ShowScreen(gameViewPanel, false);
         WeaponRotator.SetGameplayMotionEnabled(true);
-        gameViewScreen?.StartGameplay();
+        gameViewScreen.StartGameplay();
     }
 
     public void RefreshGameSceneWeaponUnlockState()
     {
-        gameViewScreen?.RefreshSceneWeaponUnlockState();
+        gameViewScreen.RefreshSceneWeaponUnlockState();
     }
 
     public void ShowWinPreview(int coins)
     {
         WeaponRotator.SetGameplayMotionEnabled(false);
         SetPanelActive(failPreviewPanel, false);
-        winPreviewPanelView?.Show(
+        winPreviewPanelView.Show(
             coins,
-            () => CollectGameCoinsAndReturnHome(coins, 1, winPreviewPanelView.Hide),
-            () => CollectGameCoinsAndReturnHome(coins, 2, winPreviewPanelView.Hide));
+            () => CollectGameCoinsAndStartNextLevel(coins, 1, winPreviewPanelView.Hide),
+            () => CollectGameCoinsAndStartNextLevel(coins, 2, winPreviewPanelView.Hide));
     }
 
     public void ShowFailPreview(int coins)
     {
         WeaponRotator.SetGameplayMotionEnabled(false);
         SetPanelActive(winPreviewPanel, false);
-        failPreviewPanelView?.Show(
+        failPreviewPanelView.Show(
             coins,
             () => CollectGameCoinsAndReturnHome(coins, 1, failPreviewPanelView.Hide),
             () => CollectGameCoinsAndReturnHome(coins, 2, failPreviewPanelView.Hide));
@@ -205,18 +173,15 @@ public class UIManager : MonoBehaviour
 
     private void SetPanelActive(GameObject panel, bool isActive)
     {
-        if (panel != null)
-        {
-            panel.SetActive(isActive);
-        }
+        panel.SetActive(isActive);
     }
 
     private void UpdateGameViewBGImageVisibility()
     {
         // bool isSettingsOpen = settingPanel != null && settingPanel.activeSelf;
         bool shouldShowBGImage = /* !isSettingsOpen && */ currentScreenPanel == gameViewPanel || currentScreenPanel == homeScreenPanel;
-        currencyView?.SetGameViewBGImageVisible(shouldShowBGImage);
-        currencyView?.SetUpgradeScreenBGImageVisible(currentScreenPanel == upgradeScreenPanel);
+        currencyView.SetGameViewBGImageVisible(shouldShowBGImage);
+        currencyView.SetUpgradeScreenBGImageVisible(currentScreenPanel == upgradeScreenPanel);
     }
 
     private void ResumeGameIfSettingsPaused()
@@ -233,16 +198,31 @@ public class UIManager : MonoBehaviour
 
     private void CollectGameCoinsAndReturnHome(int coins, int multiplier, UnityEngine.Events.UnityAction hidePanel)
     {
-        hidePanel?.Invoke();
+        hidePanel.Invoke();
 
+        CollectGameCoins(coins, multiplier);
+
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(0);
+    }
+
+    private void CollectGameCoinsAndStartNextLevel(int coins, int multiplier, UnityEngine.Events.UnityAction hidePanel)
+    {
+        hidePanel.Invoke();
+
+        CollectGameCoins(coins, multiplier);
+        LevelManager.Instance.LoadNextLevel();
+        Time.timeScale = 1f;
+        StartGame();
+    }
+
+    private static void CollectGameCoins(int coins, int multiplier)
+    {
         long collectedCoinTotal = (long)Mathf.Max(0, coins) * Mathf.Max(1, multiplier);
         int collectedCoins = (int)System.Math.Min(collectedCoinTotal, int.MaxValue);
         if (collectedCoins > 0)
         {
             PlayerCurrencySystem.AddCoins(collectedCoins);
         }
-
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(0);
     }
 }

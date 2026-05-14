@@ -62,18 +62,15 @@ public class PlayerXpSystem : MonoBehaviour
         Instance = this;
         SetCardPanelVisible(false);
         NotifyProgressChanged();
-        if (rerollButton != null)
+        rerollButton.onClick.AddListener(() =>
         {
-            rerollButton.onClick.AddListener(() =>
+            if (awaitingCardSelection)
             {
-                if (awaitingCardSelection)
-                {
-                    GenerateCardChoices();
-                    RefreshCardUi();
-                    SoundManager.Instance.PlayButtonClickSound();
-                }
-            });
-        }
+                GenerateCardChoices();
+                RefreshCardUi();
+                SoundManager.Instance.PlayButtonClickSound();
+            }
+        });
     }
 
     private void OnDestroy()
@@ -131,10 +128,7 @@ public class PlayerXpSystem : MonoBehaviour
 
     public void UpdateXpProgress(float progress)
     {
-        if (xpBarFill != null)
-        {
-            xpBarFill.fillAmount = Mathf.Clamp01(progress);
-        }
+        xpBarFill.fillAmount = Mathf.Clamp01(progress);
     }
 
     public void AwardWaveCompletionBonus()
@@ -207,11 +201,6 @@ public class PlayerXpSystem : MonoBehaviour
 
     private void BindCardInfo(CardInfo cardInfo, int choiceIndex)
     {
-        if (cardInfo == null)
-        {
-            return;
-        }
-
         bool hasChoice = choiceIndex < currentChoices.Count;
         PowerCardChoice choice = hasChoice ? currentChoices[choiceIndex] : null;
         cardInfo.gameObject.SetActive(awaitingCardSelection && hasChoice);
@@ -266,15 +255,10 @@ public class PlayerXpSystem : MonoBehaviour
 
     private static bool IsPocketGearsCard(PowerCardChoice chosenCard)
     {
-        if (chosenCard == null)
-        {
-            return false;
-        }
-
         PowerCardDefinition definition = chosenCard.definition;
         return string.Equals(chosenCard.cardId, PocketGearsCardId, StringComparison.OrdinalIgnoreCase) ||
-            (definition != null && string.Equals(definition.cardId, PocketGearsCardId, StringComparison.OrdinalIgnoreCase)) ||
-            (definition != null && string.Equals(definition.cardName, PocketGearsCardName, StringComparison.OrdinalIgnoreCase));
+            string.Equals(definition.cardId, PocketGearsCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, PocketGearsCardName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsTrapAcceleratorCard(PowerCardChoice chosenCard)
@@ -299,47 +283,30 @@ public class PlayerXpSystem : MonoBehaviour
 
     private static bool IsWaveBonusCard(PowerCardChoice chosenCard)
     {
-        if (chosenCard == null)
-        {
-            return false;
-        }
-
         PowerCardDefinition definition = chosenCard.definition;
         return string.Equals(chosenCard.cardId, WaveBonusCardId, StringComparison.OrdinalIgnoreCase) ||
-            (definition != null && string.Equals(definition.cardId, WaveBonusCardId, StringComparison.OrdinalIgnoreCase)) ||
-            (definition != null && string.Equals(definition.cardName, WaveBonusCardName, StringComparison.OrdinalIgnoreCase));
+            string.Equals(definition.cardId, WaveBonusCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, WaveBonusCardName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool HasCardName(PowerCardChoice chosenCard, string cardName)
     {
-        return chosenCard != null &&
-            chosenCard.definition != null &&
-            string.Equals(chosenCard.definition.cardName, cardName, StringComparison.OrdinalIgnoreCase);
+        return string.Equals(chosenCard.definition.cardName, cardName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static void AddGearsWithEffect(int amount)
     {
         GameViewScreen gameViewScreen = GameViewScreen.Instance;
-        if (gameViewScreen == null)
-        {
-            return;
-        }
-
         Vector3 gearCounterPosition = gameViewScreen.GearCounterLabelPosition;
-        UIParticleEffectsManager.Instance?.PlayGearEffect(gearCounterPosition);
+        UIParticleEffectsManager.Instance.PlayGearEffect(gearCounterPosition);
         gameViewScreen.AddGears(amount);
     }
 
     private static void AddHealthWithEffect(int amount)
     {
         GameViewScreen gameViewScreen = GameViewScreen.Instance;
-        if (gameViewScreen == null)
-        {
-            return;
-        }
-
         Vector3 healthBarPosition = gameViewScreen.HealthBarLabelPosition;
-        UIParticleEffectsManager.Instance?.PlayHealthEffect(healthBarPosition);
+        UIParticleEffectsManager.Instance.PlayHealthEffect(healthBarPosition);
         gameViewScreen.AddHealth(amount);
     }
 
@@ -371,7 +338,7 @@ public class PlayerXpSystem : MonoBehaviour
 
     private Sprite GetTitleSprite(PowerCardDefinition cardData)
     {
-        if (cardData == null || string.IsNullOrWhiteSpace(cardData.cardType))
+        if (string.IsNullOrWhiteSpace(cardData.cardType))
         {
             return commonTitleImage;
         }
@@ -393,10 +360,7 @@ public class PlayerXpSystem : MonoBehaviour
 
     private void SetCardPanelVisible(bool isVisible)
     {
-        if (cardSelectionPanel != null)
-        {
-            cardSelectionPanel.SetActive(isVisible);
-        }
+        cardSelectionPanel.SetActive(isVisible);
 
         if (isVisible)
         {

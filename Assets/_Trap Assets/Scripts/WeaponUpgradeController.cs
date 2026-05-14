@@ -15,7 +15,7 @@ public class WeaponUpgradeController : MonoBehaviour
     public event Action<WeaponUpgradeController> UpgradeStateChanged;
 
     public int CurrentLevel => currentLevel;
-    public int MaxLevel => upgradeLevels != null ? upgradeLevels.Length : 0;
+    public int MaxLevel => upgradeLevels.Length;
     public float DamagePower => damagePower;
 
 
@@ -27,12 +27,12 @@ public class WeaponUpgradeController : MonoBehaviour
 
     public bool CanUpgrade()
     {
-        return upgradeLevels != null && currentLevel < upgradeLevels.Length;
+        return currentLevel < upgradeLevels.Length;
     }
 
     public bool TryUpgrade(GameViewScreen gameViewScreen, int gearCost)
     {
-        if (!CanUpgrade() || gameViewScreen == null)
+        if (!CanUpgrade())
         {
             return false;
         }
@@ -63,73 +63,45 @@ public class WeaponUpgradeController : MonoBehaviour
 
         for (int i = 0; i < upgradeControllers.Length; i++)
         {
-            upgradeControllers[i]?.ApplySpeedMultiplier(multiplier);
+            upgradeControllers[i].ApplySpeedMultiplier(multiplier);
         }
     }
 
     private void PlayUpgradeEffect()
     {
-        if (weaponUpgradeEffect == null)
-        {
-            return;
-        }
-
         weaponUpgradeEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         weaponUpgradeEffect.Play();
     }
 
     private void ApplyCurrentLevelState()
     {
-        if (upgradeLevels == null || upgradeLevels.Length == 0)
-        {
-            return;
-        }
-
         WeaponUpgradeLevel level = upgradeLevels[Mathf.Clamp(currentLevel - 1, 0, upgradeLevels.Length - 1)];
 
         damagePower = Mathf.Max(1f, level.weaponPower);
 
-        if (speedTargets != null)
+        float effectiveWeaponSpeed = level.weaponSpeed * speedMultiplier;
+        for (int i = 0; i < speedTargets.Length; i++)
         {
-            float effectiveWeaponSpeed = level.weaponSpeed * speedMultiplier;
-            for (int i = 0; i < speedTargets.Length; i++)
+            speedTargets[i].SetRotationSpeed(effectiveWeaponSpeed);
+            speedTargets[i].SetMovementSpeed(effectiveWeaponSpeed);
+        }
+
+        int activeVisualIndex = Mathf.Clamp(currentLevel - 1, 0, levelVisuals.Length - 1);
+        GameObject activeVisual = levelVisuals[activeVisualIndex];
+
+        for (int i = 0; i < levelVisuals.Length; i++)
+        {
+            if (levelVisuals[i] != activeVisual)
             {
-                if (speedTargets[i] != null)
-                {
-                    speedTargets[i].SetRotationSpeed(effectiveWeaponSpeed);
-                    speedTargets[i].SetMovementSpeed(effectiveWeaponSpeed);
-                }
+                levelVisuals[i].SetActive(false);
             }
         }
 
-        if (levelVisuals != null && levelVisuals.Length > 0)
+        activeVisual.SetActive(true);
+
+        for (int i = 0; i < speedTargets.Length; i++)
         {
-            int activeVisualIndex = Mathf.Clamp(currentLevel - 1, 0, levelVisuals.Length - 1);
-            GameObject activeVisual = levelVisuals[activeVisualIndex];
-
-            for (int i = 0; i < levelVisuals.Length; i++)
-            {
-                if (levelVisuals[i] != null && levelVisuals[i] != activeVisual)
-                {
-                    levelVisuals[i].SetActive(false);
-                }
-            }
-
-            if (activeVisual != null)
-            {
-                activeVisual.SetActive(true);
-            }
-        }
-
-        if (speedTargets != null)
-        {
-            for (int i = 0; i < speedTargets.Length; i++)
-            {
-                if (speedTargets[i] != null)
-                {
-                    speedTargets[i].RestartMotion(true);
-                }
-            }
+            speedTargets[i].RestartMotion(true);
         }
 
         UpgradeStateChanged?.Invoke(this);

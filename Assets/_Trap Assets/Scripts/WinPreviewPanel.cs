@@ -13,11 +13,7 @@ public class WinPreviewPanel : MonoBehaviour
     public void Show(int coins, UnityAction onCollect, UnityAction onRewardedCollect)
     {
         gameObject.SetActive(true);
-
-        if (inGameCoinLabel != null)
-        {
-            inGameCoinLabel.text = CoinFormatter.FormatCoins(coins);
-        }
+        inGameCoinLabel.text = CoinFormatter.FormatCoins(coins);
 
         SetButton(collectButton, onCollect);
         SetButton(rvCollectButton, onRewardedCollect);
@@ -30,15 +26,7 @@ public class WinPreviewPanel : MonoBehaviour
 
     private static void SetButton(Button button, UnityAction callback)
     {
-        if (button == null)
-        {
-            return;
-        }
-
         button.onClick.RemoveAllListeners();
-        if (callback != null)
-        {
-            button.onClick.AddListener(callback);
-        }
+        button.onClick.AddListener(callback);
     }
 }
