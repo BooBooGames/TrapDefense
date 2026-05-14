@@ -417,9 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   triggerCollider: {fileID: 6383588018379191183}
-  gameViewScreen: {fileID: 0}
   gateBreakEffectPrefab: {fileID: 6706069667363551323}
-  baseZoneWallEffectPrefab: {fileID: 2925170538090329572}
   gateVisuals:
   - {fileID: 7643479642375024339}
   - {fileID: 1575060833849241261}
@@ -545,6 +543,7 @@ MonoBehaviour:
   - {fileID: 4638626894805285514}
   damagePerZombie: 1
   disableTriggerAfterGateBreak: 0
+  baseZoneShieldEffect: {fileID: 0}
 --- !u!65 &6383588018379191183
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -633,8 +632,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1904660787110232572}
+  - component: {fileID: -1126408379987902692}
   m_Layer: 0
-  m_Name: 'Military Age '
+  m_Name: 3- Military Age
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -662,6 +662,23 @@ Transform:
   - {fileID: 1303015486300998418}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &-1126408379987902692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9125758153150275976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d3e5d09661f496c9453b055f77f615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelHandler
+  crowdSpawner: {fileID: 1550922657340480981, guid: 61ef5feacfddb42ddb28a10dcc5757b7, type: 3}
+  upgradeScreenConfig: {fileID: 11400000, guid: 85f67f73f10f549d68fd9a4215a49bab, type: 2}
+  defaultWeaponUpgradeTarget: {fileID: 7485051206415849205, guid: 61ef5feacfddb42ddb28a10dcc5757b7, type: 3}
+  _1WeaponUpgradeTarget: {fileID: 6469293656565520006, guid: 61ef5feacfddb42ddb28a10dcc5757b7, type: 3}
+  _2WeaponUpgradeTarget: {fileID: 560190013538482460, guid: 61ef5feacfddb42ddb28a10dcc5757b7, type: 3}
 --- !u!1001 &2925170538108218158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -787,11 +804,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4536099b5bcefde418d890e7111a3d86, type: 3}
---- !u!198 &2925170538090329572 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 19865290, guid: 4536099b5bcefde418d890e7111a3d86, type: 3}
-  m_PrefabInstance: {fileID: 2925170538108218158}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2925170538108672722 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 471548, guid: 4536099b5bcefde418d890e7111a3d86, type: 3}
