@@ -10,11 +10,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
     [SerializeField] private ZombiePath sharedPath;
     [SerializeField] private ZombieWaveConfig levelConfig;
     [SerializeField][Min(0f)] private float initialSpacing = 1.35f;
-    [SerializeField] private Vector3 fallbackZombieScale = new Vector3(0.6f, 1.15f, 0.6f);
-    [SerializeField] private Color fallbackZombieColor = new Color(0.3f, 0.75f, 0.36f, 1f);
     [SerializeField] private bool autoStartOnPlay = false;
-
-    public ParticleSystem killEffectPrefab;
 
     private int spawnedCount;
     private int aliveZombies;
@@ -221,9 +217,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
             return;
         }
 
-        GameObject zombie = entry.prefab != null
-            ? Instantiate(entry.prefab, transform.position, Quaternion.identity)
-            : CreateFallbackZombie();
+        GameObject zombie = Instantiate(entry.prefab, transform.position, Quaternion.identity);
 
         string zombieLabel = string.IsNullOrWhiteSpace(entry.zombieTypeName) ? "Zombie" : entry.zombieTypeName;
         zombie.name = $"{zombieLabel}_{spawnedCount:000}";
@@ -285,39 +279,10 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
     private void SpawnKillEffect(ZombieRuntime zombie, Vector3 deathPosition)
     {
-        if (zombie == null)
-        {
-            return;
-        }
-
-        ParticleSystem effectPrefab = zombie.KillEffectPrefab != null ? zombie.KillEffectPrefab : killEffectPrefab;
-        if (effectPrefab == null)
-        {
-            return;
-        }
+        ParticleSystem effectPrefab = zombie.KillEffectPrefab;
 
         ParticleSystem effectInstance = Instantiate(effectPrefab, deathPosition, Quaternion.identity);
         effectInstance.Play();
-    }
-
-    private GameObject CreateFallbackZombie()
-    {
-        GameObject zombie = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-        zombie.transform.localScale = fallbackZombieScale;
-
-        Renderer renderer = zombie.GetComponentInChildren<Renderer>();
-        if (renderer != null)
-        {
-            if (fallbackMaterial == null)
-            {
-                fallbackMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-                fallbackMaterial.color = fallbackZombieColor;
-            }
-
-            renderer.sharedMaterial = fallbackMaterial;
-        }
-
-        return zombie;
     }
 
     private List<ZombieWaveEntry> BuildSpawnQueue(WaveDefinition wave)

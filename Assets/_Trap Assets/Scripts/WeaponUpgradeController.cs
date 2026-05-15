@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponUpgradeController : MonoBehaviour
 {
+    private static readonly List<WeaponUpgradeController> ActiveControllers = new List<WeaponUpgradeController>();
+    private static bool gameplayAnimationsEnabled;
+
     [SerializeField][Min(1f)] private float damagePower = 1f;
-    [SerializeField] private WeaponRotator[] speedTargets;
+    [SerializeField] private Animator[] speedTargets;
     [SerializeField] private GameObject[] levelVisuals = new GameObject[9];
     [SerializeField] private WeaponUpgradeLevel[] upgradeLevels = new WeaponUpgradeLevel[9];
     [SerializeField][Min(1)] private int currentLevel = 1;
@@ -23,6 +27,23 @@ public class WeaponUpgradeController : MonoBehaviour
     {
         currentLevel = Mathf.Clamp(currentLevel, 1, Mathf.Max(1, MaxLevel));
         ApplyCurrentLevelState();
+        SetAnimatorsEnabled(false);
+    }
+
+    private void OnEnable()
+    {
+        if (!ActiveControllers.Contains(this))
+        {
+            ActiveControllers.Add(this);
+        }
+
+        SetAnimatorsEnabled(gameplayAnimationsEnabled);
+    }
+
+    private void OnDisable()
+    {
+        ActiveControllers.Remove(this);
+        SetAnimatorsEnabled(false);
     }
 
     public bool CanUpgrade()
@@ -67,6 +88,16 @@ public class WeaponUpgradeController : MonoBehaviour
         }
     }
 
+    public static void SetGameplayAnimationsEnabled(bool isEnabled)
+    {
+        gameplayAnimationsEnabled = isEnabled;
+
+        for (int i = 0; i < ActiveControllers.Count; i++)
+        {
+            ActiveControllers[i].SetAnimatorsEnabled(isEnabled);
+        }
+    }
+
     private void PlayUpgradeEffect()
     {
         weaponUpgradeEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
@@ -82,8 +113,7 @@ public class WeaponUpgradeController : MonoBehaviour
         float effectiveWeaponSpeed = level.weaponSpeed * speedMultiplier;
         for (int i = 0; i < speedTargets.Length; i++)
         {
-            speedTargets[i].SetRotationSpeed(effectiveWeaponSpeed);
-            speedTargets[i].SetMovementSpeed(effectiveWeaponSpeed);
+            speedTargets[i].speed = effectiveWeaponSpeed;
         }
 
         int activeVisualIndex = Mathf.Clamp(currentLevel - 1, 0, levelVisuals.Length - 1);
@@ -99,18 +129,21 @@ public class WeaponUpgradeController : MonoBehaviour
 
         activeVisual.SetActive(true);
 
+        UpgradeStateChanged?.Invoke(this);
+    }
+
+    private void SetAnimatorsEnabled(bool isEnabled)
+    {
         for (int i = 0; i < speedTargets.Length; i++)
         {
-            speedTargets[i].RestartMotion(true);
+            speedTargets[i].enabled = isEnabled;
         }
-
-        UpgradeStateChanged?.Invoke(this);
     }
 }
 
 [Serializable]
 public class WeaponUpgradeLevel
 {
-    [Min(1f)] public float weaponPower = 1f;
-    [Min(0f)] public float weaponSpeed = 0f;
+    public float weaponPower = 1f;
+    public float weaponSpeed = 0f;
 }

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1c897f7580c80f74fad8fabc674b0ec5
+guid: 1ea6d302340f13f4ca6f093e20d5f8e8
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,33 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Colour_Pallet_Gradient.006
-    second: {fileID: 2100000, guid: 2b5f61193c89797479b4b783f67628c5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Ground
-    second: {fileID: 2100000, guid: 119acf9aeac380144b3769ea6d144882, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Jute Bag
-    second: {fileID: 2100000, guid: 6c31ea22100023449bd9d750e38aab5f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Road
-    second: {fileID: 2100000, guid: 79668c3816f01734ab6c480aae8e0697, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Rocks
-    second: {fileID: 2100000, guid: 35e2655189f829f49be744cd413b4360, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: Wood
-    second: {fileID: 2100000, guid: 4af474c18751cf44aa41d5a932485f83, type: 2}
+    second: {fileID: 2100000, guid: 65232865418dcdb40abf957103137b6c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

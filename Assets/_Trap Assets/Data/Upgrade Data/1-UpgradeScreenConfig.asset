@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aab8ff6ba243a4528ac24fae1a378553, type: 3}
-  m_Name: UpgradeScreenConfig
+  m_Name: 1-UpgradeScreenConfig
   m_EditorClassIdentifier: 
   weapons:
   - weaponName: Log
