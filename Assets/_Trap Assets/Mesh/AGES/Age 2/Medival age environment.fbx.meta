@@ -3,7 +3,57 @@ guid: 0977c8a5c39114e5ba072f662753778e
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Atlas_1A
+    second: {fileID: 2100000, guid: 611fdaba1ba84cb43894d9e5fb399aa6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Atlas_map
+    second: {fileID: 2100000, guid: 4148316883018421c87fa0aff45c04a4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Crack_mat
+    second: {fileID: 2100000, guid: 907cefa6e37104f3494102298b9bbc8c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grass_mat
+    second: {fileID: 2100000, guid: 24480bd2194714e36bef54a3dbef1c1f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Ground
+    second: {fileID: 2100000, guid: c043e21cb2f5740d89750ea74138085e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plants_Mat
+    second: {fileID: 2100000, guid: af5c708c4fb334e7c88e252ac61e572a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Road_base
+    second: {fileID: 2100000, guid: ccd70bc41c5074d41af58fc45aeed5c4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sand
+    second: {fileID: 2100000, guid: 4d337ce0648ba42b4bf2d304df3989f1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wood_amt
+    second: {fileID: 2100000, guid: 9651ac6de276048db94d8f4b8251e41a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: stones_moss
+    second: {fileID: 2100000, guid: 7ab5d385680cc4c459ff0065ecf793c8, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

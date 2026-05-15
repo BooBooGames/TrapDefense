@@ -1,19 +1,19 @@
 fileFormatVersion: 2
 guid: aee7fe6a24c834e0fbff6ce9f449bab3
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: ATLAS_MAP
-    second: {fileID: 2100000, guid: d9cb8cf3ee9154f449486dfcc2cee49d, type: 2}
+    second: {fileID: 2100000, guid: 611fdaba1ba84cb43894d9e5fb399aa6, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: ATLAS_MAP.002
-    second: {fileID: 2100000, guid: 574e5e45a2ca942e3959518af8d27ead, type: 2}
+    second: {fileID: 2100000, guid: 611fdaba1ba84cb43894d9e5fb399aa6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -182,6 +182,9 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8

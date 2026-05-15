@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Atlas_1A_D
+    second: {fileID: 2100000, guid: 611fdaba1ba84cb43894d9e5fb399aa6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Colour_Pallet_Gradient.003
     second: {fileID: 2100000, guid: 3fecf606bf1f1d84c8ac9a95fca8ad41, type: 2}
   - first:
