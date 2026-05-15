@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class ZombieRuntime : MonoBehaviour
@@ -13,6 +14,27 @@ public class ZombieRuntime : MonoBehaviour
     [SerializeField] private string burnAnimStateName = "Burn";
 
     [SerializeField][Min(0f)] private float destroyDelayAfterDeath = 2f;
+
+    [Header("Damage Flash")]
+    [SerializeField] private Color flashColor = Color.white;
+    [SerializeField] private Color emissionFlashColor = Color.white;
+    [SerializeField][Min(0f)] private float scalePunch = 0.15f;
+    [SerializeField][Min(0.01f)] private float flashDuration = 0.18f;
+    [SerializeField] private AnimationCurve flashCurve = new AnimationCurve(
+        new Keyframe(0f, 0f),
+        new Keyframe(0.15f, 1f),
+        new Keyframe(1f, 0f));
+
+    private Renderer[] flashRenderers;
+    private Color[] originalBaseColors;
+    private Color[] originalColors;
+    private MaterialPropertyBlock flashBlock;
+    private Coroutine flashRoutine;
+    private Vector3 originalScale;
+
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+    private static readonly int ColorId = Shader.PropertyToID("_Color");
+    private static readonly int EmissionColorId = Shader.PropertyToID("_EmissionColor");
 
     private float currentHealth;
     private int coinReward;
@@ -41,6 +63,17 @@ public class ZombieRuntime : MonoBehaviour
         if (animator == null) animator = GetComponent<Animator>();
         if (pathFollower == null) pathFollower = GetComponent<ZombiePathFollower>();
         currentHealth = maxHealth;
+        flashRenderers = GetComponentsInChildren<Renderer>(true);
+        flashBlock = new MaterialPropertyBlock();
+        originalBaseColors = new Color[flashRenderers.Length];
+        originalColors = new Color[flashRenderers.Length];
+        for (int i = 0; i < flashRenderers.Length; i++)
+        {
+            var m = flashRenderers[i] != null ? flashRenderers[i].sharedMaterial : null;
+            originalBaseColors[i] = (m != null && m.HasProperty(BaseColorId)) ? m.GetColor(BaseColorId) : Color.white;
+            originalColors[i] = (m != null && m.HasProperty(ColorId)) ? m.GetColor(ColorId) : Color.white;
+        }
+        originalScale = transform.localScale;
     }
 
     // ── Configuration ─────────────────────────────────────────────────────────
@@ -67,6 +100,7 @@ public class ZombieRuntime : MonoBehaviour
         if (killNotified || damage <= 0f) return;
         currentHealth = Mathf.Max(0f, currentHealth - damage);
         if (currentHealth <= 0f) Die();
+        else FlashDamage();
     }
 
     public void Kill()
@@ -128,6 +162,12 @@ public class ZombieRuntime : MonoBehaviour
         // Make sure animator is running so death animation plays even if frozen
         if (animator != null) animator.speed = 1f;
         isFrozen = false;
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+            flashRoutine = null;
+            ClearFlashColor();
+        }
         PlayAnim(deathAnimStateName);
         Destroy(gameObject, destroyDelayAfterDeath);
     }
@@ -136,6 +176,53 @@ public class ZombieRuntime : MonoBehaviour
     {
         if (animator != null && !string.IsNullOrWhiteSpace(stateName))
             animator.Play(stateName, 0, 0f);
+    }
+
+    private void FlashDamage()
+    {
+        if (flashRenderers == null || flashRenderers.Length == 0) return;
+        if (flashRoutine != null) StopCoroutine(flashRoutine);
+        flashRoutine = StartCoroutine(FlashRoutine());
+    }
+
+    private IEnumerator FlashRoutine()
+    {
+        float elapsed = 0f;
+        while (elapsed < flashDuration)
+        {
+            float t = Mathf.Clamp01(flashCurve.Evaluate(elapsed / flashDuration));
+            ApplyFlashIntensity(t);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        ClearFlashColor();
+        flashRoutine = null;
+    }
+
+    private void ApplyFlashIntensity(float t)
+    {
+        for (int i = 0; i < flashRenderers.Length; i++)
+        {
+            var r = flashRenderers[i];
+            if (r == null) continue;
+            r.GetPropertyBlock(flashBlock);
+            flashBlock.SetColor(BaseColorId, Color.Lerp(originalBaseColors[i], flashColor, t));
+            flashBlock.SetColor(ColorId, Color.Lerp(originalColors[i], flashColor, t));
+            flashBlock.SetColor(EmissionColorId, emissionFlashColor * t);
+            r.SetPropertyBlock(flashBlock);
+        }
+        transform.localScale = originalScale * (1f + scalePunch * t);
+    }
+
+    private void ClearFlashColor()
+    {
+        for (int i = 0; i < flashRenderers.Length; i++)
+        {
+            var r = flashRenderers[i];
+            if (r == null) continue;
+            r.SetPropertyBlock(null);
+        }
+        transform.localScale = originalScale;
     }
 
     private void OnDestroy()
