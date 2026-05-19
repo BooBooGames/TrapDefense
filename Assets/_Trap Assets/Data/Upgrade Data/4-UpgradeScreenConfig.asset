@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: 4-UpgradeScreenConfig
   m_EditorClassIdentifier: 
   weapons:
-  - weaponName: Log
-    weaponSprite: {fileID: 21300000, guid: 53b3e2b7ee4214771b00b4a29c79457e, type: 3}
+  - weaponName: Underground Drills
+    weaponSprite: {fileID: 21300000, guid: bcbbb25db61f242dc80edb216f3705ab, type: 3}
     unlockCost:
       coins: 0
       gears: 0

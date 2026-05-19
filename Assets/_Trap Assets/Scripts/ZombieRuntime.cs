@@ -20,7 +20,8 @@ public class ZombieRuntime : MonoBehaviour
     [SerializeField] private Color emissionFlashColor = Color.white;
     [SerializeField][Min(0f)] private float scalePunch = 0.15f;
     [SerializeField][Min(0.01f)] private float flashDuration = 0.18f;
-    [SerializeField] private AnimationCurve flashCurve = new AnimationCurve(
+    [SerializeField]
+    private AnimationCurve flashCurve = new AnimationCurve(
         new Keyframe(0f, 0f),
         new Keyframe(0.15f, 1f),
         new Keyframe(1f, 0f));
@@ -156,6 +157,7 @@ public class ZombieRuntime : MonoBehaviour
 
     private void Die()
     {
+
         killNotified = true;
         Killed?.Invoke(this, transform.position);
         pathFollower?.StopMovement();
