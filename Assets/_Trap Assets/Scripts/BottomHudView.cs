@@ -68,10 +68,14 @@ public class BottomHudView : MonoBehaviour
             if (selectionRect != null)
             {
                 selectionRect.position = buttonRect.position;
+                selectedButtonImage.transform.parent = buttonRect.parent;
+                selectedButtonImage.transform.SetSiblingIndex(0);
             }
             else
             {
                 selectedButtonImage.transform.position = button.transform.position;
+                selectedButtonImage.transform.parent = buttonRect.parent;
+                selectedButtonImage.transform.SetSiblingIndex(0);
             }
         }
     }
