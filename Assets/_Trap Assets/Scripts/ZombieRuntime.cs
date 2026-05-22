@@ -27,6 +27,8 @@ public class ZombieRuntime : MonoBehaviour
         new Keyframe(1f, 0f));
 
     private Renderer[] flashRenderers;
+    private Collider[] physicsColliders;
+    private Rigidbody[] physicsRigidbodies;
     private Color[] originalBaseColors;
     private Color[] originalColors;
     private MaterialPropertyBlock flashBlock;
@@ -65,6 +67,8 @@ public class ZombieRuntime : MonoBehaviour
         if (pathFollower == null) pathFollower = GetComponent<ZombiePathFollower>();
         currentHealth = maxHealth;
         flashRenderers = GetComponentsInChildren<Renderer>(true);
+        physicsColliders = GetComponentsInChildren<Collider>(true);
+        physicsRigidbodies = GetComponentsInChildren<Rigidbody>(true);
         flashBlock = new MaterialPropertyBlock();
         originalBaseColors = new Color[flashRenderers.Length];
         originalColors = new Color[flashRenderers.Length];
@@ -161,6 +165,7 @@ public class ZombieRuntime : MonoBehaviour
         killNotified = true;
         Killed?.Invoke(this, transform.position);
         pathFollower?.StopMovement();
+        DisablePhysicsInteractions();
         // Make sure animator is running so death animation plays even if frozen
         if (animator != null) animator.speed = 1f;
         isFrozen = false;
@@ -172,6 +177,31 @@ public class ZombieRuntime : MonoBehaviour
         }
         PlayAnim(deathAnimStateName);
         Destroy(gameObject, destroyDelayAfterDeath);
+    }
+
+    private void DisablePhysicsInteractions()
+    {
+        for (int i = 0; i < physicsColliders.Length; i++)
+        {
+            if (physicsColliders[i] != null)
+            {
+                physicsColliders[i].enabled = false;
+            }
+        }
+
+        for (int i = 0; i < physicsRigidbodies.Length; i++)
+        {
+            Rigidbody physicsRigidbody = physicsRigidbodies[i];
+            if (physicsRigidbody == null)
+            {
+                continue;
+            }
+
+            physicsRigidbody.linearVelocity = Vector3.zero;
+            physicsRigidbody.angularVelocity = Vector3.zero;
+            physicsRigidbody.isKinematic = true;
+            physicsRigidbody.detectCollisions = false;
+        }
     }
 
     private void PlayAnim(string stateName)

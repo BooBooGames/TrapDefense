@@ -144,6 +144,30 @@ public class PlayerXpSystem : MonoBehaviour
         }
     }
 
+    public void ResetSessionData()
+    {
+        currentXp = 0;
+        currentTargetIndex = 0;
+        awaitingCardSelection = false;
+        pausedByCardSelection = false;
+        previousTimeScale = 1f;
+        angelBlessingActive = false;
+        waveBonusActive = false;
+        invulnerabilityPulseActive = false;
+
+        if (invulnerabilityPulseCoroutine != null)
+        {
+            StopCoroutine(invulnerabilityPulseCoroutine);
+            invulnerabilityPulseCoroutine = null;
+        }
+
+        EndPointTrigger.SetBaseInvulnerable(false);
+        currentChoices.Clear();
+        selectedCards.Clear();
+        SetCardPanelVisible(false);
+        NotifyProgressChanged();
+    }
+
     private void GenerateCardChoices()
     {
         currentChoices.Clear();

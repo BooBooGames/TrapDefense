@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
     public LevelHandler[] Levels;
 
     public LevelHandler activeLevelInstance;
+    private bool activeLevelIsSpawnedPrefab;
 
     private void Awake()
     {
@@ -14,16 +15,12 @@ public class LevelManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            LoadLevel(CurrentLevel);
         }
         else
         {
             Destroy(gameObject);
         }
-    }
-
-    private void Start()
-    {
-        LoadLevel(CurrentLevel);
     }
 
     public void LoadNextLevel()
@@ -43,11 +40,15 @@ public class LevelManager : MonoBehaviour
         {
             SetSceneLevelObjectsActive(levelIndex);
             DestroyActiveLevelInstance();
+            activeLevelInstance = levelPrefab;
+            activeLevelIsSpawnedPrefab = false;
             return;
         }
 
+        SetSceneLevelObjectsActive(-1);
         DestroyActiveLevelInstance();
         activeLevelInstance = Instantiate(levelPrefab);
+        activeLevelIsSpawnedPrefab = true;
     }
 
     private void SetSceneLevelObjectsActive(int activeLevelIndex)
@@ -63,10 +64,11 @@ public class LevelManager : MonoBehaviour
 
     private void DestroyActiveLevelInstance()
     {
-        if (activeLevelInstance != null)
+        if (activeLevelInstance != null && activeLevelIsSpawnedPrefab)
         {
             Destroy(activeLevelInstance.gameObject);
             activeLevelInstance = null;
+            activeLevelIsSpawnedPrefab = false;
         }
     }
 }

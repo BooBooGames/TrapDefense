@@ -191,6 +191,7 @@ public class UIManager : MonoBehaviour
         currencyView.SetGameViewBGImageVisible(shouldShowBGImage);
         currencyView.SetUpgradeScreenBGImageVisible(currentScreenPanel == upgradeScreenPanel);
         currencyView.SetEvolutionButtonVisible(!isSettingsOpen && currentScreenPanel == upgradeScreenPanel);
+        currencyView.SetElixirCounterVisible(!isSettingsOpen && (currentScreenPanel == cardUpgradePanel || currentScreenPanel == cardViewPanel));
     }
 
     private void ShowEvolutionPanelFromUpgradeScreen()
@@ -227,9 +228,18 @@ public class UIManager : MonoBehaviour
         hidePanel.Invoke();
 
         CollectGameCoins(coins, multiplier);
+        ResetGameplaySessionData();
         LevelManager.Instance.LoadNextLevel();
+        gameViewScreen.ResetSessionDataForNextLevel();
         Time.timeScale = 1f;
-        StartGame();
+        ShowHomeScreen();
+    }
+
+    private void ResetGameplaySessionData()
+    {
+        PlayerXpSystem.Instance.ResetSessionData();
+        WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
+        WeaponRotator.SetGameplayMotionEnabled(false);
     }
 
     private static void CollectGameCoins(int coins, int multiplier)

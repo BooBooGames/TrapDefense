@@ -76,6 +76,14 @@ public class WeaponUpgradeController : MonoBehaviour
         ApplyCurrentLevelState();
     }
 
+    public void ResetSessionState()
+    {
+        currentLevel = 1;
+        speedMultiplier = 1f;
+        ApplyCurrentLevelState();
+        SetAnimatorsEnabled(gameplayAnimationsEnabled);
+    }
+
     public static void ApplySpeedMultiplierToCurrentTraps(float multiplier)
     {
         WeaponUpgradeController[] upgradeControllers = FindObjectsByType<WeaponUpgradeController>(

@@ -67,10 +67,8 @@ public class GameViewScreen : MonoBehaviour
 
     private void Awake()
     {
-        zombieCrowdSpawner = LevelManager.Instance.activeLevelInstance.crowdSpawner;
-        upgradeConfig = LevelManager.Instance.activeLevelInstance.upgradeScreenConfig;
-
         Instance = this;
+        RefreshLevelReferences();
         ApplyPersistentUpgradeState();
 
         zombieCrowdSpawner.SetGameViewScreen(this);
@@ -132,6 +130,7 @@ public class GameViewScreen : MonoBehaviour
 
     public void StartGameplay()
     {
+        RefreshLevelReferences();
         ApplyPersistentUpgradeState();
         EndPointTrigger.ResetAllGates();
         ResetInGameCoins();
@@ -145,6 +144,22 @@ public class GameViewScreen : MonoBehaviour
         gameOverPanel.SetActive(false);
 
         zombieCrowdSpawner.StartWaves();
+    }
+
+    public void ResetSessionDataForNextLevel()
+    {
+        RefreshLevelReferences();
+        StopUiFeedbackAnimations();
+        gameOverTriggered = false;
+        gearCount = 0;
+        gearGenerationTimer = 0f;
+        ResetInGameCoins();
+        ResetChestTriggerImages();
+        ResetWeaponUpgradeTargets();
+        InitializePlayerHealth();
+        RefreshWaveProgress();
+        RefreshWeaponUpgradeUi();
+        UpdateGearUi(GetGearProgress());
     }
 
     public void EndGameplay()
@@ -346,6 +361,21 @@ public class GameViewScreen : MonoBehaviour
     private UpgradeScreenConfig ResolveUpgradeConfig()
     {
         return upgradeConfig;
+    }
+
+    private void RefreshLevelReferences()
+    {
+        if (zombieCrowdSpawner != null)
+        {
+            zombieCrowdSpawner.ProgressChanged -= HandleWaveProgressChanged;
+        }
+
+        zombieCrowdSpawner = LevelManager.Instance.activeLevelInstance.crowdSpawner;
+        upgradeConfig = LevelManager.Instance.activeLevelInstance.upgradeScreenConfig;
+        zombieCrowdSpawner.SetGameViewScreen(this);
+
+        zombieCrowdSpawner.ProgressChanged -= HandleWaveProgressChanged;
+        zombieCrowdSpawner.ProgressChanged += HandleWaveProgressChanged;
     }
 
     private void UpdateGearUi(float progress)
@@ -594,6 +624,20 @@ public class GameViewScreen : MonoBehaviour
         else if (waveNumber == 8)
         {
             chest2TriggerImage.SetActive(true);
+        }
+    }
+
+    private void ResetChestTriggerImages()
+    {
+        chest1TriggerImage.SetActive(false);
+        chest2TriggerImage.SetActive(false);
+    }
+
+    private void ResetWeaponUpgradeTargets()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            GetWeaponUpgradeTarget(i).ResetSessionState();
         }
     }
 }

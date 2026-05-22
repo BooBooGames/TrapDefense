@@ -25,6 +25,7 @@ public class CurrencyView : MonoBehaviour
             SoundManager.Instance.PlayButtonClickSound();
         });
         SetEvolutionButtonVisible(false);
+        SetElixirCounterVisible(false);
     }
 
     private void OnEnable()
@@ -67,6 +68,11 @@ public class CurrencyView : MonoBehaviour
     {
         evolutionButton.onClick.RemoveAllListeners();
         evolutionButton.onClick.AddListener(callback);
+    }
+
+    public void SetElixirCounterVisible(bool isVisible)
+    {
+        elixirCounterGroup.SetActive(isVisible);
     }
 
     /*     private void AutoResolveReferences()
