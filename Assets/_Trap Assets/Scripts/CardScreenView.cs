@@ -8,8 +8,6 @@ public class CardScreenView : MonoBehaviour
 {
     public Sprite commonCardSprite, rareCardSprite, epicCardSprite, legendaryCardSprite, lockCardSprite, commonLevelBgSprite, rareLevelBgSprite, epicLevelBgSprite, legendaryLevelBgSprite, lockLevelBgSprite, lockIconSprite;
 
-    public TextMeshProUGUI elixirText;
-
     public Button summonx1Button, summonx10Button;
     [Serializable]
     public class UpgradeCardData

@@ -4,24 +4,27 @@ using UnityEngine.UI;
 
 public class CardInfo : MonoBehaviour
 {
-    public Image titleImage;
+    public Image cardBGImage;
     public TextMeshProUGUI cardTypeText;
-    public Image cardImage;
+    public Image cardIconBG, cardIconImage;
     public TextMeshProUGUI cardNameText;
     public TextMeshProUGUI cardDescriptionText1, cardDescriptionText2, cardDescriptionText3, cardDescriptionText4, cardDescriptionText5;
     public Button selectButton;
 
-    public void Bind(PowerCardDefinition cardData, Sprite titleSprite, UnityEngine.Events.UnityAction onSelected)
+    public void Bind(PowerCardDefinition cardData, Sprite bgImage, Sprite iconBGImage, UnityEngine.Events.UnityAction onSelected)
     {
-        titleImage.sprite = titleSprite;
-        titleImage.enabled = titleSprite != null;
+        cardBGImage.sprite = bgImage;
+        cardBGImage.enabled = bgImage != null;
 
         cardTypeText.text = cardData.cardType;
 
         cardNameText.text = cardData.cardName;
 
-        cardImage.sprite = cardData.cardImage;
-        cardImage.enabled = cardData.cardImage != null;
+        cardIconBG.sprite = iconBGImage;
+        cardIconBG.enabled = iconBGImage != null;
+
+        cardIconImage.sprite = cardData.cardImage;
+        cardIconImage.enabled = cardData.cardImage != null;
 
         TextMeshProUGUI[] descriptionLabels =
         {

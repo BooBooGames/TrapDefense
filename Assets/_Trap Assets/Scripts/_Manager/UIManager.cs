@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
 
     private BottomHudView bottomHudController;
     private GameViewScreen gameViewScreen;
+    private UpgradeScreenView upgradeScreenView;
     private SettingPanelView settingPanelView;
     private WinPreviewPanel winPreviewPanelView;
     private FailPreviewPanel failPreviewPanelView;
@@ -37,9 +38,11 @@ public class UIManager : MonoBehaviour
 
         bottomHudController = bottomHudPanel.GetComponent<BottomHudView>();
         gameViewScreen = gameViewPanel.GetComponent<GameViewScreen>();
+        upgradeScreenView = upgradeScreenPanel.GetComponent<UpgradeScreenView>();
         settingPanelView = settingPanel.GetComponentInChildren<SettingPanelView>(true);
         winPreviewPanelView = winPreviewPanel.GetComponent<WinPreviewPanel>();
         failPreviewPanelView = failPreviewPanel.GetComponent<FailPreviewPanel>();
+        currencyView.BindEvolutionButton(ShowEvolutionPanelFromUpgradeScreen);
 
         ShowHomeScreen();
     }
@@ -132,7 +135,7 @@ public class UIManager : MonoBehaviour
         winPreviewPanelView.Show(
             coins,
             () => CollectGameCoinsAndStartNextLevel(coins, 1, winPreviewPanelView.Hide),
-            () => CollectGameCoinsAndStartNextLevel(coins, 2, winPreviewPanelView.Hide));
+            multiplier => CollectGameCoinsAndStartNextLevel(coins, multiplier, winPreviewPanelView.Hide));
     }
 
     public void ShowFailPreview(int coins)
@@ -183,10 +186,17 @@ public class UIManager : MonoBehaviour
 
     private void UpdateGameViewBGImageVisibility()
     {
-        // bool isSettingsOpen = settingPanel != null && settingPanel.activeSelf;
-        bool shouldShowBGImage = /* !isSettingsOpen && */ currentScreenPanel == gameViewPanel || currentScreenPanel == homeScreenPanel;
+        bool isSettingsOpen = settingPanel.activeSelf;
+        bool shouldShowBGImage = !isSettingsOpen && (currentScreenPanel == gameViewPanel || currentScreenPanel == homeScreenPanel);
         currencyView.SetGameViewBGImageVisible(shouldShowBGImage);
         currencyView.SetUpgradeScreenBGImageVisible(currentScreenPanel == upgradeScreenPanel);
+        currencyView.SetEvolutionButtonVisible(!isSettingsOpen && currentScreenPanel == upgradeScreenPanel);
+    }
+
+    private void ShowEvolutionPanelFromUpgradeScreen()
+    {
+        upgradeScreenView.ShowEvolutionBackground();
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     private void ResumeGameIfSettingsPaused()

@@ -26,7 +26,7 @@ public class PlayerXpSystem : MonoBehaviour
 
     [SerializeField] private GameObject cardSelectionPanel;
     [SerializeField] private Image xpBarFill;
-    public Sprite commonTitleImage, rareTitleImage, epicTitleImage, legendaryTitleImage;
+    public Sprite commonBGImage, rareBGImage, epicBGImage, legendaryBGImage, commonBGIcon, rareBGIcon, epicBGIcon, legendaryBGIcon;
     [SerializeField] private CardInfo cardInfo1;
     [SerializeField] private CardInfo cardInfo2;
     [SerializeField] private CardInfo cardInfo3;
@@ -210,7 +210,7 @@ public class PlayerXpSystem : MonoBehaviour
             return;
         }
 
-        cardInfo.Bind(choice.definition, GetTitleSprite(choice.definition), () => SelectCard(choiceIndex));
+        cardInfo.Bind(choice.definition, GetTitleSprite(choice.definition), GetIconSprite(choice.definition), () => SelectCard(choiceIndex));
     }
 
     private void ApplySelectedCardEffect(PowerCardChoice chosenCard)
@@ -340,21 +340,43 @@ public class PlayerXpSystem : MonoBehaviour
     {
         if (string.IsNullOrWhiteSpace(cardData.cardType))
         {
-            return commonTitleImage;
+            return commonBGImage;
         }
 
         switch (cardData.cardType.Trim().ToLowerInvariant())
         {
             case "common":
-                return commonTitleImage;
+                return commonBGImage;
             case "rare":
-                return rareTitleImage;
+                return rareBGImage;
             case "epic":
-                return epicTitleImage;
+                return epicBGImage;
             case "legendary":
-                return legendaryTitleImage;
+                return legendaryBGImage;
             default:
-                return commonTitleImage;
+                return commonBGImage;
+        }
+    }
+
+    private Sprite GetIconSprite(PowerCardDefinition cardData)
+    {
+        if (string.IsNullOrWhiteSpace(cardData.cardType))
+        {
+            return commonBGIcon;
+        }
+
+        switch (cardData.cardType.Trim().ToLowerInvariant())
+        {
+            case "common":
+                return commonBGIcon;
+            case "rare":
+                return rareBGIcon;
+            case "epic":
+                return epicBGIcon;
+            case "legendary":
+                return legendaryBGIcon;
+            default:
+                return commonBGIcon;
         }
     }
 

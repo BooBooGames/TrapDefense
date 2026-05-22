@@ -16,50 +16,50 @@ MonoBehaviour:
   - cardId: 1
     cardType: Common
     cardName: Trap Accelerator
-    cardImage: {fileID: 21300000, guid: 2d1be89e9223c451ba65efab1008d339, type: 3}
+    cardImage: {fileID: 21300000, guid: a146a6ff2a3b245648c6b1ee93407d03, type: 3}
     descriptions:
     - +8% trap attack speed
   - cardId: 2
     cardType: Common
     cardName: Pocket Gears
-    cardImage: {fileID: 21300000, guid: 02afcdc83ca2a4a7a8bd6c6e41ab3501, type: 3}
+    cardImage: {fileID: 21300000, guid: 2f3f24521a11e4460b67b2a0de326f9b, type: 3}
     descriptions:
     - Instantly gain +3 gears
   - cardId: 3
     cardType: Common
     cardName: Minor Heal
-    cardImage: {fileID: 21300000, guid: 1412e6f96b5d44247b82f99f13a44953, type: 3}
+    cardImage: {fileID: 21300000, guid: bba37440f470c44109bd42117f27a6c9, type: 3}
     descriptions:
     - Instantly heal 5 HP
   - cardId: 4
     cardType: Rare
     cardName: Angel Blessing
-    cardImage: {fileID: 21300000, guid: e13bb9a4d80694b1988b840384993d47, type: 3}
+    cardImage: {fileID: 21300000, guid: 909758b52a6d14b7593f59563e831bed, type: 3}
     descriptions:
     - +5 HP at end of each wave
   - cardId: 5
     cardType: Common
     cardName: Thin Armor
-    cardImage: {fileID: 21300000, guid: d19f44afb18834f5787c021edb760f87, type: 3}
+    cardImage: {fileID: 21300000, guid: eae3ab270db604ca4a71b2884688507a, type: 3}
     descriptions:
     - -10% enemy HP
   - cardId: 6
     cardType: Rare
     cardName: Wave Bonus
-    cardImage: {fileID: 21300000, guid: 90ce1d2a755d940f49910fc5a037270b, type: 3}
+    cardImage: {fileID: 21300000, guid: 0662957288b124c93b09d8f648e5066c, type: 3}
     descriptions:
     - +5 gears on wave complete
   - cardId: 7
     cardType: Rare
     cardName: Weakening Strike
-    cardImage: {fileID: 21300000, guid: b29e0e0e91d3d4094bb6142401594c11, type: 3}
+    cardImage: {fileID: 21300000, guid: c8e1c0bcf899e4e82a6c72085c29df63, type: 3}
     descriptions:
     - Trap hits slow enemy
     - -10% for 2s
   - cardId: 8
     cardType: Epic
     cardName: Invulnerability Pulse
-    cardImage: {fileID: 21300000, guid: 468426658927144c0b43cf391a66fa1b, type: 3}
+    cardImage: {fileID: 21300000, guid: 8ec02b6483ff94f4186a964fe42489cf, type: 3}
     descriptions:
     - Every 30s
     - enemies deal no
@@ -67,13 +67,13 @@ MonoBehaviour:
   - cardId: 9
     cardType: Epic
     cardName: Death Mark
-    cardImage: {fileID: 21300000, guid: 05d2bd4a8d3334884a56951cfcd8dc3a, type: 3}
+    cardImage: {fileID: 21300000, guid: 6efedac627cc040d691acb8b079dace0, type: 3}
     descriptions:
     - Enemies has a 5% Chance to die instantly
   - cardId: 10
     cardType: Legendary
     cardName: Doom Traps
-    cardImage: {fileID: 21300000, guid: 2c83a179cad914f34807d88fd4bd70ec, type: 3}
+    cardImage: {fileID: 21300000, guid: 9938c3c2ec51e4bb8a06fcfce15657fa, type: 3}
     descriptions:
     - Each hit slows enemies
     - +20% trap damage

@@ -9,8 +9,10 @@ public class CurrencyView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinCounterLabel;
     [SerializeField] private TextMeshProUGUI gemsCounterLabel;
     [SerializeField] private Button settingsButton;
-    [SerializeField] private Image gameViewBGImage, upgradeScreenBGImage;
-
+    // [SerializeField] private Image gameViewBGImage, upgradeScreenBGImage;
+    [SerializeField] private Button evolutionButton;
+    [SerializeField] public GameObject elixirCounterGroup;
+    [SerializeField] public TextMeshProUGUI elixirCounterLabel;
 
     private void Awake()
     {
@@ -22,6 +24,7 @@ public class CurrencyView : MonoBehaviour
             uiManager.ShowSettingsScreen();
             SoundManager.Instance.PlayButtonClickSound();
         });
+        SetEvolutionButtonVisible(false);
     }
 
     private void OnEnable()
@@ -47,12 +50,23 @@ public class CurrencyView : MonoBehaviour
 
     public void SetGameViewBGImageVisible(bool isVisible)
     {
-        gameViewBGImage.gameObject.SetActive(isVisible);
+        // gameViewBGImage.gameObject.SetActive(isVisible);
     }
 
     public void SetUpgradeScreenBGImageVisible(bool isVisible)
     {
-        upgradeScreenBGImage.gameObject.SetActive(isVisible);
+        // upgradeScreenBGImage.gameObject.SetActive(isVisible);
+    }
+
+    public void SetEvolutionButtonVisible(bool isVisible)
+    {
+        evolutionButton.gameObject.SetActive(isVisible);
+    }
+
+    public void BindEvolutionButton(UnityEngine.Events.UnityAction callback)
+    {
+        evolutionButton.onClick.RemoveAllListeners();
+        evolutionButton.onClick.AddListener(callback);
     }
 
     /*     private void AutoResolveReferences()

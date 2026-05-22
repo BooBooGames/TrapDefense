@@ -9,13 +9,14 @@ public class UpgradeScreenView : MonoBehaviour
     public GameObject upgradesBG, evolutionBG;
 
     [Header("Weapons")]
-    public Image weapon1Image, weapon2Image, weapon3Image;
+    public Image weapon1Image;
+    public Image weapon2Image, weapon3Image;
     public TextMeshProUGUI weapon1Text, weapon2Text, weapon3Text;
     public Button weapon2BuyButton, weapon3BuyButton;
     public TextMeshProUGUI weapon2CostText, weapon3CostText;
 
-    [Header("Stat Upgrades")]
-    public TextMeshProUGUI gearFlowText, baseHealthText;
+
+    public TextMeshProUGUI gearFlowCurrentText, baseHealthCurrentText, gearFlowUpgradedText, baseHealthUpgradedText;
     public Button gearFlowUpgradeButton, baseHealthUpgradeButton;
     public TextMeshProUGUI gearFlowUpgradeCostText, baseHealthUpgradeCostText;
 
@@ -24,7 +25,7 @@ public class UpgradeScreenView : MonoBehaviour
 
     public UpgradeScreenConfig ConfigAsset => upgradeConfig;
 
-    public Button upgradeButton, evolutionButton;
+    public Button upgradeButton;
 
     [Header("Evolution")] public TextMeshProUGUI timelineText;
     public Image timeline1Image, timeline2Image;
@@ -71,7 +72,6 @@ public class UpgradeScreenView : MonoBehaviour
         BindButton(gearFlowUpgradeButton, HandleGearFlowUpgradeClicked);
         BindButton(baseHealthUpgradeButton, HandleBaseHealthUpgradeClicked);
         BindButton(upgradeButton, HandleUpgradeTabClicked);
-        BindButton(evolutionButton, HandleEvolutionTabClicked);
     }
 
     private void BindButton(Button button, UnityEngine.Events.UnityAction callback)
@@ -134,22 +134,16 @@ public class UpgradeScreenView : MonoBehaviour
         SoundManager.Instance.PlayButtonClickSound();
     }
 
-    private void HandleEvolutionTabClicked()
-    {
-        ShowEvolutionBackground();
-        SoundManager.Instance.PlayButtonClickSound();
-    }
-
     private void ShowUpgradeBackground()
     {
         upgradesBG.SetActive(true);
         evolutionBG.SetActive(false);
     }
 
-    private void ShowEvolutionBackground()
+    public void ShowEvolutionBackground()
     {
         evolutionBG.SetActive(true);
-        upgradesBG.SetActive(false);
+        // upgradesBG.SetActive(false);
     }
     private void RefreshUi()
     {
@@ -202,10 +196,11 @@ public class UpgradeScreenView : MonoBehaviour
         UpgradeResourceCost cost = weapon.unlockCost;
 
         unlockButton.interactable = !isUnlocked && PlayerUpgradeSystem.CanAfford(cost);
+        unlockButton.transform.GetChild(0).gameObject.SetActive(!isUnlocked);
 
         if (costLabel != null)
         {
-            costLabel.text = isUnlocked ? "Unlocked" : CoinFormatter.FormatCoins(cost.coins);
+            costLabel.text = isUnlocked ? "USE" : CoinFormatter.FormatCoins(cost.coins);
         }
 
         if (buttonLabel != null)
@@ -217,8 +212,20 @@ public class UpgradeScreenView : MonoBehaviour
 
     private void RefreshStatUpgrades()
     {
-        gearFlowText.text = $"{PlayerUpgradeSystem.CurrentGearFlowValue:0.00}s";
-        baseHealthText.text = PlayerUpgradeSystem.CurrentBaseHealthValue.ToString();
+        UpgradeScreenConfig config = PlayerUpgradeSystem.Config;
+        float currentGearFlowValue = PlayerUpgradeSystem.CurrentGearFlowValue;
+        float upgradedGearFlowValue = PlayerUpgradeSystem.CanUpgradeGearFlow()
+            ? config.GearFlow.EvaluateValue(PlayerUpgradeSystem.GearFlowLevel + 1)
+            : currentGearFlowValue;
+        int currentBaseHealthValue = PlayerUpgradeSystem.CurrentBaseHealthValue;
+        int upgradedBaseHealthValue = PlayerUpgradeSystem.CanUpgradeBaseHealth()
+            ? config.BaseHealth.EvaluateValue(PlayerUpgradeSystem.BaseHealthLevel + 1)
+            : currentBaseHealthValue;
+
+        gearFlowCurrentText.text = $"{currentGearFlowValue:0.00}s";
+        gearFlowUpgradedText.text = $"{upgradedGearFlowValue:0.00}s";
+        baseHealthCurrentText.text = currentBaseHealthValue.ToString();
+        baseHealthUpgradedText.text = upgradedBaseHealthValue.ToString();
 
         RefreshUpgradeButton(
             gearFlowUpgradeButton,
