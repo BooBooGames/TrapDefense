@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject failPreviewPanel;
     [SerializeField] private GameObject cardUpgradePanel;
     [SerializeField] private GameObject ageChangePanel;
+    [SerializeField] private GameObject FTUEPanel;
     // [SerializeField] private Button playButton;
 
     private BottomHudView bottomHudController;
@@ -27,6 +28,7 @@ public class UIManager : MonoBehaviour
     private SettingPanelView settingPanelView;
     private WinPreviewPanel winPreviewPanelView;
     private FailPreviewPanel failPreviewPanelView;
+    public FTUEController ftueController;
     private GameObject currentScreenPanel;
     private bool settingsOpenedFromGameView;
     private float timeScaleBeforeSettings = 1f;
@@ -44,7 +46,14 @@ public class UIManager : MonoBehaviour
         failPreviewPanelView = failPreviewPanel.GetComponent<FailPreviewPanel>();
         currencyView.BindEvolutionButton(ShowEvolutionPanelFromUpgradeScreen);
 
-        ShowHomeScreen();
+        if (FTUEController.IsCompleted)
+        {
+            ShowHomeScreen();
+        }
+        else
+        {
+            ShowFTUE();
+        }
     }
 
     private void OnDestroy()
@@ -75,12 +84,14 @@ public class UIManager : MonoBehaviour
     {
         ShowScreen(cardUpgradePanel, true);
         bottomHudController.SetSelectedButton(BottomHudView.CardButtonIndex);
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void ShowShopScreen()
     {
         ShowScreen(shopPanel, true);
         bottomHudController.SetSelectedButton(BottomHudView.ShopButtonIndex);
+        SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void ShowSettingsScreen()
@@ -164,6 +175,7 @@ public class UIManager : MonoBehaviour
     {
         currentScreenPanel = activePanel;
 
+        SetPanelActive(currencyView.gameObject, true);
         SetPanelActive(homeScreenPanel, activePanel == homeScreenPanel);
         SetPanelActive(upgradeScreenPanel, activePanel == upgradeScreenPanel);
         SetPanelActive(cardViewPanel, activePanel == cardViewPanel);
@@ -176,7 +188,40 @@ public class UIManager : MonoBehaviour
         SetPanelActive(chestPreviewPanel, false);
         SetPanelActive(cardUpgradePanel, activePanel == cardUpgradePanel);
         SetPanelActive(ageChangePanel, false);
+        SetPanelActive(FTUEPanel, false);
         UpdateGameViewBGImageVisibility();
+    }
+
+    private void ShowFTUE()
+    {
+        currentScreenPanel = FTUEPanel;
+        Time.timeScale = 1f;
+        WeaponRotator.SetGameplayMotionEnabled(false);
+        WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
+
+        SetPanelActive(currencyView.gameObject, false);
+        SetPanelActive(homeScreenPanel, false);
+        SetPanelActive(upgradeScreenPanel, false);
+        SetPanelActive(cardViewPanel, false);
+        SetPanelActive(shopPanel, false);
+        SetPanelActive(gameViewPanel, false);
+        SetPanelActive(bottomHudPanel, false);
+        SetPanelActive(settingPanel, false);
+        SetPanelActive(winPreviewPanel, false);
+        SetPanelActive(failPreviewPanel, false);
+        SetPanelActive(chestPreviewPanel, false);
+        SetPanelActive(cardUpgradePanel, false);
+        SetPanelActive(ageChangePanel, false);
+        SetPanelActive(FTUEPanel, true);
+
+        ftueController.Begin(CompleteFTUEAndStartGame);
+    }
+
+    private void CompleteFTUEAndStartGame()
+    {
+        SetPanelActive(FTUEPanel, false);
+        ShowHomeScreen();
+        // StartGame();
     }
 
     private void SetPanelActive(GameObject panel, bool isActive)

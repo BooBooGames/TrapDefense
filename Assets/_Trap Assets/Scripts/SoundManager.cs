@@ -11,6 +11,7 @@ public class SoundManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        GameSettingsSystem.Initialize();
     }
 
     public void PlaySound(AudioClip clip)

@@ -14,7 +14,6 @@ public class SettingPanelView : MonoBehaviour
 
     private void Awake()
     {
-        GameSettingsSystem.Initialize();
         BindButtons();
     }
 
