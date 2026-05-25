@@ -266,6 +266,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
     private void OnZombieKilled(ZombieRuntime zombie, Vector3 deathPosition)
     {
         SpawnKillEffect(zombie, deathPosition);
+        SpawnCoinBillboard(zombie);
 
         gameViewScreen?.AddInGameCoins(zombie.CoinReward);
         PlayerCurrencySystem.AddGems(zombie.GemReward);
@@ -283,6 +284,12 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
         ParticleSystem effectInstance = Instantiate(effectPrefab, deathPosition, Quaternion.identity);
         effectInstance.Play();
+    }
+
+    private void SpawnCoinBillboard(ZombieRuntime zombie)
+    {
+        CoinBillboard billboard = Instantiate(levelConfig.coinBillboardPrefab, zombie.GetHeadBillboardPosition(), Quaternion.identity);
+        billboard.Show(zombie.CoinReward);
     }
 
     private List<ZombieWaveEntry> BuildSpawnQueue(WaveDefinition wave)

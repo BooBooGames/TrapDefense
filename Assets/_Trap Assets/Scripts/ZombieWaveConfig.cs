@@ -6,6 +6,7 @@ public class ZombieWaveConfig : ScriptableObject
 {
     [SerializeField][Min(1)] private int totalWaves = 9;
     [SerializeField][Min(1)] private int startingPlayerHealth = 30;
+    public CoinBillboard coinBillboardPrefab;
     [SerializeField] private WaveDefinition[] waves = new WaveDefinition[9];
 
     public int TotalWaves => totalWaves;

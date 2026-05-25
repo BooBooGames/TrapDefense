@@ -98,6 +98,14 @@ public class ZombieRuntime : MonoBehaviour
 
     public void ConfigureKillEffect(ParticleSystem prefab) => killEffectPrefab = prefab;
 
+    public Vector3 GetHeadBillboardPosition()
+    {
+        Vector3 zombieBounds = transform.position;
+
+        zombieBounds.y += 2.5f; // Approximate head height above pivot; adjust as needed based on zombie model
+        return zombieBounds;
+    }
+
     // ── Damage ────────────────────────────────────────────────────────────────
 
     public void ApplyDamage(float damage)

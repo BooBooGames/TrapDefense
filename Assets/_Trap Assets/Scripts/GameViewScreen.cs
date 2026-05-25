@@ -73,7 +73,6 @@ public class GameViewScreen : MonoBehaviour
 
         zombieCrowdSpawner.SetGameViewScreen(this);
 
-        gearCount = ParseInitialGearCount();
         UpdateGearUi(GetGearProgress());
         RefreshInGameCoinLabel();
         RefreshWaveProgress();
@@ -381,7 +380,7 @@ public class GameViewScreen : MonoBehaviour
     private void UpdateGearUi(float progress)
     {
         gearCounterFill.fillAmount = Mathf.Clamp01(progress);
-        gearCounterLabel.text = gearCount.ToString();
+        gearCounterLabel.text = gearCount < 40 ? gearCount.ToString() : "MAX";
 
         RefreshWeaponUpgradeUi();
     }
@@ -607,11 +606,6 @@ public class GameViewScreen : MonoBehaviour
     private float GetGearProgress()
     {
         return gearGenerationDuration > 0f ? gearGenerationTimer / gearGenerationDuration : 0f;
-    }
-
-    private int ParseInitialGearCount()
-    {
-        return int.TryParse(gearCounterLabel.text, out int parsedCount) ? Mathf.Max(0, parsedCount) : 0;
     }
 
     public void ShowChestTriggerImage(int waveNumber)
