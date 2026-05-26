@@ -13,6 +13,8 @@ public class CurrencyView : MonoBehaviour
     [SerializeField] private Button evolutionButton;
     [SerializeField] public GameObject elixirCounterGroup;
     [SerializeField] public TextMeshProUGUI elixirCounterLabel;
+    [SerializeField] public GameObject waveCounterGroup;
+    [SerializeField] public TextMeshProUGUI waveCounterLabel;
 
     private void Awake()
     {
@@ -26,6 +28,7 @@ public class CurrencyView : MonoBehaviour
         });
         SetEvolutionButtonVisible(false);
         SetElixirCounterVisible(false);
+        SetWaveCounterVisible(false);
     }
 
     private void OnEnable()
@@ -73,6 +76,16 @@ public class CurrencyView : MonoBehaviour
     public void SetElixirCounterVisible(bool isVisible)
     {
         elixirCounterGroup.SetActive(isVisible);
+    }
+
+    public void SetWaveCounterVisible(bool isVisible)
+    {
+        waveCounterGroup.SetActive(isVisible);
+    }
+
+    public void SetWaveCounterText(string waveText)
+    {
+        waveCounterLabel.text = waveText;
     }
 
     /*     private void AutoResolveReferences()

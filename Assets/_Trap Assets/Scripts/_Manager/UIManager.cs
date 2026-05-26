@@ -48,7 +48,7 @@ public class UIManager : MonoBehaviour
 
         if (FTUEController.IsCompleted)
         {
-            ShowHomeScreen();
+            ShowHomeScreen(true);
         }
         else
         {
@@ -64,13 +64,13 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void ShowHomeScreen()
+    public void ShowHomeScreen(bool fromFTUE = false)
     {
         WeaponRotator.SetGameplayMotionEnabled(false);
         WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
         ShowScreen(homeScreenPanel, true);
         bottomHudController.SetSelectedButton(BottomHudView.HomeButtonIndex);
-        SoundManager.Instance.PlayButtonClickSound();
+        if (!fromFTUE) SoundManager.Instance.PlayButtonClickSound();
     }
 
     public void ShowUpgradeScreen()
@@ -237,6 +237,7 @@ public class UIManager : MonoBehaviour
         currencyView.SetUpgradeScreenBGImageVisible(currentScreenPanel == upgradeScreenPanel);
         currencyView.SetEvolutionButtonVisible(!isSettingsOpen && currentScreenPanel == upgradeScreenPanel);
         currencyView.SetElixirCounterVisible(!isSettingsOpen && (currentScreenPanel == cardUpgradePanel || currentScreenPanel == cardViewPanel));
+        currencyView.SetWaveCounterVisible(currentScreenPanel == gameViewPanel);
     }
 
     private void ShowEvolutionPanelFromUpgradeScreen()
@@ -275,6 +276,7 @@ public class UIManager : MonoBehaviour
         CollectGameCoins(coins, multiplier);
         ResetGameplaySessionData();
         LevelManager.Instance.LoadNextLevel();
+        PlayerUpgradeSystem.ResetWeaponUnlockStateToDefaults(LevelManager.Instance.activeLevelInstance.upgradeScreenConfig);
         gameViewScreen.ResetSessionDataForNextLevel();
         Time.timeScale = 1f;
         ShowHomeScreen();

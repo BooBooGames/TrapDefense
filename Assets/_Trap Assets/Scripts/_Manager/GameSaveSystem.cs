@@ -12,6 +12,10 @@ public class SaveGameData
     public int gearFlowLevel;
     public int baseHealthLevel;
     public ChestSlotSaveData[] chestSlots;
+    public int currentLevel = 1;
+    public int chestRewardLevel = 1;
+    public bool wave4ChestClaimed;
+    public bool wave8ChestClaimed;
 
     public bool musicEnabled = true;
     public bool soundEnabled = true;

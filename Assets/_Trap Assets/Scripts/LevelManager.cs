@@ -15,6 +15,7 @@ public class LevelManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            CurrentLevel = GetSavedLevel();
             LoadLevel(CurrentLevel);
         }
         else
@@ -27,7 +28,24 @@ public class LevelManager : MonoBehaviour
     {
         CurrentLevel = CurrentLevel >= Levels.Length ? 1 : CurrentLevel + 1;
         LoadLevel(CurrentLevel);
+        SaveCurrentLevel();
+        HomeViewScreen.ResetChestRewardsForLevel(CurrentLevel);
         Debug.Log("Loading Level: " + CurrentLevel);
+    }
+
+    private int GetSavedLevel()
+    {
+        SaveGameData saveData = GameSaveSystem.Load();
+        int maxLevel = Mathf.Max(1, Levels.Length);
+        int savedLevel = saveData.currentLevel <= 0 ? 1 : saveData.currentLevel;
+        return Mathf.Clamp(savedLevel, 1, maxLevel);
+    }
+
+    private void SaveCurrentLevel()
+    {
+        SaveGameData saveData = GameSaveSystem.Load();
+        saveData.currentLevel = CurrentLevel;
+        GameSaveSystem.Save(saveData);
     }
 
     private void LoadLevel(int levelNumber)

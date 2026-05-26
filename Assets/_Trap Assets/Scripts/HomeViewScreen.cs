@@ -97,14 +97,76 @@ public class HomeViewScreen : MonoBehaviour
 
     public static void AwardChestForCompletedWave(int completedWave)
     {
+        /* if (!IsChestRewardAvailableForWave(completedWave))
+        {
+            GameViewScreen.Instance.RefreshChestAvailabilityVisuals();
+            return;
+        } */
+
+        bool chestAwarded = false;
         if (completedWave == 4)
         {
-            AwardChest(instance != null ? instance.wave4ChestType : ChestType.Common);
+            chestAwarded = AwardChest(instance != null ? instance.wave4ChestType : ChestType.Common);
+            if (chestAwarded)
+            {
+                GameViewScreen.Instance.wave4triggered = true;
+            }
         }
         else if (completedWave == 8)
         {
-            AwardChest(instance != null ? instance.wave8ChestType : ChestType.Rare);
+            chestAwarded = AwardChest(instance != null ? instance.wave8ChestType : ChestType.Rare);
+            if (chestAwarded)
+            {
+                GameViewScreen.Instance.wave8triggered = true;
+            }
         }
+
+        if (chestAwarded)
+        {
+            MarkChestRewardClaimed(completedWave);
+            // GameViewScreen.Instance.RefreshChestAvailabilityVisuals();
+        }
+    }
+
+    public static bool IsChestRewardAvailableForWave(int completedWave)
+    {
+        SaveGameData data = GameSaveSystem.Load();
+        EnsureChestRewardLevel(data, GetCurrentLevelNumber());
+
+        return completedWave switch
+        {
+            4 => !data.wave4ChestClaimed,
+            8 => !data.wave8ChestClaimed,
+            _ => false,
+        };
+    }
+
+    public static int GetEmptyChestSlotCount()
+    {
+        SaveGameData data = GameSaveSystem.Load();
+        EnsureChestSlots(data);
+
+        int emptySlotCount = 0;
+        for (int i = 0; i < data.chestSlots.Length; i++)
+        {
+            if (data.chestSlots[i] == null || !data.chestSlots[i].hasChest)
+            {
+                emptySlotCount++;
+            }
+        }
+
+        return emptySlotCount;
+    }
+
+    public static void ResetChestRewardsForLevel(int levelNumber)
+    {
+        SaveGameData data = GameSaveSystem.Load();
+        int currentLevel = Mathf.Max(1, levelNumber);
+        data.chestRewardLevel = currentLevel;
+        data.wave4ChestClaimed = false;
+        data.wave8ChestClaimed = false;
+        GameSaveSystem.Save(data);
+        GameViewScreen.Instance.RefreshChestAvailabilityVisuals();
     }
 
     public static bool AwardChest(ChestType chestType)
@@ -409,5 +471,41 @@ public class HomeViewScreen : MonoBehaviour
             gemsReward = reward != null ? reward.gems : 0,
             cardsReward = reward != null ? reward.cards : 0
         };
+    }
+
+    private static void MarkChestRewardClaimed(int completedWave)
+    {
+        SaveGameData data = GameSaveSystem.Load();
+        EnsureChestRewardLevel(data, GetCurrentLevelNumber());
+
+        if (completedWave == 4)
+        {
+            data.wave4ChestClaimed = true;
+        }
+        else if (completedWave == 8)
+        {
+            data.wave8ChestClaimed = true;
+        }
+
+        GameSaveSystem.Save(data);
+    }
+
+    private static void EnsureChestRewardLevel(SaveGameData data, int levelNumber)
+    {
+        int currentLevel = Mathf.Max(1, levelNumber);
+        if (data.chestRewardLevel == currentLevel)
+        {
+            return;
+        }
+
+        data.chestRewardLevel = currentLevel;
+        data.wave4ChestClaimed = false;
+        data.wave8ChestClaimed = false;
+        GameSaveSystem.Save(data);
+    }
+
+    private static int GetCurrentLevelNumber()
+    {
+        return LevelManager.Instance != null ? LevelManager.Instance.CurrentLevel : 1;
     }
 }

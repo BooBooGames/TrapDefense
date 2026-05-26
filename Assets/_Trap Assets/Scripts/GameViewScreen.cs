@@ -9,11 +9,11 @@ public class GameViewScreen : MonoBehaviour
 
     ZombieCrowdSpawner zombieCrowdSpawner;
     UpgradeScreenConfig upgradeConfig;
+    CurrencyView currencyView;
 
     public TextMeshProUGUI inGameCoinLabel;
     [SerializeField] private Image waveProgressBarFill;
-    [SerializeField] private TextMeshProUGUI waveProgressBarLabel;
-    [SerializeField] private GameObject chest1TriggerImage, chest2TriggerImage;
+    [SerializeField] private GameObject chestBG1, chestBG2, chest1TriggerImage, chest2TriggerImage;
     [SerializeField] private Image gearCounterFill;
     [SerializeField] private TextMeshProUGUI gearCounterLabel;
     [SerializeField][Min(0.1f)] private float gearGenerationDuration = 5f;
@@ -68,6 +68,7 @@ public class GameViewScreen : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        currencyView = FindFirstObjectByType<CurrencyView>(FindObjectsInactive.Include);
         RefreshLevelReferences();
         ApplyPersistentUpgradeState();
 
@@ -77,6 +78,7 @@ public class GameViewScreen : MonoBehaviour
         RefreshInGameCoinLabel();
         RefreshWaveProgress();
         RefreshWeaponUpgradeUi();
+        RefreshChestAvailabilityVisuals();
 
         gameOverPanel.SetActive(false);
     }
@@ -134,6 +136,7 @@ public class GameViewScreen : MonoBehaviour
         EndPointTrigger.ResetAllGates();
         ResetInGameCoins();
         RefreshWeaponUpgradeUi();
+        RefreshChestAvailabilityVisuals();
 
         if (!gameOverTriggered)
         {
@@ -153,12 +156,12 @@ public class GameViewScreen : MonoBehaviour
         gearCount = 0;
         gearGenerationTimer = 0f;
         ResetInGameCoins();
-        ResetChestTriggerImages();
         ResetWeaponUpgradeTargets();
         InitializePlayerHealth();
         RefreshWaveProgress();
         RefreshWeaponUpgradeUi();
         UpdateGearUi(GetGearProgress());
+        RefreshChestAvailabilityVisuals();
     }
 
     public void EndGameplay()
@@ -171,6 +174,7 @@ public class GameViewScreen : MonoBehaviour
         gameOverPanel.SetActive(false);
 
         RefreshWaveProgress();
+        RefreshChestAvailabilityVisuals();
     }
 
     public void InitializePlayerHealth()
@@ -295,6 +299,33 @@ public class GameViewScreen : MonoBehaviour
         RefreshWeaponUpgradeUi();
     }
 
+    public bool wave4triggered, wave8triggered;
+    public void RefreshChestAvailabilityVisuals()
+    {
+        int emptyChestSlots = HomeViewScreen.GetEmptyChestSlotCount();
+        bool isChest1Available = HomeViewScreen.IsChestRewardAvailableForWave(4) && emptyChestSlots > 0;
+
+        if (isChest1Available)
+        {
+            emptyChestSlots--;
+        }
+
+        bool isChest2Available = HomeViewScreen.IsChestRewardAvailableForWave(8) && emptyChestSlots > 0;
+
+        chestBG1.SetActive(isChest1Available);
+        if (isChest1Available)
+        {
+            chest1TriggerImage.SetActive(false);
+        }
+        chest1TriggerImage.transform.parent.gameObject.SetActive(isChest1Available);
+        chestBG2.SetActive(isChest2Available);
+        if (isChest2Available)
+        {
+            chest2TriggerImage.SetActive(false);
+        }
+        chest2TriggerImage.transform.parent.gameObject.SetActive(isChest2Available);
+    }
+
     private void BindWeaponUpgradeUi()
     {
         for (int i = 0; i < 3; i++)
@@ -338,7 +369,7 @@ public class GameViewScreen : MonoBehaviour
         waveProgressBarFill.fillAmount = Mathf.Clamp01(overallProgress);
 
         int displayedWave = totalWaves > 0 ? Mathf.Clamp(Mathf.Max(currentWave, 1), 1, totalWaves) : 0;
-        waveProgressBarLabel.text = totalWaves > 0 ? $"Wave {displayedWave}/{totalWaves}" : "Wave 0/0";
+        currencyView.SetWaveCounterText(totalWaves > 0 ? $"Wave {displayedWave}/{totalWaves}" : "Wave 0/0");
     }
 
     private void RefreshWaveProgress()
@@ -610,21 +641,14 @@ public class GameViewScreen : MonoBehaviour
 
     public void ShowChestTriggerImage(int waveNumber)
     {
-        if (waveNumber == 4)
+        if (waveNumber == 4 && wave4triggered)
         {
             chest1TriggerImage.SetActive(true);
-
         }
-        else if (waveNumber == 8)
+        else if (waveNumber == 8 && wave8triggered)
         {
             chest2TriggerImage.SetActive(true);
         }
-    }
-
-    private void ResetChestTriggerImages()
-    {
-        chest1TriggerImage.SetActive(false);
-        chest2TriggerImage.SetActive(false);
     }
 
     private void ResetWeaponUpgradeTargets()

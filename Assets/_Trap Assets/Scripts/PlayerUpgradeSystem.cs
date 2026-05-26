@@ -164,6 +164,19 @@ public static class PlayerUpgradeSystem
         return true;
     }
 
+    public static void ResetWeaponUnlockStateToDefaults(UpgradeScreenConfig sourceConfig)
+    {
+        config = UpgradeScreenConfig.Resolve(sourceConfig);
+        unlockedWeaponStates = CreateDefaultWeaponUnlockStates();
+
+        SaveGameData saveData = GameSaveSystem.Load();
+        saveData.unlockedWeaponStates = (bool[])unlockedWeaponStates.Clone();
+        GameSaveSystem.Save(saveData);
+
+        isInitialized = true;
+        UpgradeStateChanged?.Invoke();
+    }
+
     private static void EnsureInitialized()
     {
         if (!isInitialized)
@@ -223,6 +236,18 @@ public static class PlayerUpgradeSystem
         }
 
         return changed;
+    }
+
+    private static bool[] CreateDefaultWeaponUnlockStates()
+    {
+        bool[] defaultStates = new bool[CurrentConfig.WeaponCount];
+        for (int i = 0; i < defaultStates.Length; i++)
+        {
+            WeaponUnlockDefinition weapon = CurrentConfig.GetWeapon(i);
+            defaultStates[i] = weapon != null && weapon.unlockedByDefault;
+        }
+
+        return defaultStates;
     }
 
     private static void ApplySaveData(SaveGameData saveData)

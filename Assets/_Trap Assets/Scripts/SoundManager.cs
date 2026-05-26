@@ -29,7 +29,6 @@ public class SoundManager : MonoBehaviour
 
     public void PlayButtonClickSound()
     {
-
         PlaySound(buttonClickSound);
         MediumImpactHaptic();
     }
