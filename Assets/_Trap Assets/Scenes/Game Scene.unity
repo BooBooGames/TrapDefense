@@ -11229,8 +11229,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 409048775}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: -31.95485, y: 24, z: -25.73547}
+  m_LocalRotation: {x: 0.53729963, y: 0, z: 0, w: 0.8433915}
+  m_LocalPosition: {x: 0, y: 27.7, z: -14.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30227,6 +30227,8 @@ MonoBehaviour:
   gameOverPanel: {fileID: 1657989071}
   playerHealthUpgradeBonus: 0
   pauseOnGameOver: 1
+  wave4triggered: 0
+  wave8triggered: 0
 --- !u!1 &1159452809
 GameObject:
   m_ObjectHideFlags: 0
@@ -47461,9 +47463,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   Levels:
+  - {fileID: -1126408379987902692, guid: c31021e5e2555be40aa636e9e676790f, type: 3}
   - {fileID: 1291743322639741911, guid: 61ef5feacfddb42ddb28a10dcc5757b7, type: 3}
   - {fileID: 170342769137415752, guid: 194fa4afe69564f5baa394f8ff40e6f0, type: 3}
-  - {fileID: -1126408379987902692, guid: c31021e5e2555be40aa636e9e676790f, type: 3}
   - {fileID: 1221801518337366175, guid: c4e801f87c38349efa599ceb7f748d10, type: 3}
   activeLevelInstance: {fileID: 0}
 --- !u!1 &1663654490

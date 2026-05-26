@@ -9,7 +9,6 @@ public class ZombieCrowdSpawner : MonoBehaviour
 
     [SerializeField] private ZombiePath sharedPath;
     [SerializeField] private ZombieWaveConfig levelConfig;
-    [SerializeField][Min(0f)] private float initialSpacing = 1.35f;
     [SerializeField] private bool autoStartOnPlay = false;
 
     private int spawnedCount;
@@ -118,7 +117,6 @@ public class ZombieCrowdSpawner : MonoBehaviour
             }
 
             currentWaveNumber = waveIndex + 1;
-            initialSpacing = GetInitialSpacingForWave(currentWaveNumber);
             currentWavePlannedZombies = wave.GetTotalZombieCount();
             currentWaveCompletedZombies = 0;
             NotifyProgressChanged();
@@ -168,45 +166,15 @@ public class ZombieCrowdSpawner : MonoBehaviour
             yield break;
         }
 
-        int spawnedInWave = 0;
         for (int entryIndex = 0; entryIndex < spawnQueue.Count; entryIndex++)
         {
             ZombieWaveEntry entry = spawnQueue[entryIndex];
-            float initialDistance = -(spawnedInWave * initialSpacing);
-            SpawnZombie(entry, initialDistance);
-            spawnedInWave++;
+            SpawnZombie(entry, 0f);
 
             if (wave.spawnInterval > 0f)
             {
                 yield return new WaitForSeconds(wave.spawnInterval);
             }
-        }
-    }
-
-    private float GetInitialSpacingForWave(int waveNumber)
-    {
-        switch (waveNumber)
-        {
-            case 1:
-                return 2.4f;
-            case 2:
-                return 2.1f;
-            case 3:
-                return 1.8f;
-            case 4:
-                return 1.5f;
-            case 5:
-                return 1.2f;
-            case 6:
-                return 0.9f;
-            case 7:
-                return 0.6f;
-            case 8:
-                return 0.3f;
-            case 9:
-                return 0f;
-            default:
-                return waveNumber < 1 ? 2.4f : 0f;
         }
     }
 
