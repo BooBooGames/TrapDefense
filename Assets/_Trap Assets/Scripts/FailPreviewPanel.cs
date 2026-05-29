@@ -11,7 +11,6 @@ public class FailPreviewPanel : MonoBehaviour
     public Button rvCollectButton;
 
     public void Show(int coins, UnityAction onCollect, UnityAction onRewardedCollect)
-
     {
         gameObject.SetActive(true);
         inGameCoinLabel.text = CoinFormatter.FormatCoins(coins);

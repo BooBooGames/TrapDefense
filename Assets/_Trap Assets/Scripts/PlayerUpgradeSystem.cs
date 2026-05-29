@@ -164,17 +164,26 @@ public static class PlayerUpgradeSystem
         return true;
     }
 
-    public static void ResetWeaponUnlockStateToDefaults(UpgradeScreenConfig sourceConfig)
+    public static void ResetProgressionStateToDefaults(UpgradeScreenConfig sourceConfig)
     {
         config = UpgradeScreenConfig.Resolve(sourceConfig);
         unlockedWeaponStates = CreateDefaultWeaponUnlockStates();
+        gearFlowLevel = 0;
+        baseHealthLevel = 0;
 
         SaveGameData saveData = GameSaveSystem.Load();
         saveData.unlockedWeaponStates = (bool[])unlockedWeaponStates.Clone();
+        saveData.gearFlowLevel = gearFlowLevel;
+        saveData.baseHealthLevel = baseHealthLevel;
         GameSaveSystem.Save(saveData);
 
         isInitialized = true;
         UpgradeStateChanged?.Invoke();
+    }
+
+    public static void ResetWeaponUnlockStateToDefaults(UpgradeScreenConfig sourceConfig)
+    {
+        ResetProgressionStateToDefaults(sourceConfig);
     }
 
     private static void EnsureInitialized()

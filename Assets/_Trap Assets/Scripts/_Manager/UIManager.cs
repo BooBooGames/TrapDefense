@@ -220,7 +220,7 @@ public class UIManager : MonoBehaviour
     private void CompleteFTUEAndStartGame()
     {
         SetPanelActive(FTUEPanel, false);
-        ShowHomeScreen();
+        ShowHomeScreen(true);
         // StartGame();
     }
 
@@ -261,6 +261,7 @@ public class UIManager : MonoBehaviour
 
     private void CollectGameCoinsAndReturnHome(int coins, int multiplier, UnityEngine.Events.UnityAction hidePanel)
     {
+        SoundManager.Instance.PlayButtonClickSound();
         hidePanel.Invoke();
 
         CollectGameCoins(coins, multiplier);
@@ -271,15 +272,17 @@ public class UIManager : MonoBehaviour
 
     private void CollectGameCoinsAndStartNextLevel(int coins, int multiplier, UnityEngine.Events.UnityAction hidePanel)
     {
+        SoundManager.Instance.PlayButtonClickSound();
+
         hidePanel.Invoke();
 
         CollectGameCoins(coins, multiplier);
         ResetGameplaySessionData();
         LevelManager.Instance.LoadNextLevel();
-        PlayerUpgradeSystem.ResetWeaponUnlockStateToDefaults(LevelManager.Instance.activeLevelInstance.upgradeScreenConfig);
+        PlayerUpgradeSystem.ResetProgressionStateToDefaults(LevelManager.Instance.activeLevelInstance.upgradeScreenConfig);
         gameViewScreen.ResetSessionDataForNextLevel();
         Time.timeScale = 1f;
-        ShowHomeScreen();
+        ShowHomeScreen(true);
     }
 
     private void ResetGameplaySessionData()

@@ -36,6 +36,7 @@ public class FTUEController : MonoBehaviour
 
     private void HandleContinueClicked()
     {
+        SoundManager.Instance.PlayButtonClickSound();
         currentStepIndex++;
 
         if (currentStepIndex >= TotalSteps)

@@ -48,7 +48,7 @@ public class SettingPanelView : MonoBehaviour
     {
         openedFromGameView = isOpenedFromGameView;
         SetButtonVisible(homeButton, openedFromGameView);
-        SetButtonVisible(restorePurchasesButton, openedFromGameView);
+        // SetButtonVisible(restorePurchasesButton, openedFromGameView);
     }
 
     private void RefreshUI()
