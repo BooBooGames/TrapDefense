@@ -4,7 +4,6 @@ using UnityEngine.UI;
 
 public class UpgradeScreenView : MonoBehaviour
 {
-    [SerializeField] private UpgradeScreenConfig upgradeConfig;
 
     public GameObject upgradesBG, evolutionBG;
 
@@ -23,26 +22,20 @@ public class UpgradeScreenView : MonoBehaviour
     private TextMeshProUGUI weapon2ButtonLabel;
     private TextMeshProUGUI weapon3ButtonLabel;
 
-    public UpgradeScreenConfig ConfigAsset => upgradeConfig;
+
 
     public Button upgradeButton;
-
-    [Header("Evolution")] public TextMeshProUGUI timelineText;
-    public Image timeline1Image, timeline2Image;
-    public Button evolveButton;
-    public TextMeshProUGUI descriptionText1, descriptionText2, evolutionCostText;
 
     private void Awake()
     {
         CacheButtonLabels();
         BindButtons();
-        PlayerUpgradeSystem.Initialize(upgradeConfig);
         RefreshUi();
     }
 
     private void OnEnable()
     {
-        PlayerUpgradeSystem.Initialize(upgradeConfig);
+        PlayerUpgradeSystem.Initialize(UIManager.Instance.ConfigAsset);
         PlayerUpgradeSystem.UpgradeStateChanged += HandleUpgradeStateChanged;
         PlayerCurrencySystem.CurrencyChanged += HandleCurrencyChanged;
         ShowUpgradeBackground();
@@ -140,39 +133,19 @@ public class UpgradeScreenView : MonoBehaviour
         evolutionBG.SetActive(false);
     }
 
-    public void ShowEvolutionBackground()
-    {
-        evolutionBG.SetActive(true);
-        // upgradesBG.SetActive(false);
-    }
+
     private void RefreshUi()
     {
-        PlayerUpgradeSystem.Initialize(upgradeConfig);
+        PlayerUpgradeSystem.Initialize(UIManager.Instance.ConfigAsset);
 
         UpgradeScreenConfig config = PlayerUpgradeSystem.Config;
         RefreshWeaponSlot(0, config, weapon1Image, weapon1Text, null, null, null);
         RefreshWeaponSlot(1, config, weapon2Image, weapon2Text, weapon2BuyButton, weapon2CostText, weapon2ButtonLabel);
         RefreshWeaponSlot(2, config, weapon3Image, weapon3Text, weapon3BuyButton, weapon3CostText, weapon3ButtonLabel);
         RefreshStatUpgrades();
-        RefreshEvolution(config);
     }
 
-    private void RefreshEvolution(UpgradeScreenConfig config)
-    {
-        timeline1Image.sprite = config.timeline1Sprite;
-        timeline2Image.sprite = config.timeline2Sprite;
-        descriptionText1.text = config.evolutionDescription1;
-        descriptionText2.text = config.evolutionDescription2;
-        evolutionCostText.text = CoinFormatter.FormatCoins(config.evolutionCost);
 
-        UpgradeResourceCost evolutionCost = new UpgradeResourceCost
-        {
-            coins = Mathf.Max(0, config.evolutionCost),
-            gears = 0,
-        };
-
-        evolveButton.interactable = PlayerUpgradeSystem.CanAfford(evolutionCost);
-    }
 
     private void RefreshWeaponSlot(
         int weaponIndex,

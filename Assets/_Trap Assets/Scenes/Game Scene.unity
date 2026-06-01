@@ -3005,7 +3005,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 197298793}
-  - {fileID: 1842302467}
   m_Father: {fileID: 1504815685}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3025,7 +3024,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f47d7f9282a4475298aed78c5d447a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upgradeConfig: {fileID: 11400000, guid: 85f67f73f10f549d68fd9a4215a49bab, type: 2}
   upgradesBG: {fileID: 197298792}
   evolutionBG: {fileID: 1842302466}
   weapon1Image: {fileID: 66276900}
@@ -3047,13 +3045,6 @@ MonoBehaviour:
   gearFlowUpgradeCostText: {fileID: 1639083805}
   baseHealthUpgradeCostText: {fileID: 1384697746}
   upgradeButton: {fileID: 1648035864}
-  timelineText: {fileID: 1347651369}
-  timeline1Image: {fileID: 383605442}
-  timeline2Image: {fileID: 225115018}
-  evolveButton: {fileID: 1670095470}
-  descriptionText1: {fileID: 633868750}
-  descriptionText2: {fileID: 1518806909}
-  evolutionCostText: {fileID: 1298506867}
 --- !u!114 &118448130 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3782752090022286349, guid: 288513eaeb9a44b9cbfea17f9e3a0264, type: 3}
@@ -43501,6 +43492,7 @@ RectTransform:
   - {fileID: 1751581343}
   - {fileID: 1263119499}
   - {fileID: 117165694}
+  - {fileID: 1842302467}
   - {fileID: 442763287}
   - {fileID: 1824190023}
   - {fileID: 68127248}
@@ -46556,7 +46548,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -40.42993, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -47826,7 +47818,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1648035865}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1842302466}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1648035865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53170,6 +53174,7 @@ GameObject:
   - component: {fileID: 1842302467}
   - component: {fileID: 1842302469}
   - component: {fileID: 1842302468}
+  - component: {fileID: 1842302470}
   m_Layer: 5
   m_Name: Evolution BG Image
   m_TagString: Untagged
@@ -53184,7 +53189,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1842302466}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -53192,7 +53197,7 @@ RectTransform:
   - {fileID: 996822018}
   - {fileID: 1518806908}
   - {fileID: 276458674}
-  m_Father: {fileID: 117165694}
+  m_Father: {fileID: 1504815685}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -53237,6 +53242,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1842302466}
   m_CullTransparentMesh: 1
+--- !u!114 &1842302470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842302466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f159563450af14995921f01b35905f35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EvolutionScreenView
+  timelineText: {fileID: 1347651369}
+  timeline1Image: {fileID: 383605442}
+  timeline2Image: {fileID: 225115018}
+  evolveButton: {fileID: 1670095470}
+  descriptionText1: {fileID: 1597667293}
+  descriptionText2: {fileID: 694340882}
+  evolutionCostText: {fileID: 1298506867}
 --- !u!1 &1843679042
 GameObject:
   m_ObjectHideFlags: 0
@@ -58162,6 +58186,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b19b885e89d041aab0b669b9b6c002a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeConfig: {fileID: 11400000, guid: 85f67f73f10f549d68fd9a4215a49bab, type: 2}
   gameViewPanel: {fileID: 1157064126}
   homeScreenPanel: {fileID: 1751581342}
   cardViewPanel: {fileID: 1263119498}
@@ -58173,6 +58198,7 @@ MonoBehaviour:
   chestPreviewPanel: {fileID: 442763286}
   winPreviewPanel: {fileID: 68127247}
   failPreviewPanel: {fileID: 1705609160}
+  evolutionScreenPanel: {fileID: 1842302466}
   cardUpgradePanel: {fileID: 974225249}
   ageChangePanel: {fileID: 414301533}
   FTUEPanel: {fileID: 512438150}

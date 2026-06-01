@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
+    [SerializeField] private UpgradeScreenConfig upgradeConfig;
+
 
     [SerializeField] private GameObject gameViewPanel;
     [SerializeField] private GameObject homeScreenPanel;
@@ -17,6 +19,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject chestPreviewPanel;
     [SerializeField] private GameObject winPreviewPanel;
     [SerializeField] private GameObject failPreviewPanel;
+    [SerializeField] private GameObject evolutionScreenPanel;
     [SerializeField] private GameObject cardUpgradePanel;
     [SerializeField] private GameObject ageChangePanel;
     [SerializeField] private GameObject FTUEPanel;
@@ -28,10 +31,12 @@ public class UIManager : MonoBehaviour
     private SettingPanelView settingPanelView;
     private WinPreviewPanel winPreviewPanelView;
     private FailPreviewPanel failPreviewPanelView;
+    private EvolutionScreenView evolutionScreenView;
     public FTUEController ftueController;
     private GameObject currentScreenPanel;
     private bool settingsOpenedFromGameView;
     private float timeScaleBeforeSettings = 1f;
+    public UpgradeScreenConfig ConfigAsset => upgradeConfig;
 
     private void Awake()
     {
@@ -44,7 +49,9 @@ public class UIManager : MonoBehaviour
         settingPanelView = settingPanel.GetComponentInChildren<SettingPanelView>(true);
         winPreviewPanelView = winPreviewPanel.GetComponent<WinPreviewPanel>();
         failPreviewPanelView = failPreviewPanel.GetComponent<FailPreviewPanel>();
-        currencyView.BindEvolutionButton(ShowEvolutionPanelFromUpgradeScreen);
+        evolutionScreenView = evolutionScreenPanel.GetComponent<EvolutionScreenView>();
+        currencyView.BindEvolutionButton(ShowEvolutionPanel);
+        PlayerUpgradeSystem.Initialize(upgradeConfig);
 
         if (FTUEController.IsCompleted)
         {
@@ -235,14 +242,15 @@ public class UIManager : MonoBehaviour
         bool shouldShowBGImage = !isSettingsOpen && (currentScreenPanel == gameViewPanel || currentScreenPanel == homeScreenPanel);
         currencyView.SetGameViewBGImageVisible(shouldShowBGImage);
         currencyView.SetUpgradeScreenBGImageVisible(currentScreenPanel == upgradeScreenPanel);
-        currencyView.SetEvolutionButtonVisible(!isSettingsOpen && currentScreenPanel == upgradeScreenPanel);
+        currencyView.SetEvolutionButtonVisible(!isSettingsOpen && currentScreenPanel == homeScreenPanel);
         currencyView.SetElixirCounterVisible(!isSettingsOpen && (currentScreenPanel == cardUpgradePanel || currentScreenPanel == cardViewPanel));
         currencyView.SetWaveCounterVisible(currentScreenPanel == gameViewPanel);
     }
 
-    private void ShowEvolutionPanelFromUpgradeScreen()
+    private void ShowEvolutionPanel()
     {
-        upgradeScreenView.ShowEvolutionBackground();
+        UpgradeScreenConfig config = PlayerUpgradeSystem.Config;
+        evolutionScreenView.ShowEvolutionBackground(config);
         SoundManager.Instance.PlayButtonClickSound();
     }
 
