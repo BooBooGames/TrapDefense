@@ -11,6 +11,8 @@ public class ZombiePathFollower : MonoBehaviour
 
     private float travelledDistance;
     private float lateralOffset;
+    private float stackingSpeedMultiplier = 1f;
+    private float temporarySpeedMultiplier = 1f;
     private bool initialized;
     private bool movementStopped;  // permanent (death)
     private bool movementPaused;   // temporary (ice / shock)
@@ -27,6 +29,7 @@ public class ZombiePathFollower : MonoBehaviour
         initialized = true;
         movementStopped = false;
         movementPaused = false;
+        ResetMovementSpeedMultipliers();
         UpdateTransform();
     }
 
@@ -34,6 +37,22 @@ public class ZombiePathFollower : MonoBehaviour
     {
         moveSpeed = Mathf.Max(0.1f, speed);
         roadWidthUsage = Mathf.Clamp(widthUsage, 0.1f, 1f);
+    }
+
+    public void SetTemporaryMovementSpeedMultiplier(float multiplier)
+    {
+        temporarySpeedMultiplier = Mathf.Max(0f, multiplier);
+    }
+
+    public void ApplyStackingMovementSpeedMultiplier(float multiplier)
+    {
+        stackingSpeedMultiplier = Mathf.Clamp(stackingSpeedMultiplier * multiplier, 0.05f, 1f);
+    }
+
+    public void ResetMovementSpeedMultipliers()
+    {
+        stackingSpeedMultiplier = 1f;
+        temporarySpeedMultiplier = 1f;
     }
 
     /// <summary>Permanent stop used on death.</summary>
@@ -60,7 +79,7 @@ public class ZombiePathFollower : MonoBehaviour
     {
         if (movementStopped || movementPaused || path == null || !path.HasValidPath) return;
 
-        travelledDistance += moveSpeed * Time.deltaTime;
+        travelledDistance += moveSpeed * stackingSpeedMultiplier * temporarySpeedMultiplier * Time.deltaTime;
 
         if (travelledDistance >= path.Length)
         {

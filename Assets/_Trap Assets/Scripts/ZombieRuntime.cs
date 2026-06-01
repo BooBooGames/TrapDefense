@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class ZombieRuntime : MonoBehaviour
 {
+    private const float WeakeningStrikeSlowMultiplier = 0.9f;
+    private const float WeakeningStrikeSlowDuration = 2f;
+    private const float DeathMarkInstantKillChance = 0.05f;
+    private const float DoomTrapsSpeedMultiplierPerHit = 0.95f;
+
     [SerializeField][Min(1f)] private float maxHealth = 10f;
     [SerializeField] private Animator animator;
     [SerializeField] private ZombiePathFollower pathFollower;
@@ -33,6 +38,7 @@ public class ZombieRuntime : MonoBehaviour
     private Color[] originalColors;
     private MaterialPropertyBlock flashBlock;
     private Coroutine flashRoutine;
+    private Coroutine movementSlowRoutine;
     private Vector3 originalScale;
 
     private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
@@ -111,9 +117,16 @@ public class ZombieRuntime : MonoBehaviour
     public void ApplyDamage(float damage)
     {
         if (killNotified || damage <= 0f) return;
+        if (TryApplyDeathMarkInstantKill()) return;
+
         currentHealth = Mathf.Max(0f, currentHealth - damage);
         if (currentHealth <= 0f) Die();
-        else FlashDamage();
+        else
+        {
+            FlashDamage();
+            ApplyDoomTrapsSlowIfActive();
+            ApplyWeakeningStrikeSlowIfActive();
+        }
     }
 
     public void Kill()
@@ -171,6 +184,7 @@ public class ZombieRuntime : MonoBehaviour
     {
 
         killNotified = true;
+        ClearMovementSlow();
         Killed?.Invoke(this, transform.position);
         pathFollower?.StopMovement();
         DisablePhysicsInteractions();
@@ -185,6 +199,80 @@ public class ZombieRuntime : MonoBehaviour
         }
         PlayAnim(deathAnimStateName);
         Destroy(gameObject, destroyDelayAfterDeath);
+    }
+
+    private bool TryApplyDeathMarkInstantKill()
+    {
+        PlayerXpSystem playerXpSystem = PlayerXpSystem.Instance;
+        if (playerXpSystem == null || !playerXpSystem.DeathMarkActive)
+        {
+            return false;
+        }
+
+        if (UnityEngine.Random.value >= DeathMarkInstantKillChance)
+        {
+            return false;
+        }
+
+        currentHealth = 0f;
+        Die();
+        return true;
+    }
+
+    private void ApplyDoomTrapsSlowIfActive()
+    {
+        PlayerXpSystem playerXpSystem = PlayerXpSystem.Instance;
+        if (playerXpSystem == null || !playerXpSystem.DoomTrapsActive || pathFollower == null)
+        {
+            return;
+        }
+
+        pathFollower.ApplyStackingMovementSpeedMultiplier(DoomTrapsSpeedMultiplierPerHit);
+    }
+
+    private void ApplyWeakeningStrikeSlowIfActive()
+    {
+        PlayerXpSystem playerXpSystem = PlayerXpSystem.Instance;
+        if (playerXpSystem == null || !playerXpSystem.WeakeningStrikeActive)
+        {
+            return;
+        }
+
+        ApplyTemporaryMovementSlow(WeakeningStrikeSlowMultiplier, WeakeningStrikeSlowDuration);
+    }
+
+    private void ApplyTemporaryMovementSlow(float speedMultiplier, float duration)
+    {
+        if (pathFollower == null)
+        {
+            return;
+        }
+
+        if (movementSlowRoutine != null)
+        {
+            StopCoroutine(movementSlowRoutine);
+        }
+
+        movementSlowRoutine = StartCoroutine(RunTemporaryMovementSlow(speedMultiplier, duration));
+    }
+
+    private IEnumerator RunTemporaryMovementSlow(float speedMultiplier, float duration)
+    {
+        pathFollower.SetTemporaryMovementSpeedMultiplier(speedMultiplier);
+        yield return new WaitForSeconds(duration);
+        pathFollower.SetTemporaryMovementSpeedMultiplier(1f);
+        movementSlowRoutine = null;
+    }
+
+    private void ClearMovementSlow()
+    {
+        if (movementSlowRoutine != null)
+        {
+            StopCoroutine(movementSlowRoutine);
+            movementSlowRoutine = null;
+        }
+
+        pathFollower?.SetTemporaryMovementSpeedMultiplier(1f);
     }
 
     private void DisablePhysicsInteractions()

@@ -76,4 +76,5 @@ MonoBehaviour:
     cardImage: {fileID: 21300000, guid: 9938c3c2ec51e4bb8a06fcfce15657fa, type: 3}
     descriptions:
     - Each hit slows enemies
+    - speed by -5%
     - +20% trap damage

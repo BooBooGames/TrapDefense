@@ -23,6 +23,12 @@ public class PlayerXpSystem : MonoBehaviour
     private const string WaveBonusCardName = "Wave Bonus";
     private const string WaveBonusCardId = "6";
     private const int WaveBonusRewardAmount = 5;
+    private const string WeakeningStrikeCardName = "Weakening Strike";
+    private const string WeakeningStrikeCardId = "7";
+    private const string DeathMarkCardName = "Death Mark";
+    private const string DeathMarkCardId = "9";
+    private const string DoomTrapsCardName = "Doom Traps";
+    private const string DoomTrapsCardId = "10";
 
     [SerializeField] private GameObject cardSelectionPanel;
     [SerializeField] private Image xpBarFill;
@@ -44,6 +50,9 @@ public class PlayerXpSystem : MonoBehaviour
     private bool angelBlessingActive;
     private bool waveBonusActive;
     private bool invulnerabilityPulseActive;
+    private bool weakeningStrikeActive;
+    private bool deathMarkActive;
+    private bool doomTrapsActive;
     private Coroutine invulnerabilityPulseCoroutine;
     private float previousTimeScale = 1f;
 
@@ -56,6 +65,9 @@ public class PlayerXpSystem : MonoBehaviour
     public bool AwaitingCardSelection => awaitingCardSelection;
     public IReadOnlyList<PowerCardChoice> CurrentChoices => currentChoices;
     public IReadOnlyList<PowerCardChoice> SelectedCards => selectedCards;
+    public bool WeakeningStrikeActive => weakeningStrikeActive;
+    public bool DeathMarkActive => deathMarkActive;
+    public bool DoomTrapsActive => doomTrapsActive;
 
     private void Awake()
     {
@@ -154,6 +166,9 @@ public class PlayerXpSystem : MonoBehaviour
         angelBlessingActive = false;
         waveBonusActive = false;
         invulnerabilityPulseActive = false;
+        weakeningStrikeActive = false;
+        deathMarkActive = false;
+        doomTrapsActive = false;
 
         if (invulnerabilityPulseCoroutine != null)
         {
@@ -263,6 +278,24 @@ public class PlayerXpSystem : MonoBehaviour
             return;
         }
 
+        if (IsWeakeningStrikeCard(chosenCard))
+        {
+            weakeningStrikeActive = true;
+            return;
+        }
+
+        if (IsDeathMarkCard(chosenCard))
+        {
+            deathMarkActive = true;
+            return;
+        }
+
+        if (IsDoomTrapsCard(chosenCard))
+        {
+            doomTrapsActive = true;
+            return;
+        }
+
         if (IsMinorHealCard(chosenCard))
         {
             AddHealthWithEffect(MinorHealRewardAmount);
@@ -311,6 +344,30 @@ public class PlayerXpSystem : MonoBehaviour
         return string.Equals(chosenCard.cardId, WaveBonusCardId, StringComparison.OrdinalIgnoreCase) ||
             string.Equals(definition.cardId, WaveBonusCardId, StringComparison.OrdinalIgnoreCase) ||
             string.Equals(definition.cardName, WaveBonusCardName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsWeakeningStrikeCard(PowerCardChoice chosenCard)
+    {
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, WeakeningStrikeCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, WeakeningStrikeCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, WeakeningStrikeCardName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsDeathMarkCard(PowerCardChoice chosenCard)
+    {
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, DeathMarkCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, DeathMarkCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, DeathMarkCardName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsDoomTrapsCard(PowerCardChoice chosenCard)
+    {
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, DoomTrapsCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, DoomTrapsCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, DoomTrapsCardName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool HasCardName(PowerCardChoice chosenCard, string cardName)
