@@ -46,6 +46,10 @@ public class GameViewScreen : MonoBehaviour
     private const float WeaponButtonPressedScale = 0.92f;
     private const float WeaponButtonPressInDuration = 0.08f;
     private const float WeaponButtonPressOutDuration = 0.14f;
+    private const int GameOverElixirReward = 2;
+    private const int LevelCompleteElixirReward = 4;
+    private const int GameOverElixirRewardMinWave = 7;
+    private const int GameOverElixirRewardMaxWave = 9;
 
     private int gearCount;
     private float gearGenerationTimer;
@@ -216,7 +220,7 @@ public class GameViewScreen : MonoBehaviour
 
         gameOverPanel.SetActive(false);
 
-        UIManager.Instance.ShowWinPreview(inGameCoins);
+        UIManager.Instance.ShowWinPreview(inGameCoins, LevelCompleteElixirReward);
 
         if (pauseOnGameOver)
         {
@@ -239,7 +243,7 @@ public class GameViewScreen : MonoBehaviour
             return;
         }
 
-        int maxHealth = Mathf.Max(1, PlayerUpgradeSystem.CurrentBaseHealthValue);
+        int maxHealth = Mathf.Max(1, maxPlayerHealth > 0 ? maxPlayerHealth : PlayerUpgradeSystem.CurrentBaseHealthValue);
         maxPlayerHealth = maxHealth;
 
         int remainingHealth = Mathf.Max(0, maxHealth - currentPlayerHealth);
@@ -256,13 +260,40 @@ public class GameViewScreen : MonoBehaviour
         }
 
         currentPlayerHealth = Mathf.Max(0, currentPlayerHealth - amount);
-        UpdatePlayerHealthUi();
+        if (!TryApplySecondWind())
+        {
+            UpdatePlayerHealthUi();
+        }
+
         PlayLifeIconDamageFeedback();
 
         if (currentPlayerHealth <= 0)
         {
             TriggerGameOver();
         }
+    }
+
+    private bool TryApplySecondWind()
+    {
+        if (currentPlayerHealth != 1)
+        {
+            return false;
+        }
+
+        PlayerXpSystem playerXpSystem = PlayerXpSystem.Instance;
+        if (playerXpSystem == null || !playerXpSystem.TryConsumeSecondWind(out int healAmount))
+        {
+            return false;
+        }
+
+        AddHealth(healAmount);
+
+        if (UIParticleEffectsManager.Instance != null)
+        {
+            UIParticleEffectsManager.Instance.PlayHealthEffect(HealthBarLabelPosition);
+        }
+
+        return true;
     }
 
     public bool TrySpendGears(int amount)
@@ -297,6 +328,13 @@ public class GameViewScreen : MonoBehaviour
     {
         ApplyPersistentUpgradeState();
         RefreshWeaponUpgradeUi();
+    }
+
+    public void RefreshResourceMasteryModifiers()
+    {
+        ApplyPersistentUpgradeState();
+        RefreshWeaponUpgradeUi();
+        UpdateGearUi(GetGearProgress());
     }
 
     public bool wave4triggered, wave8triggered;
@@ -384,6 +422,11 @@ public class GameViewScreen : MonoBehaviour
     {
         PlayerUpgradeSystem.Initialize(ResolveUpgradeConfig());
         gearGenerationDuration = Mathf.Max(0.1f, PlayerUpgradeSystem.CurrentGearFlowValue);
+        if (PlayerXpSystem.Instance != null)
+        {
+            gearGenerationDuration *= PlayerXpSystem.Instance.GetGearGenerationDurationMultiplier();
+        }
+
         playerHealthUpgradeBonus = Mathf.Max(0, PlayerUpgradeSystem.CurrentBaseHealthBonus);
         gearGenerationTimer = Mathf.Clamp(gearGenerationTimer, 0f, gearGenerationDuration);
     }
@@ -535,7 +578,10 @@ public class GameViewScreen : MonoBehaviour
 
     private static int GetRequiredGearCost(WeaponUpgradeController target, WeaponUnlockDefinition weaponDefinition)
     {
-        return weaponDefinition.requiredGearCostForUpgrade;
+        int baseCost = weaponDefinition.requiredGearCostForUpgrade;
+        return PlayerXpSystem.Instance != null
+            ? PlayerXpSystem.Instance.ApplyGearUpgradeCostModifiers(baseCost)
+            : baseCost;
     }
 
     private void UpdatePlayerHealthUi()
@@ -614,8 +660,9 @@ public class GameViewScreen : MonoBehaviour
     private void TriggerGameOver()
     {
         gameOverTriggered = true;
+        int elixirReward = GetGameOverElixirReward();
 
-        UIManager.Instance.ShowFailPreview(inGameCoins);
+        UIManager.Instance.ShowFailPreview(inGameCoins, elixirReward);
 
         if (pauseOnGameOver)
         {
@@ -632,6 +679,17 @@ public class GameViewScreen : MonoBehaviour
     private void RefreshInGameCoinLabel()
     {
         inGameCoinLabel.text = CoinFormatter.FormatCoins(inGameCoins);
+    }
+
+    private int GetGameOverElixirReward()
+    {
+        int reachedWave = zombieCrowdSpawner != null ? zombieCrowdSpawner.CurrentWaveNumber : 0;
+        if (reachedWave < GameOverElixirRewardMinWave || reachedWave > GameOverElixirRewardMaxWave)
+        {
+            return 0;
+        }
+
+        return GameOverElixirReward;
     }
 
     private float GetGearProgress()

@@ -19,8 +19,13 @@ public class CurrencyView : MonoBehaviour
     private void Awake()
     {
         // AutoResolveReferences();
-        PlayerCurrencySystem.Initialize(ParseLabelValue(coinCounterLabel), ParseLabelValue(gemsCounterLabel));
+        PlayerCurrencySystem.Initialize(
+            ParseLabelValue(coinCounterLabel),
+            ParseLabelValue(gemsCounterLabel),
+            ParseLabelValue(elixirCounterLabel));
+        PlayerCurrencySystem.ReloadElixirFromSave();
         Refresh(PlayerCurrencySystem.Coins, PlayerCurrencySystem.Gems);
+        RefreshElixir(PlayerCurrencySystem.Elixir);
         BindBottomHudButton(() =>
         {
             uiManager.ShowSettingsScreen();
@@ -34,11 +39,13 @@ public class CurrencyView : MonoBehaviour
     private void OnEnable()
     {
         PlayerCurrencySystem.CurrencyChanged += HandleCurrencyChanged;
+        PlayerCurrencySystem.ElixirChanged += HandleElixirChanged;
     }
 
     private void OnDisable()
     {
         PlayerCurrencySystem.CurrencyChanged -= HandleCurrencyChanged;
+        PlayerCurrencySystem.ElixirChanged -= HandleElixirChanged;
     }
 
     private void HandleCurrencyChanged(int coins, int gems)
@@ -46,10 +53,20 @@ public class CurrencyView : MonoBehaviour
         Refresh(coins, gems);
     }
 
+    private void HandleElixirChanged(int elixir)
+    {
+        RefreshElixir(elixir);
+    }
+
     private void Refresh(int coins, int gems)
     {
         coinCounterLabel.text = CoinFormatter.FormatCoins(coins);
         gemsCounterLabel.text = gems.ToString();
+    }
+
+    private void RefreshElixir(int elixir)
+    {
+        elixirCounterLabel.text = Mathf.Max(0, elixir).ToString();
     }
 
     public void SetGameViewBGImageVisible(bool isVisible)
@@ -76,6 +93,11 @@ public class CurrencyView : MonoBehaviour
     public void SetElixirCounterVisible(bool isVisible)
     {
         elixirCounterGroup.SetActive(isVisible);
+        if (isVisible)
+        {
+            PlayerCurrencySystem.ReloadElixirFromSave();
+            RefreshElixir(PlayerCurrencySystem.Elixir);
+        }
     }
 
     public void SetWaveCounterVisible(bool isVisible)

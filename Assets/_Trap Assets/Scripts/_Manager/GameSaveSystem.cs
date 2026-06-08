@@ -8,6 +8,8 @@ public class SaveGameData
     public bool hasSavedCoins;
     public int gems;
     public bool hasSavedGems;
+    public int elixir;
+    public bool hasSavedElixir;
     public bool[] unlockedWeaponStates;
     public int gearFlowLevel;
     public int baseHealthLevel;

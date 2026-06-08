@@ -19,10 +19,11 @@ public class WinPreviewPanel : MonoBehaviour
     private bool isSliderAnimating;
     private float sliderDirection = 1f;
 
-    public void Show(int coins, UnityAction onCollect, UnityAction<int> onRewardedCollect)
+    public void Show(int coins, int elixirReward, UnityAction onCollect, UnityAction<int> onRewardedCollect)
     {
         gameObject.SetActive(true);
         inGameCoinLabel.text = CoinFormatter.FormatCoins(coins);
+        RefreshElixirReward(elixirReward);
         rewardProgressSlider.value = SliderMinValue;
         sliderDirection = 1f;
         isSliderAnimating = true;
@@ -64,6 +65,14 @@ public class WinPreviewPanel : MonoBehaviour
     {
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(callback);
+    }
+
+    private void RefreshElixirReward(int elixirReward)
+    {
+        if (elixirRewardLabel != null)
+        {
+            elixirRewardLabel.text = Mathf.Max(0, elixirReward).ToString();
+        }
     }
 
     private int GetCurrentRewardMultiplier()

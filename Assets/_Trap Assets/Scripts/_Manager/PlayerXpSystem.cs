@@ -29,6 +29,19 @@ public class PlayerXpSystem : MonoBehaviour
     private const string DeathMarkCardId = "9";
     private const string DoomTrapsCardName = "Doom Traps";
     private const string DoomTrapsCardId = "10";
+    private const string SecondWindCardName = "Second Wind";
+    private const string SecondWindCardId = "11";
+    private const int SecondWindHealAmount = 10;
+    private const string ScrapCollectorCardName = "Scrap Collector";
+    private const string ScrapCollectorCardId = "13";
+    private const float ScrapCollectorGearChance = 0.05f;
+    private const string ResourceMasteryCardName = "Resource Mastery";
+    private const string ResourceMasteryCardId = "14";
+    private const float ResourceMasteryGearGenerationSpeedMultiplier = 1.25f;
+    private const int ResourceMasteryGearCostReduction = 1;
+    private const string ToughBaseCardName = "Tough Base";
+    private const string ToughBaseCardId = "15";
+    private const int ToughBaseHealthBonus = 5;
 
     [SerializeField] private GameObject cardSelectionPanel;
     [SerializeField] private Image xpBarFill;
@@ -53,6 +66,10 @@ public class PlayerXpSystem : MonoBehaviour
     private bool weakeningStrikeActive;
     private bool deathMarkActive;
     private bool doomTrapsActive;
+    private bool secondWindActive;
+    private bool secondWindUsed;
+    private bool scrapCollectorActive;
+    private bool resourceMasteryActive;
     private Coroutine invulnerabilityPulseCoroutine;
     private float previousTimeScale = 1f;
 
@@ -65,9 +82,11 @@ public class PlayerXpSystem : MonoBehaviour
     public bool AwaitingCardSelection => awaitingCardSelection;
     public IReadOnlyList<PowerCardChoice> CurrentChoices => currentChoices;
     public IReadOnlyList<PowerCardChoice> SelectedCards => selectedCards;
+    public PowerCardCatalog PowerCardCatalogData => powerCardCatalogData;
     public bool WeakeningStrikeActive => weakeningStrikeActive;
     public bool DeathMarkActive => deathMarkActive;
     public bool DoomTrapsActive => doomTrapsActive;
+    public bool ResourceMasteryActive => resourceMasteryActive;
 
     private void Awake()
     {
@@ -156,6 +175,45 @@ public class PlayerXpSystem : MonoBehaviour
         }
     }
 
+    public bool TryConsumeSecondWind(out int healAmount)
+    {
+        healAmount = 0;
+        if (!secondWindActive || secondWindUsed)
+        {
+            return false;
+        }
+
+        secondWindUsed = true;
+        healAmount = SecondWindHealAmount;
+        return true;
+    }
+
+    public bool TryRollScrapCollectorGearReward()
+    {
+        return scrapCollectorActive && UnityEngine.Random.value < ScrapCollectorGearChance;
+    }
+
+    public float GetGearGenerationDurationMultiplier()
+    {
+        return resourceMasteryActive ? 1f / ResourceMasteryGearGenerationSpeedMultiplier : 1f;
+    }
+
+    public int ApplyGearUpgradeCostModifiers(int baseCost)
+    {
+        if (!resourceMasteryActive || baseCost <= 0)
+        {
+            return Mathf.Max(0, baseCost);
+        }
+
+        return Mathf.Max(1, baseCost - ResourceMasteryGearCostReduction);
+    }
+
+    public UpgradeResourceCost ApplyGearUpgradeCostModifiers(UpgradeResourceCost baseCost)
+    {
+        baseCost.gears = ApplyGearUpgradeCostModifiers(baseCost.gears);
+        return baseCost;
+    }
+
     public void ResetSessionData()
     {
         currentXp = 0;
@@ -169,6 +227,10 @@ public class PlayerXpSystem : MonoBehaviour
         weakeningStrikeActive = false;
         deathMarkActive = false;
         doomTrapsActive = false;
+        secondWindActive = false;
+        secondWindUsed = false;
+        scrapCollectorActive = false;
+        resourceMasteryActive = false;
 
         if (invulnerabilityPulseCoroutine != null)
         {
@@ -296,6 +358,32 @@ public class PlayerXpSystem : MonoBehaviour
             return;
         }
 
+        if (IsSecondWindCard(chosenCard))
+        {
+            secondWindActive = true;
+            secondWindUsed = false;
+            return;
+        }
+
+        if (IsScrapCollectorCard(chosenCard))
+        {
+            scrapCollectorActive = true;
+            return;
+        }
+
+        if (IsResourceMasteryCard(chosenCard))
+        {
+            resourceMasteryActive = true;
+            GameViewScreen.Instance?.RefreshResourceMasteryModifiers();
+            return;
+        }
+
+        if (IsToughBaseCard(chosenCard))
+        {
+            GameViewScreen.Instance?.AddPlayerHealthUpgrade(ToughBaseHealthBonus);
+            return;
+        }
+
         if (IsMinorHealCard(chosenCard))
         {
             AddHealthWithEffect(MinorHealRewardAmount);
@@ -368,6 +456,38 @@ public class PlayerXpSystem : MonoBehaviour
         return string.Equals(chosenCard.cardId, DoomTrapsCardId, StringComparison.OrdinalIgnoreCase) ||
             string.Equals(definition.cardId, DoomTrapsCardId, StringComparison.OrdinalIgnoreCase) ||
             string.Equals(definition.cardName, DoomTrapsCardName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsSecondWindCard(PowerCardChoice chosenCard)
+    {
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, SecondWindCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, SecondWindCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, SecondWindCardName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsScrapCollectorCard(PowerCardChoice chosenCard)
+    {
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, ScrapCollectorCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, ScrapCollectorCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, ScrapCollectorCardName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsResourceMasteryCard(PowerCardChoice chosenCard)
+    {
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, ResourceMasteryCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, ResourceMasteryCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, ResourceMasteryCardName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsToughBaseCard(PowerCardChoice chosenCard)
+    {
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, ToughBaseCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, ToughBaseCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, ToughBaseCardName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool HasCardName(PowerCardChoice chosenCard, string cardName)

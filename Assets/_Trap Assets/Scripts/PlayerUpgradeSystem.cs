@@ -71,9 +71,11 @@ public static class PlayerUpgradeSystem
     public static UpgradeResourceCost GetGearFlowUpgradeCost()
     {
         EnsureInitialized();
-        return CanUpgradeGearFlow()
+        UpgradeResourceCost cost = CanUpgradeGearFlow()
             ? CurrentConfig.GearFlow.EvaluateUpgradeCost(gearFlowLevel + 1)
             : default;
+
+        return ApplyGearUpgradeCostModifiers(cost);
     }
 
     public static bool CanUpgradeBaseHealth()
@@ -85,9 +87,11 @@ public static class PlayerUpgradeSystem
     public static UpgradeResourceCost GetBaseHealthUpgradeCost()
     {
         EnsureInitialized();
-        return CanUpgradeBaseHealth()
+        UpgradeResourceCost cost = CanUpgradeBaseHealth()
             ? CurrentConfig.BaseHealth.EvaluateUpgradeCost(baseHealthLevel + 1)
             : default;
+
+        return ApplyGearUpgradeCostModifiers(cost);
     }
 
     public static bool CanAfford(UpgradeResourceCost cost)
@@ -308,5 +312,12 @@ public static class PlayerUpgradeSystem
         }
 
         return true;
+    }
+
+    private static UpgradeResourceCost ApplyGearUpgradeCostModifiers(UpgradeResourceCost cost)
+    {
+        return PlayerXpSystem.Instance != null
+            ? PlayerXpSystem.Instance.ApplyGearUpgradeCostModifiers(cost)
+            : cost;
     }
 }

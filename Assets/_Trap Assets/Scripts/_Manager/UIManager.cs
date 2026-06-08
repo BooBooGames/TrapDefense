@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject cardUpgradePanel;
     [SerializeField] private GameObject ageChangePanel;
     [SerializeField] private GameObject FTUEPanel;
+    [SerializeField] private PerksCardInfoPanel perksCardInfoPanel;
     // [SerializeField] private Button playButton;
 
     private BottomHudView bottomHudController;
@@ -145,26 +146,28 @@ public class UIManager : MonoBehaviour
         gameViewScreen.RefreshSceneWeaponUnlockState();
     }
 
-    public void ShowWinPreview(int coins)
+    public void ShowWinPreview(int coins, int elixirReward = 0)
     {
         WeaponRotator.SetGameplayMotionEnabled(false);
         WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
         SetPanelActive(failPreviewPanel, false);
         winPreviewPanelView.Show(
             coins,
-            () => CollectGameCoinsAndStartNextLevel(coins, 1, winPreviewPanelView.Hide),
-            multiplier => CollectGameCoinsAndStartNextLevel(coins, multiplier, winPreviewPanelView.Hide));
+            elixirReward,
+            () => CollectGameCoinsAndStartNextLevel(coins, 1, elixirReward, 1, winPreviewPanelView.Hide),
+            multiplier => CollectGameCoinsAndStartNextLevel(coins, multiplier, elixirReward, 2, winPreviewPanelView.Hide));
     }
 
-    public void ShowFailPreview(int coins)
+    public void ShowFailPreview(int coins, int elixirReward = 0)
     {
         WeaponRotator.SetGameplayMotionEnabled(false);
         WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
         SetPanelActive(winPreviewPanel, false);
         failPreviewPanelView.Show(
             coins,
-            () => CollectGameCoinsAndReturnHome(coins, 1, failPreviewPanelView.Hide),
-            () => CollectGameCoinsAndReturnHome(coins, 2, failPreviewPanelView.Hide));
+            elixirReward,
+            () => CollectGameCoinsAndReturnHome(coins, 1, elixirReward, 1, failPreviewPanelView.Hide),
+            () => CollectGameCoinsAndReturnHome(coins, 2, elixirReward, 2, failPreviewPanelView.Hide));
     }
 
     /*  private void BindFlowButtons()
@@ -267,24 +270,26 @@ public class UIManager : MonoBehaviour
         WeaponUpgradeController.SetGameplayAnimationsEnabled(currentScreenPanel == gameViewPanel);
     }
 
-    private void CollectGameCoinsAndReturnHome(int coins, int multiplier, UnityEngine.Events.UnityAction hidePanel)
+    private void CollectGameCoinsAndReturnHome(int coins, int multiplier, int elixirReward, int elixirMultiplier, UnityEngine.Events.UnityAction hidePanel)
     {
         SoundManager.Instance.PlayButtonClickSound();
         hidePanel.Invoke();
 
         CollectGameCoins(coins, multiplier);
+        CollectElixir(elixirReward, elixirMultiplier);
 
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
     }
 
-    private void CollectGameCoinsAndStartNextLevel(int coins, int multiplier, UnityEngine.Events.UnityAction hidePanel)
+    private void CollectGameCoinsAndStartNextLevel(int coins, int multiplier, int elixirReward, int elixirMultiplier, UnityEngine.Events.UnityAction hidePanel)
     {
         SoundManager.Instance.PlayButtonClickSound();
 
         hidePanel.Invoke();
 
         CollectGameCoins(coins, multiplier);
+        CollectElixir(elixirReward, elixirMultiplier);
         ResetGameplaySessionData();
         LevelManager.Instance.LoadNextLevel();
         PlayerUpgradeSystem.ResetProgressionStateToDefaults(LevelManager.Instance.activeLevelInstance.upgradeScreenConfig);
@@ -307,6 +312,15 @@ public class UIManager : MonoBehaviour
         if (collectedCoins > 0)
         {
             PlayerCurrencySystem.AddCoins(collectedCoins);
+        }
+    }
+
+    private static void CollectElixir(int elixirReward, int multiplier)
+    {
+        int collectedElixir = Mathf.Max(0, elixirReward) * Mathf.Max(1, multiplier);
+        if (collectedElixir > 0)
+        {
+            PlayerCurrencySystem.AddElixir(collectedElixir);
         }
     }
 }

@@ -242,6 +242,11 @@ public class ZombieCrowdSpawner : MonoBehaviour
         if (PlayerXpSystem.Instance != null)
         {
             PlayerXpSystem.Instance.AddXp(1);
+
+            if (PlayerXpSystem.Instance.TryRollScrapCollectorGearReward())
+            {
+                gameViewScreen?.AddGears(1);
+            }
         }
     }
 
