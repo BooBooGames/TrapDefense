@@ -104,7 +104,6 @@ public class CardScreenView : MonoBehaviour
             return;
         }
 
-        string description = FormatDescriptions(card);
         cardData.cardId = card.cardId;
         cardData.cardName = card.cardName;
         cardData.cardType = card.cardType;
@@ -114,6 +113,7 @@ public class CardScreenView : MonoBehaviour
         SetImage(cardData.bgImage, GetCardBackgroundSprite(card.cardType));
         SetImage(cardData.iconImage, card.cardImage);
         SetImage(cardData.levelBgImage, GetLevelBackgroundSprite(card.cardType));
+        BindCardButton(cardData, card);
     }
 
     private void ClearCardData(UpgradeCardData cardData)
@@ -127,6 +127,7 @@ public class CardScreenView : MonoBehaviour
         SetImage(cardData.bgImage, lockCardSprite);
         SetImage(cardData.iconImage, lockIconSprite);
         SetImage(cardData.levelBgImage, lockLevelBgSprite);
+        BindCardButton(cardData, null);
 
 
         SetText(cardData.levelText, string.Empty);
@@ -170,10 +171,39 @@ public class CardScreenView : MonoBehaviour
         return string.IsNullOrWhiteSpace(cardType) ? string.Empty : cardType.Trim().ToLowerInvariant();
     }
 
-    private string FormatDescriptions(PowerCardDefinition card)
+    private void BindCardButton(UpgradeCardData cardData, PowerCardDefinition card)
     {
-        string[] descriptions = card.GetDescriptions();
-        return descriptions.Length == 0 ? string.Empty : string.Join("\n", descriptions);
+        if (cardData.bgImage == null)
+        {
+            return;
+        }
+
+        Button cardButton = cardData.bgImage.GetComponent<Button>();
+        if (cardButton == null)
+        {
+            return;
+        }
+
+        cardButton.onClick.RemoveAllListeners();
+        cardButton.interactable = card != null;
+
+        if (card == null)
+        {
+            return;
+        }
+
+        PowerCardDefinition selectedCard = card;
+        cardButton.onClick.AddListener(() => HandleCardClicked(selectedCard));
+    }
+
+    private void HandleCardClicked(PowerCardDefinition card)
+    {
+        if (card == null || UIManager.Instance == null)
+        {
+            return;
+        }
+
+        UIManager.Instance.ShowPerksCardInfoPanel(card);
     }
 
     private void SetImage(Image image, Sprite sprite)

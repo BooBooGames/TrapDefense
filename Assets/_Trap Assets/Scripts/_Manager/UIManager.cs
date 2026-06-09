@@ -53,6 +53,7 @@ public class UIManager : MonoBehaviour
         evolutionScreenView = evolutionScreenPanel.GetComponent<EvolutionScreenView>();
         currencyView.BindEvolutionButton(ShowEvolutionPanel);
         PlayerUpgradeSystem.Initialize(upgradeConfig);
+        ClosePerksCardInfoPanel();
 
         if (FTUEController.IsCompleted)
         {
@@ -170,6 +171,26 @@ public class UIManager : MonoBehaviour
             () => CollectGameCoinsAndReturnHome(coins, 2, elixirReward, 2, failPreviewPanelView.Hide));
     }
 
+    public void ShowPerksCardInfoPanel(PowerCardDefinition cardData)
+    {
+        if (perksCardInfoPanel == null || cardData == null)
+        {
+            return;
+        }
+
+        perksCardInfoPanel.Show(cardData, ClosePerksCardInfoPanel);
+    }
+
+    public void ClosePerksCardInfoPanel()
+    {
+        if (perksCardInfoPanel == null)
+        {
+            return;
+        }
+
+        perksCardInfoPanel.Hide();
+    }
+
     /*  private void BindFlowButtons()
      {
          if (playButton == null)
@@ -199,6 +220,7 @@ public class UIManager : MonoBehaviour
         SetPanelActive(cardUpgradePanel, activePanel == cardUpgradePanel);
         SetPanelActive(ageChangePanel, false);
         SetPanelActive(FTUEPanel, false);
+        ClosePerksCardInfoPanel();
         UpdateGameViewBGImageVisibility();
     }
 
