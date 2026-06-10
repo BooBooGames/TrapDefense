@@ -10,6 +10,9 @@ public class PerksCardInfoPanel : MonoBehaviour
     public TextMeshProUGUI cardNameText, cardTypeText, cardLevelText, fillerText, cardDescriptionText, upgradeDescriptionText;
     public Button upgradeButton, CloseButton;
 
+    private PowerCardDefinition currentCardData;
+    private Sprite currentCardBackgroundSprite;
+
     public void Show(PowerCardDefinition cardData, Sprite cardBackgroundSprite, UnityAction onClose)
     {
         if (cardData == null)
@@ -18,17 +21,16 @@ public class PerksCardInfoPanel : MonoBehaviour
         }
 
         gameObject.SetActive(true);
-
-        SetImage(titleImage, GetTitleSprite(cardData.cardType));
-        SetImage(cardBgImage, cardBackgroundSprite);
-        SetImage(cardImage, cardData.cardImage);
-        SetText(cardNameText, cardData.cardName);
-        SetText(cardTypeText, cardData.cardType);
-        SetText(cardDescriptionText, FormatDescriptions(cardData));
+        currentCardData = cardData;
+        currentCardBackgroundSprite = cardBackgroundSprite;
+        RefreshCardInfo();
 
         if (upgradeButton != null)
         {
-            upgradeButton.gameObject.SetActive(false);
+            upgradeButton.gameObject.SetActive(true);
+            upgradeButton.interactable = true;
+            upgradeButton.onClick.RemoveAllListeners();
+            upgradeButton.onClick.AddListener(HandleUpgradeClicked);
         }
 
         if (CloseButton != null)
@@ -41,6 +43,41 @@ public class PerksCardInfoPanel : MonoBehaviour
     public void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    private void HandleUpgradeClicked()
+    {
+        if (currentCardData == null)
+        {
+            return;
+        }
+
+        PowerCardUpgradeSystem.UpgradeCard(currentCardData);
+        RefreshCardInfo();
+    }
+
+    private void RefreshCardInfo()
+    {
+        if (currentCardData == null)
+        {
+            return;
+        }
+
+        int currentLevel = PowerCardUpgradeSystem.GetCardLevel(currentCardData);
+
+        SetImage(titleImage, GetTitleSprite(currentCardData.cardType));
+        SetImage(cardBgImage, currentCardBackgroundSprite);
+        SetImage(cardImage, currentCardData.cardImage);
+        SetText(cardNameText, currentCardData.cardName);
+        SetText(cardTypeText, currentCardData.cardType);
+        SetText(cardLevelText, $"Lv. {currentLevel}");
+        SetText(cardDescriptionText, FormatDescriptions(PowerCardUpgradeSystem.GetCurrentDescriptions(currentCardData)));
+        if (upgradeDescriptionText != null)
+        {
+            upgradeDescriptionText.gameObject.SetActive(true);
+        }
+
+        SetText(upgradeDescriptionText, FormatDescriptions(PowerCardUpgradeSystem.GetNextLevelDescriptions(currentCardData)));
     }
 
     private Sprite GetTitleSprite(string cardType)
@@ -64,9 +101,13 @@ public class PerksCardInfoPanel : MonoBehaviour
         return string.IsNullOrWhiteSpace(cardType) ? string.Empty : cardType.Trim().ToLowerInvariant();
     }
 
-    private static string FormatDescriptions(PowerCardDefinition cardData)
+    private static string FormatDescriptions(string[] descriptions)
     {
-        string[] descriptions = cardData.GetDescriptions();
+        if (descriptions == null)
+        {
+            return string.Empty;
+        }
+
         return descriptions.Length == 0 ? string.Empty : string.Join("\n", descriptions);
     }
 

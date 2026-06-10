@@ -13,6 +13,7 @@ public class SaveGameData
     public bool[] unlockedWeaponStates;
     public int gearFlowLevel;
     public int baseHealthLevel;
+    public PowerCardLevelSaveData[] powerCardLevels;
     public ChestSlotSaveData[] chestSlots;
     public int currentLevel = 1;
     public int chestRewardLevel = 1;
@@ -27,6 +28,13 @@ public class SaveGameData
     // public int selectedWeaponLevel;
     // public int highestUnlockedWave;
     // public string[] unlockedUpgradeIds;
+}
+
+[Serializable]
+public class PowerCardLevelSaveData
+{
+    public string cardId;
+    public int level = 1;
 }
 
 [Serializable]

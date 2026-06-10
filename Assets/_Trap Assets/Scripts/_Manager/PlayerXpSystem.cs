@@ -10,19 +10,18 @@ public class PlayerXpSystem : MonoBehaviour
 
     private const string PocketGearsCardName = "Pocket Gears";
     private const string PocketGearsCardId = "2";
-    private const int PocketGearsRewardAmount = 3;
     private const string TrapAcceleratorCardName = "Trap Accelerator";
-    private const float TrapAcceleratorSpeedMultiplier = 1.08f;
+    private const string TrapAcceleratorCardId = "1";
     private const string MinorHealCardName = "Minor Heal";
-    private const int MinorHealRewardAmount = 5;
+    private const string MinorHealCardId = "3";
     private const string AngelBlessingCardName = "Angel Blessing";
-    private const int AngelBlessingRewardAmount = 5;
+    private const string AngelBlessingCardId = "4";
+    private const string ThinArmorCardName = "Thin Armor";
+    private const string ThinArmorCardId = "5";
     private const string InvulnerabilityPulseCardName = "Invulnerability Pulse";
-    private const float InvulnerabilityPulseDuration = 5f;
-    private const float InvulnerabilityPulseCooldown = 30f;
+    private const string InvulnerabilityPulseCardId = "8";
     private const string WaveBonusCardName = "Wave Bonus";
     private const string WaveBonusCardId = "6";
-    private const int WaveBonusRewardAmount = 5;
     private const string WeakeningStrikeCardName = "Weakening Strike";
     private const string WeakeningStrikeCardId = "7";
     private const string DeathMarkCardName = "Death Mark";
@@ -31,17 +30,14 @@ public class PlayerXpSystem : MonoBehaviour
     private const string DoomTrapsCardId = "10";
     private const string SecondWindCardName = "Second Wind";
     private const string SecondWindCardId = "11";
-    private const int SecondWindHealAmount = 10;
+    private const string SharpTrapsCardName = "Sharp Traps";
+    private const string SharpTrapsCardId = "12";
     private const string ScrapCollectorCardName = "Scrap Collector";
     private const string ScrapCollectorCardId = "13";
-    private const float ScrapCollectorGearChance = 0.05f;
     private const string ResourceMasteryCardName = "Resource Mastery";
     private const string ResourceMasteryCardId = "14";
-    private const float ResourceMasteryGearGenerationSpeedMultiplier = 1.25f;
-    private const int ResourceMasteryGearCostReduction = 1;
     private const string ToughBaseCardName = "Tough Base";
     private const string ToughBaseCardId = "15";
-    private const int ToughBaseHealthBonus = 5;
 
     [SerializeField] private GameObject cardSelectionPanel;
     [SerializeField] private Image xpBarFill;
@@ -61,6 +57,7 @@ public class PlayerXpSystem : MonoBehaviour
     private bool awaitingCardSelection;
     private bool pausedByCardSelection;
     private bool angelBlessingActive;
+    private bool thinArmorActive;
     private bool waveBonusActive;
     private bool invulnerabilityPulseActive;
     private bool weakeningStrikeActive;
@@ -68,10 +65,22 @@ public class PlayerXpSystem : MonoBehaviour
     private bool doomTrapsActive;
     private bool secondWindActive;
     private bool secondWindUsed;
+    private bool sharpTrapsActive;
     private bool scrapCollectorActive;
     private bool resourceMasteryActive;
     private Coroutine invulnerabilityPulseCoroutine;
     private float previousTimeScale = 1f;
+    private int angelBlessingHealAmount;
+    private int waveBonusGearAmount;
+    private int secondWindHealAmount;
+    private float thinArmorEnemyHealthMultiplier = 1f;
+    private float weakeningStrikeSlowMultiplier = 1f;
+    private float weakeningStrikeSlowDuration;
+    private float deathMarkInstantKillChance;
+    private float doomTrapsSpeedMultiplierPerHit = 1f;
+    private float doomTrapsTrapDamageMultiplier = 1f;
+    private float sharpTrapsDamageMultiplier = 1f;
+    private float scrapCollectorGearChance;
 
     public event Action<float, int, int> XpProgressChanged;
     public event Action<IReadOnlyList<PowerCardChoice>> CardChoicesPresented;
@@ -87,6 +96,8 @@ public class PlayerXpSystem : MonoBehaviour
     public bool DeathMarkActive => deathMarkActive;
     public bool DoomTrapsActive => doomTrapsActive;
     public bool ResourceMasteryActive => resourceMasteryActive;
+    public bool ThinArmorActive => thinArmorActive;
+    public bool SharpTrapsActive => sharpTrapsActive;
 
     private void Awake()
     {
@@ -166,12 +177,12 @@ public class PlayerXpSystem : MonoBehaviour
     {
         if (angelBlessingActive)
         {
-            AddHealthWithEffect(AngelBlessingRewardAmount);
+            AddHealthWithEffect(angelBlessingHealAmount);
         }
 
         if (waveBonusActive)
         {
-            AddGearsWithEffect(WaveBonusRewardAmount);
+            AddGearsWithEffect(waveBonusGearAmount);
         }
     }
 
@@ -184,18 +195,18 @@ public class PlayerXpSystem : MonoBehaviour
         }
 
         secondWindUsed = true;
-        healAmount = SecondWindHealAmount;
+        healAmount = secondWindHealAmount;
         return true;
     }
 
     public bool TryRollScrapCollectorGearReward()
     {
-        return scrapCollectorActive && UnityEngine.Random.value < ScrapCollectorGearChance;
+        return scrapCollectorActive && UnityEngine.Random.value < scrapCollectorGearChance;
     }
 
     public float GetGearGenerationDurationMultiplier()
     {
-        return resourceMasteryActive ? 1f / ResourceMasteryGearGenerationSpeedMultiplier : 1f;
+        return resourceMasteryActive ? PowerCardUpgradeSystem.GetResourceMasteryGearGenerationDurationMultiplier() : 1f;
     }
 
     public int ApplyGearUpgradeCostModifiers(int baseCost)
@@ -205,13 +216,54 @@ public class PlayerXpSystem : MonoBehaviour
             return Mathf.Max(0, baseCost);
         }
 
-        return Mathf.Max(1, baseCost - ResourceMasteryGearCostReduction);
+        return PowerCardUpgradeSystem.ApplyResourceMasteryUpgradeCostReduction(baseCost);
     }
 
     public UpgradeResourceCost ApplyGearUpgradeCostModifiers(UpgradeResourceCost baseCost)
     {
         baseCost.gears = ApplyGearUpgradeCostModifiers(baseCost.gears);
         return baseCost;
+    }
+
+    public float GetTrapDamageMultiplier()
+    {
+        float multiplier = 1f;
+        if (doomTrapsActive)
+        {
+            multiplier *= doomTrapsTrapDamageMultiplier;
+        }
+
+        if (sharpTrapsActive)
+        {
+            multiplier *= sharpTrapsDamageMultiplier;
+        }
+
+        return multiplier;
+    }
+
+    public float GetEnemyHealthMultiplier()
+    {
+        return thinArmorActive ? thinArmorEnemyHealthMultiplier : 1f;
+    }
+
+    public float GetWeakeningStrikeSlowMultiplier()
+    {
+        return weakeningStrikeSlowMultiplier;
+    }
+
+    public float GetWeakeningStrikeSlowDuration()
+    {
+        return weakeningStrikeSlowDuration;
+    }
+
+    public float GetDeathMarkInstantKillChance()
+    {
+        return deathMarkInstantKillChance;
+    }
+
+    public float GetDoomTrapsSpeedMultiplierPerHit()
+    {
+        return doomTrapsSpeedMultiplierPerHit;
     }
 
     public void ResetSessionData()
@@ -222,6 +274,7 @@ public class PlayerXpSystem : MonoBehaviour
         pausedByCardSelection = false;
         previousTimeScale = 1f;
         angelBlessingActive = false;
+        thinArmorActive = false;
         waveBonusActive = false;
         invulnerabilityPulseActive = false;
         weakeningStrikeActive = false;
@@ -229,8 +282,10 @@ public class PlayerXpSystem : MonoBehaviour
         doomTrapsActive = false;
         secondWindActive = false;
         secondWindUsed = false;
+        sharpTrapsActive = false;
         scrapCollectorActive = false;
         resourceMasteryActive = false;
+        ResetActiveCardEffectValues();
 
         if (invulnerabilityPulseCoroutine != null)
         {
@@ -243,6 +298,21 @@ public class PlayerXpSystem : MonoBehaviour
         selectedCards.Clear();
         SetCardPanelVisible(false);
         NotifyProgressChanged();
+    }
+
+    private void ResetActiveCardEffectValues()
+    {
+        angelBlessingHealAmount = 0;
+        waveBonusGearAmount = 0;
+        secondWindHealAmount = 0;
+        thinArmorEnemyHealthMultiplier = 1f;
+        weakeningStrikeSlowMultiplier = 1f;
+        weakeningStrikeSlowDuration = 0f;
+        deathMarkInstantKillChance = 0f;
+        doomTrapsSpeedMultiplierPerHit = 1f;
+        doomTrapsTrapDamageMultiplier = 1f;
+        sharpTrapsDamageMultiplier = 1f;
+        scrapCollectorGearChance = 0f;
     }
 
     private void GenerateCardChoices()
@@ -318,7 +388,7 @@ public class PlayerXpSystem : MonoBehaviour
     {
         if (IsTrapAcceleratorCard(chosenCard))
         {
-            WeaponUpgradeController.ApplySpeedMultiplierToCurrentTraps(TrapAcceleratorSpeedMultiplier);
+            WeaponUpgradeController.ApplySpeedMultiplierToCurrentTraps(PowerCardUpgradeSystem.GetTrapAcceleratorSpeedMultiplier(chosenCard.definition));
             return;
         }
 
@@ -331,30 +401,49 @@ public class PlayerXpSystem : MonoBehaviour
         if (IsAngelBlessingCard(chosenCard))
         {
             angelBlessingActive = true;
+            angelBlessingHealAmount = PowerCardUpgradeSystem.GetAngelBlessingHealAmount();
+            return;
+        }
+
+        if (IsThinArmorCard(chosenCard))
+        {
+            if (!thinArmorActive)
+            {
+                thinArmorActive = true;
+                thinArmorEnemyHealthMultiplier = PowerCardUpgradeSystem.GetThinArmorEnemyHealthMultiplier();
+                ApplyThinArmorToCurrentEnemies();
+            }
+
             return;
         }
 
         if (IsWaveBonusCard(chosenCard))
         {
             waveBonusActive = true;
+            waveBonusGearAmount = PowerCardUpgradeSystem.GetWaveBonusGears();
             return;
         }
 
         if (IsWeakeningStrikeCard(chosenCard))
         {
             weakeningStrikeActive = true;
+            weakeningStrikeSlowMultiplier = PowerCardUpgradeSystem.GetWeakeningStrikeSlowMultiplier();
+            weakeningStrikeSlowDuration = PowerCardUpgradeSystem.GetWeakeningStrikeSlowDuration();
             return;
         }
 
         if (IsDeathMarkCard(chosenCard))
         {
             deathMarkActive = true;
+            deathMarkInstantKillChance = PowerCardUpgradeSystem.GetDeathMarkInstantKillChance();
             return;
         }
 
         if (IsDoomTrapsCard(chosenCard))
         {
             doomTrapsActive = true;
+            doomTrapsSpeedMultiplierPerHit = PowerCardUpgradeSystem.GetDoomTrapsSlowMultiplierPerHit();
+            doomTrapsTrapDamageMultiplier = PowerCardUpgradeSystem.GetDoomTrapsTrapDamageMultiplier();
             return;
         }
 
@@ -362,12 +451,21 @@ public class PlayerXpSystem : MonoBehaviour
         {
             secondWindActive = true;
             secondWindUsed = false;
+            secondWindHealAmount = PowerCardUpgradeSystem.GetSecondWindHealAmount();
+            return;
+        }
+
+        if (IsSharpTrapsCard(chosenCard))
+        {
+            sharpTrapsActive = true;
+            sharpTrapsDamageMultiplier = PowerCardUpgradeSystem.GetSharpTrapsDamageMultiplier();
             return;
         }
 
         if (IsScrapCollectorCard(chosenCard))
         {
             scrapCollectorActive = true;
+            scrapCollectorGearChance = PowerCardUpgradeSystem.GetScrapCollectorGearChance();
             return;
         }
 
@@ -380,13 +478,13 @@ public class PlayerXpSystem : MonoBehaviour
 
         if (IsToughBaseCard(chosenCard))
         {
-            GameViewScreen.Instance?.AddPlayerHealthUpgrade(ToughBaseHealthBonus);
+            GameViewScreen.Instance?.AddPlayerHealthUpgrade(PowerCardUpgradeSystem.GetToughBaseHealthBonus(chosenCard.definition));
             return;
         }
 
         if (IsMinorHealCard(chosenCard))
         {
-            AddHealthWithEffect(MinorHealRewardAmount);
+            AddHealthWithEffect(PowerCardUpgradeSystem.GetMinorHealAmount(chosenCard.definition));
             return;
         }
 
@@ -395,7 +493,7 @@ public class PlayerXpSystem : MonoBehaviour
             return;
         }
 
-        AddGearsWithEffect(PocketGearsRewardAmount);
+        AddGearsWithEffect(PowerCardUpgradeSystem.GetPocketGearsReward(chosenCard.definition));
     }
 
     private static bool IsPocketGearsCard(PowerCardChoice chosenCard)
@@ -408,22 +506,42 @@ public class PlayerXpSystem : MonoBehaviour
 
     private static bool IsTrapAcceleratorCard(PowerCardChoice chosenCard)
     {
-        return HasCardName(chosenCard, TrapAcceleratorCardName);
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, TrapAcceleratorCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, TrapAcceleratorCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, TrapAcceleratorCardName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsMinorHealCard(PowerCardChoice chosenCard)
     {
-        return HasCardName(chosenCard, MinorHealCardName);
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, MinorHealCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, MinorHealCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, MinorHealCardName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsAngelBlessingCard(PowerCardChoice chosenCard)
     {
-        return HasCardName(chosenCard, AngelBlessingCardName);
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, AngelBlessingCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, AngelBlessingCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, AngelBlessingCardName, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsThinArmorCard(PowerCardChoice chosenCard)
+    {
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, ThinArmorCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, ThinArmorCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, ThinArmorCardName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsInvulnerabilityPulseCard(PowerCardChoice chosenCard)
     {
-        return HasCardName(chosenCard, InvulnerabilityPulseCardName);
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, InvulnerabilityPulseCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, InvulnerabilityPulseCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, InvulnerabilityPulseCardName, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool IsWaveBonusCard(PowerCardChoice chosenCard)
@@ -466,6 +584,14 @@ public class PlayerXpSystem : MonoBehaviour
             string.Equals(definition.cardName, SecondWindCardName, StringComparison.OrdinalIgnoreCase);
     }
 
+    private static bool IsSharpTrapsCard(PowerCardChoice chosenCard)
+    {
+        PowerCardDefinition definition = chosenCard.definition;
+        return string.Equals(chosenCard.cardId, SharpTrapsCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardId, SharpTrapsCardId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(definition.cardName, SharpTrapsCardName, StringComparison.OrdinalIgnoreCase);
+    }
+
     private static bool IsScrapCollectorCard(PowerCardChoice chosenCard)
     {
         PowerCardDefinition definition = chosenCard.definition;
@@ -490,11 +616,6 @@ public class PlayerXpSystem : MonoBehaviour
             string.Equals(definition.cardName, ToughBaseCardName, StringComparison.OrdinalIgnoreCase);
     }
 
-    private static bool HasCardName(PowerCardChoice chosenCard, string cardName)
-    {
-        return string.Equals(chosenCard.definition.cardName, cardName, StringComparison.OrdinalIgnoreCase);
-    }
-
     private static void AddGearsWithEffect(int amount)
     {
         GameViewScreen gameViewScreen = GameViewScreen.Instance;
@@ -509,6 +630,18 @@ public class PlayerXpSystem : MonoBehaviour
         Vector3 healthBarPosition = gameViewScreen.HealthBarLabelPosition;
         UIParticleEffectsManager.Instance.PlayHealthEffect(healthBarPosition);
         gameViewScreen.AddHealth(amount);
+    }
+
+    private void ApplyThinArmorToCurrentEnemies()
+    {
+        ZombieRuntime[] zombies = FindObjectsByType<ZombieRuntime>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        for (int i = 0; i < zombies.Length; i++)
+        {
+            if (zombies[i] != null)
+            {
+                zombies[i].ApplyMaxHealthMultiplier(thinArmorEnemyHealthMultiplier);
+            }
+        }
     }
 
     private void ActivateInvulnerabilityPulse()
@@ -527,10 +660,10 @@ public class PlayerXpSystem : MonoBehaviour
         while (invulnerabilityPulseActive)
         {
             EndPointTrigger.SetBaseInvulnerable(true);
-            yield return new WaitForSeconds(InvulnerabilityPulseDuration);
+            yield return new WaitForSeconds(PowerCardUpgradeSystem.GetInvulnerabilityPulseDuration());
 
             EndPointTrigger.SetBaseInvulnerable(false);
-            yield return new WaitForSeconds(InvulnerabilityPulseCooldown);
+            yield return new WaitForSeconds(PowerCardUpgradeSystem.GetInvulnerabilityPulseCooldown());
         }
 
         EndPointTrigger.SetBaseInvulnerable(false);

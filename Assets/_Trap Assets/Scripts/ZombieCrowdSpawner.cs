@@ -196,7 +196,8 @@ public class ZombieCrowdSpawner : MonoBehaviour
             runtime = zombie.AddComponent<ZombieRuntime>();
         }
 
-        runtime.Configure(entry.health);
+        float healthMultiplier = PlayerXpSystem.Instance != null ? PlayerXpSystem.Instance.GetEnemyHealthMultiplier() : 1f;
+        runtime.Configure(entry.health * healthMultiplier);
         runtime.ConfigureRewards(entry.coinReward, entry.gemReward);
         runtime.ConfigureKillEffect(entry.killEffectPrefab);
         runtime.Despawned += OnZombieDespawned;
@@ -337,4 +338,3 @@ public class ZombieCrowdSpawner : MonoBehaviour
         gameViewScreen = screen;
     }
 }
-

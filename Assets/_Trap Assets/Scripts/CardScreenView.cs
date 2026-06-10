@@ -25,11 +25,12 @@ public class CardScreenView : MonoBehaviour
         public TextMeshProUGUI levelText, countText;
     }
     public List<UpgradeCardData> upgradeCardDatas;
-    public Button perksButton, heroButton;
+    // public Button perksButton, heroButton;
 
     private void OnEnable()
     {
         PlayerCurrencySystem.ElixirChanged += HandleElixirChanged;
+        PowerCardUpgradeSystem.CardLevelChanged += HandleCardLevelChanged;
         RefreshCardData();
         RefreshSummonButtonStates();
     }
@@ -37,11 +38,17 @@ public class CardScreenView : MonoBehaviour
     private void OnDisable()
     {
         PlayerCurrencySystem.ElixirChanged -= HandleElixirChanged;
+        PowerCardUpgradeSystem.CardLevelChanged -= HandleCardLevelChanged;
     }
 
     private void HandleElixirChanged(int _)
     {
         RefreshSummonButtonStates();
+    }
+
+    private void HandleCardLevelChanged(PowerCardDefinition _, int __)
+    {
+        RefreshCardData();
     }
 
     private void RefreshSummonButtonStates()
@@ -108,11 +115,13 @@ public class CardScreenView : MonoBehaviour
         cardData.cardName = card.cardName;
         cardData.cardType = card.cardType;
         cardData.cardSprite = card.cardImage;
-        cardData.descriptions = card.GetDescriptions();
+        cardData.descriptions = PowerCardUpgradeSystem.GetCurrentDescriptions(card);
 
         SetImage(cardData.bgImage, GetCardBackgroundSprite(card.cardType));
         SetImage(cardData.iconImage, card.cardImage);
         SetImage(cardData.levelBgImage, GetLevelBackgroundSprite(card.cardType));
+        SetText(cardData.levelText, $"Lv. {PowerCardUpgradeSystem.GetCardLevel(card)}");
+        SetText(cardData.countText, string.Empty);
         BindCardButton(cardData, card);
     }
 

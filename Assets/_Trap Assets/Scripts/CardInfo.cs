@@ -35,7 +35,7 @@ public class CardInfo : MonoBehaviour
             cardDescriptionText5
         };
 
-        string[] descriptions = cardData.GetDescriptions();
+        string[] descriptions = PowerCardUpgradeSystem.GetCurrentDescriptions(cardData);
         for (int i = 0; i < descriptionLabels.Length; i++)
         {
             TextMeshProUGUI label = descriptionLabels[i];

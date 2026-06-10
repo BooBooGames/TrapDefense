@@ -4,11 +4,6 @@ using UnityEngine;
 
 public class ZombieRuntime : MonoBehaviour
 {
-    private const float WeakeningStrikeSlowMultiplier = 0.9f;
-    private const float WeakeningStrikeSlowDuration = 2f;
-    private const float DeathMarkInstantKillChance = 0.05f;
-    private const float DoomTrapsSpeedMultiplierPerHit = 0.95f;
-
     [SerializeField][Min(1f)] private float maxHealth = 10f;
     [SerializeField] private Animator animator;
     [SerializeField] private ZombiePathFollower pathFollower;
@@ -111,6 +106,19 @@ public class ZombieRuntime : MonoBehaviour
         configured = true;
     }
 
+    public void ApplyMaxHealthMultiplier(float multiplier)
+    {
+        if (killNotified)
+        {
+            return;
+        }
+
+        float previousMaxHealth = Mathf.Max(1f, maxHealth);
+        maxHealth = Mathf.Max(1f, maxHealth * Mathf.Max(0f, multiplier));
+        float healthRatio = previousMaxHealth > 0f ? currentHealth / previousMaxHealth : 1f;
+        currentHealth = Mathf.Clamp(maxHealth * healthRatio, 0f, maxHealth);
+    }
+
     public void ConfigureRewards(int coins, int gems)
     {
         coinReward = Mathf.Max(0, coins);
@@ -134,7 +142,7 @@ public class ZombieRuntime : MonoBehaviour
         if (killNotified || damage <= 0f) return;
         if (TryApplyDeathMarkInstantKill()) return;
 
-        currentHealth = Mathf.Max(0f, currentHealth - damage);
+        currentHealth = Mathf.Max(0f, currentHealth - GetModifiedTrapDamage(damage));
         if (currentHealth <= 0f) Die();
         else
         {
@@ -142,6 +150,11 @@ public class ZombieRuntime : MonoBehaviour
             ApplyDoomTrapsSlowIfActive();
             ApplyWeakeningStrikeSlowIfActive();
         }
+    }
+
+    private static float GetModifiedTrapDamage(float damage)
+    {
+        return PlayerXpSystem.Instance != null ? damage * PlayerXpSystem.Instance.GetTrapDamageMultiplier() : damage;
     }
 
     public void Kill()
@@ -226,7 +239,7 @@ public class ZombieRuntime : MonoBehaviour
             return false;
         }
 
-        if (UnityEngine.Random.value >= DeathMarkInstantKillChance)
+        if (UnityEngine.Random.value >= playerXpSystem.GetDeathMarkInstantKillChance())
         {
             return false;
         }
@@ -244,7 +257,7 @@ public class ZombieRuntime : MonoBehaviour
             return;
         }
 
-        pathFollower.ApplyStackingMovementSpeedMultiplier(DoomTrapsSpeedMultiplierPerHit);
+        pathFollower.ApplyStackingMovementSpeedMultiplier(playerXpSystem.GetDoomTrapsSpeedMultiplierPerHit());
     }
 
     private void ApplyWeakeningStrikeSlowIfActive()
@@ -255,7 +268,9 @@ public class ZombieRuntime : MonoBehaviour
             return;
         }
 
-        ApplyTemporaryMovementSlow(WeakeningStrikeSlowMultiplier, WeakeningStrikeSlowDuration);
+        ApplyTemporaryMovementSlow(
+            playerXpSystem.GetWeakeningStrikeSlowMultiplier(),
+            playerXpSystem.GetWeakeningStrikeSlowDuration());
     }
 
     private void ApplyTemporaryMovementSlow(float speedMultiplier, float duration)
