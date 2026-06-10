@@ -254,8 +254,13 @@ public class ZombieCrowdSpawner : MonoBehaviour
     private void SpawnKillEffect(ZombieRuntime zombie, Vector3 deathPosition)
     {
         ParticleSystem effectPrefab = zombie.KillEffectPrefab;
+        Quaternion rotation = Quaternion.identity;
+        rotation.eulerAngles = new Vector3(-90f, 0, 0f);
+        deathPosition.y += 0.1f;
+        // deathPosition.x -= 1;
+        // deathPosition.z -= 1;
 
-        ParticleSystem effectInstance = Instantiate(effectPrefab, deathPosition, Quaternion.identity);
+        ParticleSystem effectInstance = Instantiate(effectPrefab, deathPosition, rotation);
         effectInstance.Play();
     }
 
@@ -332,3 +337,4 @@ public class ZombieCrowdSpawner : MonoBehaviour
         gameViewScreen = screen;
     }
 }
+

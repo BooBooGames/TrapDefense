@@ -19,6 +19,7 @@ public class ZombieRuntime : MonoBehaviour
     [SerializeField] private string burnAnimStateName = "Burn";
 
     [SerializeField][Min(0f)] private float destroyDelayAfterDeath = 2f;
+    [SerializeField][Min(0f)] private float gravityDelayAfterDeath = 1f;
 
     [Header("Damage Flash")]
     [SerializeField] private Color flashColor = Color.white;
@@ -31,6 +32,19 @@ public class ZombieRuntime : MonoBehaviour
         new Keyframe(0.15f, 1f),
         new Keyframe(1f, 0f));
 
+    [Header("Death Feedback")]
+    [SerializeField] private ParticleSystem skillEffectPrefab;
+    [SerializeField] private Color deathFlashColor = new Color(1f, 0.05f, 0.02f, 1f);
+    [SerializeField] private Color deathEmissionFlashColor = new Color(1f, 0.1f, 0.04f, 1f);
+    [SerializeField][Min(0.01f)] private float deathFlashDuration = 0.24f;
+    [SerializeField][Min(0f)] private float deathScalePunch = 0.18f;
+    [SerializeField][Min(0f)] private float deathShakeMagnitude = 0.04f;
+    [SerializeField][Min(0f)] private float deathShakeFrequency = 55f;
+    [SerializeField]
+    private AnimationCurve deathFeedbackCurve = new AnimationCurve(
+        new Keyframe(0f, 1f),
+        new Keyframe(1f, 0f));
+
     private Renderer[] flashRenderers;
     private Collider[] physicsColliders;
     private Rigidbody[] physicsRigidbodies;
@@ -38,6 +52,7 @@ public class ZombieRuntime : MonoBehaviour
     private Color[] originalColors;
     private MaterialPropertyBlock flashBlock;
     private Coroutine flashRoutine;
+    private Coroutine deathFeedbackRoutine;
     private Coroutine movementSlowRoutine;
     private Vector3 originalScale;
 
@@ -197,7 +212,9 @@ public class ZombieRuntime : MonoBehaviour
             flashRoutine = null;
             ClearFlashColor();
         }
+        PlayDeathFeedback();
         PlayAnim(deathAnimStateName);
+        StartCoroutine(EnableGravityAfterDeathDelay());
         Destroy(gameObject, destroyDelayAfterDeath);
     }
 
@@ -300,6 +317,25 @@ public class ZombieRuntime : MonoBehaviour
         }
     }
 
+    private IEnumerator EnableGravityAfterDeathDelay()
+    {
+        yield return new WaitForSeconds(gravityDelayAfterDeath);
+
+        for (int i = 0; i < physicsRigidbodies.Length; i++)
+        {
+            Rigidbody physicsRigidbody = physicsRigidbodies[i];
+            if (physicsRigidbody == null)
+            {
+                continue;
+            }
+
+            physicsRigidbody.isKinematic = false;
+            physicsRigidbody.useGravity = true;
+            physicsRigidbody.detectCollisions = false;
+            physicsRigidbody.WakeUp();
+        }
+    }
+
     private void PlayAnim(string stateName)
     {
         if (animator != null && !string.IsNullOrWhiteSpace(stateName))
@@ -327,6 +363,36 @@ public class ZombieRuntime : MonoBehaviour
         flashRoutine = null;
     }
 
+    private void PlayDeathFeedback()
+    {
+        skillEffectPrefab.Play();
+        if (deathFeedbackRoutine != null)
+        {
+            StopCoroutine(deathFeedbackRoutine);
+        }
+
+        deathFeedbackRoutine = StartCoroutine(DeathFeedbackRoutine(transform.localPosition));
+    }
+
+    private IEnumerator DeathFeedbackRoutine(Vector3 deathLocalPosition)
+    {
+        float elapsed = 0f;
+        float duration = Mathf.Max(0.01f, deathFlashDuration);
+
+        while (elapsed < duration)
+        {
+            float progress = Mathf.Clamp01(elapsed / duration);
+            float t = Mathf.Clamp01(deathFeedbackCurve.Evaluate(progress));
+            ApplyDeathFeedbackIntensity(t, deathLocalPosition, elapsed);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localPosition = deathLocalPosition;
+        ClearFlashColor();
+        deathFeedbackRoutine = null;
+    }
+
     private void ApplyFlashIntensity(float t)
     {
         for (int i = 0; i < flashRenderers.Length; i++)
@@ -340,6 +406,32 @@ public class ZombieRuntime : MonoBehaviour
             r.SetPropertyBlock(flashBlock);
         }
         transform.localScale = originalScale * (1f + scalePunch * t);
+    }
+
+    private void ApplyDeathFeedbackIntensity(float t, Vector3 deathLocalPosition, float elapsed)
+    {
+        for (int i = 0; i < flashRenderers.Length; i++)
+        {
+            var r = flashRenderers[i];
+            if (r == null) continue;
+            r.GetPropertyBlock(flashBlock);
+            flashBlock.SetColor(BaseColorId, Color.Lerp(originalBaseColors[i], deathFlashColor, t));
+            flashBlock.SetColor(ColorId, Color.Lerp(originalColors[i], deathFlashColor, t));
+            flashBlock.SetColor(EmissionColorId, deathEmissionFlashColor * t);
+            r.SetPropertyBlock(flashBlock);
+        }
+
+        transform.localScale = originalScale * (1f + deathScalePunch * t);
+
+        if (deathShakeMagnitude <= 0f || deathShakeFrequency <= 0f)
+        {
+            transform.localPosition = deathLocalPosition;
+            return;
+        }
+
+        float shakeX = Mathf.Sin(elapsed * deathShakeFrequency) * deathShakeMagnitude * t;
+        float shakeZ = Mathf.Cos(elapsed * deathShakeFrequency * 1.37f) * deathShakeMagnitude * t;
+        transform.localPosition = deathLocalPosition + new Vector3(shakeX, 0f, shakeZ);
     }
 
     private void ClearFlashColor()

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -24,6 +25,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject ageChangePanel;
     [SerializeField] private GameObject FTUEPanel;
     [SerializeField] private PerksCardInfoPanel perksCardInfoPanel;
+    [SerializeField] private Image damageImage;
+    [SerializeField][Range(0f, 1f)] private float damageFlashMaxAlpha = 0.55f;
+    [SerializeField][Min(0.01f)] private float damageFlashFadeInDuration = 0.08f;
+    [SerializeField][Min(0.01f)] private float damageFlashFadeOutDuration = 0.45f;
     // [SerializeField] private Button playButton;
 
     private BottomHudView bottomHudController;
@@ -37,6 +42,7 @@ public class UIManager : MonoBehaviour
     private GameObject currentScreenPanel;
     private bool settingsOpenedFromGameView;
     private float timeScaleBeforeSettings = 1f;
+    private Coroutine damageFlashRoutine;
     public UpgradeScreenConfig ConfigAsset => upgradeConfig;
 
     private void Awake()
@@ -54,6 +60,7 @@ public class UIManager : MonoBehaviour
         currencyView.BindEvolutionButton(ShowEvolutionPanel);
         PlayerUpgradeSystem.Initialize(upgradeConfig);
         ClosePerksCardInfoPanel();
+        SetDamageImageAlpha(0f);
 
         if (FTUEController.IsCompleted)
         {
@@ -171,14 +178,14 @@ public class UIManager : MonoBehaviour
             () => CollectGameCoinsAndReturnHome(coins, 2, elixirReward, 2, failPreviewPanelView.Hide));
     }
 
-    public void ShowPerksCardInfoPanel(PowerCardDefinition cardData)
+    public void ShowPerksCardInfoPanel(PowerCardDefinition cardData, Sprite cardBackgroundSprite)
     {
         if (perksCardInfoPanel == null || cardData == null)
         {
             return;
         }
 
-        perksCardInfoPanel.Show(cardData, ClosePerksCardInfoPanel);
+        perksCardInfoPanel.Show(cardData, cardBackgroundSprite, ClosePerksCardInfoPanel);
     }
 
     public void ClosePerksCardInfoPanel()
@@ -189,6 +196,26 @@ public class UIManager : MonoBehaviour
         }
 
         perksCardInfoPanel.Hide();
+    }
+
+    public void PlayDamageScreenFlash()
+    {
+        if (damageImage == null)
+        {
+            return;
+        }
+
+        if (damageFlashRoutine != null)
+        {
+            StopCoroutine(damageFlashRoutine);
+        }
+
+        if (!damageImage.gameObject.activeSelf)
+        {
+            damageImage.gameObject.SetActive(true);
+        }
+
+        damageFlashRoutine = StartCoroutine(DamageScreenFlashRoutine());
     }
 
     /*  private void BindFlowButtons()
@@ -290,6 +317,42 @@ public class UIManager : MonoBehaviour
         Time.timeScale = timeScaleBeforeSettings <= 0f ? 1f : timeScaleBeforeSettings;
         WeaponRotator.SetGameplayMotionEnabled(currentScreenPanel == gameViewPanel);
         WeaponUpgradeController.SetGameplayAnimationsEnabled(currentScreenPanel == gameViewPanel);
+    }
+
+    private IEnumerator DamageScreenFlashRoutine()
+    {
+        yield return FadeDamageImageAlpha(0f, damageFlashMaxAlpha, damageFlashFadeInDuration);
+        yield return FadeDamageImageAlpha(damageFlashMaxAlpha, 0f, damageFlashFadeOutDuration);
+        SetDamageImageAlpha(0f);
+        damageFlashRoutine = null;
+    }
+
+    private IEnumerator FadeDamageImageAlpha(float fromAlpha, float toAlpha, float duration)
+    {
+        float elapsed = 0f;
+        float safeDuration = Mathf.Max(0.01f, duration);
+
+        while (elapsed < safeDuration)
+        {
+            float progress = Mathf.Clamp01(elapsed / safeDuration);
+            SetDamageImageAlpha(Mathf.Lerp(fromAlpha, toAlpha, progress));
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        SetDamageImageAlpha(toAlpha);
+    }
+
+    private void SetDamageImageAlpha(float alpha)
+    {
+        if (damageImage == null)
+        {
+            return;
+        }
+
+        Color color = damageImage.color;
+        color.a = Mathf.Clamp01(alpha);
+        damageImage.color = color;
     }
 
     private void CollectGameCoinsAndReturnHome(int coins, int multiplier, int elixirReward, int elixirMultiplier, UnityEngine.Events.UnityAction hidePanel)

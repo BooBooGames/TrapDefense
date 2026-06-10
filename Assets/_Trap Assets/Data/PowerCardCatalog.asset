@@ -76,30 +76,30 @@ MonoBehaviour:
   - cardId: 11
     cardType: Common
     cardName: Second wind
-    cardImage: {fileID: 21300000, guid: bba37440f470c44109bd42117f27a6c9, type: 3}
+    cardImage: {fileID: 21300000, guid: 89861752bcf16460b8821e99e47ef603, type: 3}
     descriptions:
     - At 1 HP base recovers 10 HP once
   - cardId: 12
     cardType: Common
     cardName: Sharp traps
-    cardImage: {fileID: 21300000, guid: 9938c3c2ec51e4bb8a06fcfce15657fa, type: 3}
+    cardImage: {fileID: 21300000, guid: 50bd68a352eb641edb162ace52ba8de9, type: 3}
     descriptions:
     - +8% trap damage
   - cardId: 13
     cardType: Common
     cardName: Scrap collector
-    cardImage: {fileID: 21300000, guid: eae3ab270db604ca4a71b2884688507a, type: 3}
+    cardImage: {fileID: 21300000, guid: 1a7c4a5201ed94b39aa6c0c8d4f20278, type: 3}
     descriptions:
     - 5% chance to drop +1 gear on enemy kill
   - cardId: 14
     cardType: Epic
     cardName: Resource mastery
-    cardImage: {fileID: 21300000, guid: 2f3f24521a11e4460b67b2a0de326f9b, type: 3}
+    cardImage: {fileID: 21300000, guid: 8ea971430a7f141808c7534e9abc8e5e, type: 3}
     descriptions:
     - +25% gear production -10% upgrade costs
   - cardId: 15
     cardType: Common
     cardName: Tough base
-    cardImage: {fileID: 21300000, guid: 8ec02b6483ff94f4186a964fe42489cf, type: 3}
+    cardImage: {fileID: 21300000, guid: 64f5cc5326ef74db1825104e1db3d641, type: 3}
     descriptions:
     - +5 base HP

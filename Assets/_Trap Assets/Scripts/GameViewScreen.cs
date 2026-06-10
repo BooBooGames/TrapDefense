@@ -260,6 +260,7 @@ public class GameViewScreen : MonoBehaviour
         }
 
         currentPlayerHealth = Mathf.Max(0, currentPlayerHealth - amount);
+        UIManager.Instance?.PlayDamageScreenFlash();
         if (!TryApplySecondWind())
         {
             UpdatePlayerHealthUi();

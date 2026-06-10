@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 public class PerksCardInfoPanel : MonoBehaviour
 {
-    public Image cardImage;
-    public TextMeshProUGUI cardNameText, cardLevelText, cardDescriptionText, upgradeDescriptionText;
+    public Sprite commonTitleSprite, rareTitleSprite, epicTitleSprite, legendaryTitleSprite;
+    public Image titleImage, cardBgImage, cardImage, fillerImage;
+    public TextMeshProUGUI cardNameText, cardTypeText, cardLevelText, fillerText, cardDescriptionText, upgradeDescriptionText;
     public Button upgradeButton, CloseButton;
 
-    public void Show(PowerCardDefinition cardData, UnityAction onClose)
+    public void Show(PowerCardDefinition cardData, Sprite cardBackgroundSprite, UnityAction onClose)
     {
         if (cardData == null)
         {
@@ -18,16 +19,12 @@ public class PerksCardInfoPanel : MonoBehaviour
 
         gameObject.SetActive(true);
 
+        SetImage(titleImage, GetTitleSprite(cardData.cardType));
+        SetImage(cardBgImage, cardBackgroundSprite);
         SetImage(cardImage, cardData.cardImage);
         SetText(cardNameText, cardData.cardName);
-        SetText(cardLevelText, cardData.cardType);
+        SetText(cardTypeText, cardData.cardType);
         SetText(cardDescriptionText, FormatDescriptions(cardData));
-        SetText(upgradeDescriptionText, string.Empty);
-
-        if (upgradeDescriptionText != null)
-        {
-            upgradeDescriptionText.gameObject.SetActive(false);
-        }
 
         if (upgradeButton != null)
         {
@@ -44,6 +41,27 @@ public class PerksCardInfoPanel : MonoBehaviour
     public void Hide()
     {
         gameObject.SetActive(false);
+    }
+
+    private Sprite GetTitleSprite(string cardType)
+    {
+        switch (NormalizeCardType(cardType))
+        {
+            case "rare":
+                return rareTitleSprite != null ? rareTitleSprite : commonTitleSprite;
+            case "epic":
+                return epicTitleSprite != null ? epicTitleSprite : commonTitleSprite;
+            case "legendary":
+                return legendaryTitleSprite != null ? legendaryTitleSprite : commonTitleSprite;
+            case "common":
+            default:
+                return commonTitleSprite;
+        }
+    }
+
+    private static string NormalizeCardType(string cardType)
+    {
+        return string.IsNullOrWhiteSpace(cardType) ? string.Empty : cardType.Trim().ToLowerInvariant();
     }
 
     private static string FormatDescriptions(PowerCardDefinition cardData)

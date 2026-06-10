@@ -193,17 +193,18 @@ public class CardScreenView : MonoBehaviour
         }
 
         PowerCardDefinition selectedCard = card;
-        cardButton.onClick.AddListener(() => HandleCardClicked(selectedCard));
+        Sprite selectedCardBackgroundSprite = cardData.bgImage.sprite;
+        cardButton.onClick.AddListener(() => HandleCardClicked(selectedCard, selectedCardBackgroundSprite));
     }
 
-    private void HandleCardClicked(PowerCardDefinition card)
+    private void HandleCardClicked(PowerCardDefinition card, Sprite cardBackgroundSprite)
     {
         if (card == null || UIManager.Instance == null)
         {
             return;
         }
 
-        UIManager.Instance.ShowPerksCardInfoPanel(card);
+        UIManager.Instance.ShowPerksCardInfoPanel(card, cardBackgroundSprite);
     }
 
     private void SetImage(Image image, Sprite sprite)
