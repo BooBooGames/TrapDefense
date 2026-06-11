@@ -21,6 +21,11 @@ public class SaveGameData
     public bool wave4ChestClaimed;
     public bool wave8ChestClaimed;
 
+    public bool freeSpeedBoostActive;
+    public int freeSpeedBoostRemainingSeconds;
+    public long freeSpeedBoostExpirationUtc;
+    public bool unlimitedSpeedBoostActive;
+
     public bool musicEnabled = true;
     public bool soundEnabled = true;
     public bool hapticEnabled = true;

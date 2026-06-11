@@ -45,6 +45,7 @@ public class UIManager : MonoBehaviour
     public FTUEController ftueController;
     private GameObject currentScreenPanel;
     private bool settingsOpenedFromGameView;
+    private bool xSpeedPanelOpenedFromGameView;
     private float timeScaleBeforeSettings = 1f;
     private Coroutine damageFlashRoutine;
     public UpgradeScreenConfig ConfigAsset => upgradeConfig;
@@ -52,6 +53,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        GameplaySpeedSystem.Initialize();
         // BindFlowButtons();
 
         bottomHudController = bottomHudPanel.GetComponent<BottomHudView>();
@@ -62,7 +64,9 @@ public class UIManager : MonoBehaviour
         failPreviewPanelView = failPreviewPanel.GetComponent<FailPreviewPanel>();
         evolutionScreenView = evolutionScreenPanel.GetComponent<EvolutionScreenView>();
         currencyView.BindEvolutionButton(ShowEvolutionPanel);
+        BindXSpeedPanel();
         PlayerUpgradeSystem.Initialize(upgradeConfig);
+        CloseXSpeedPanel(false);
         ClosePerksCardInfoPanel();
         CloseSummonScreen();
         SetDamageImageAlpha(0f);
@@ -77,8 +81,38 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        GameplaySpeedSystem.Tick();
+
+        if (currentScreenPanel == gameViewPanel && Time.timeScale > 0f)
+        {
+            GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
+        }
+    }
+
+    private void OnApplicationPause(bool pauseStatus)
+    {
+        if (pauseStatus)
+        {
+            GameplaySpeedSystem.Flush();
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        GameplaySpeedSystem.Flush();
+    }
+
     private void OnDestroy()
     {
+        GameplaySpeedSystem.Flush();
+
+        if (xSpeedPanel != null)
+        {
+            xSpeedPanel.Unbind();
+        }
+
         if (Instance == this)
         {
             Instance = null;
@@ -157,6 +191,42 @@ public class UIManager : MonoBehaviour
     public void RefreshGameSceneWeaponUnlockState()
     {
         gameViewScreen.RefreshSceneWeaponUnlockState();
+    }
+
+    public void ShowXSpeedPanel()
+    {
+        if (xSpeedPanel == null)
+        {
+            return;
+        }
+
+        xSpeedPanelOpenedFromGameView = currentScreenPanel == gameViewPanel;
+
+        if (xSpeedPanelOpenedFromGameView)
+        {
+            Time.timeScale = 0f;
+            WeaponRotator.SetGameplayMotionEnabled(false);
+            WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
+        }
+
+        SetPanelActive(xSpeedPanel.gameObject, true);
+        SoundManager.Instance.PlayButtonClickSound();
+    }
+
+    public void CloseXSpeedPanel(bool playSound = true)
+    {
+        if (xSpeedPanel == null)
+        {
+            return;
+        }
+
+        SetPanelActive(xSpeedPanel.gameObject, false);
+        ResumeGameIfXSpeedPanelPaused();
+
+        if (playSound)
+        {
+            SoundManager.Instance.PlayButtonClickSound();
+        }
     }
 
     public void ShowWinPreview(int coins, int elixirReward = 0)
@@ -295,6 +365,7 @@ public class UIManager : MonoBehaviour
         SetPanelActive(winPreviewPanel, false);
         SetPanelActive(failPreviewPanel, false);
         SetPanelActive(chestPreviewPanel, false);
+        CloseXSpeedPanel(false);
         SetPanelActive(cardUpgradePanel, activePanel == cardUpgradePanel);
         SetPanelActive(ageChangePanel, false);
         SetPanelActive(FTUEPanel, false);
@@ -321,6 +392,7 @@ public class UIManager : MonoBehaviour
         SetPanelActive(winPreviewPanel, false);
         SetPanelActive(failPreviewPanel, false);
         SetPanelActive(chestPreviewPanel, false);
+        CloseXSpeedPanel(false);
         SetPanelActive(cardUpgradePanel, false);
         SetPanelActive(ageChangePanel, false);
         SetPanelActive(FTUEPanel, true);
@@ -338,6 +410,48 @@ public class UIManager : MonoBehaviour
     private void SetPanelActive(GameObject panel, bool isActive)
     {
         panel.SetActive(isActive);
+    }
+
+    private void BindXSpeedPanel()
+    {
+        if (xSpeedPanel == null)
+        {
+            return;
+        }
+
+        xSpeedPanel.Bind(ActivateFreeXSpeedBoost, ActivateUnlimitedXSpeedBoost, () => CloseXSpeedPanel());
+    }
+
+    private void ActivateFreeXSpeedBoost()
+    {
+        GameplaySpeedSystem.ActivateFreeBoost();
+        CloseXSpeedPanel();
+    }
+
+    private void ActivateUnlimitedXSpeedBoost()
+    {
+        GameplaySpeedSystem.ActivateUnlimitedBoost();
+        CloseXSpeedPanel();
+    }
+
+    private void ResumeGameIfXSpeedPanelPaused()
+    {
+        if (!xSpeedPanelOpenedFromGameView)
+        {
+            return;
+        }
+
+        xSpeedPanelOpenedFromGameView = false;
+
+        if (currentScreenPanel == gameViewPanel)
+        {
+            GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
+            WeaponRotator.SetGameplayMotionEnabled(true);
+            WeaponUpgradeController.SetGameplayAnimationsEnabled(true);
+            return;
+        }
+
+        Time.timeScale = 1f;
     }
 
     private void UpdateGameViewBGImageVisibility()
@@ -366,7 +480,15 @@ public class UIManager : MonoBehaviour
         }
 
         settingsOpenedFromGameView = false;
-        Time.timeScale = timeScaleBeforeSettings <= 0f ? 1f : timeScaleBeforeSettings;
+        if (currentScreenPanel == gameViewPanel)
+        {
+            GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
+        }
+        else
+        {
+            Time.timeScale = timeScaleBeforeSettings <= 0f ? 1f : timeScaleBeforeSettings;
+        }
+
         WeaponRotator.SetGameplayMotionEnabled(currentScreenPanel == gameViewPanel);
         WeaponUpgradeController.SetGameplayAnimationsEnabled(currentScreenPanel == gameViewPanel);
     }
