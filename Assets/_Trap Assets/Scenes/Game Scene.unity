@@ -64567,6 +64567,7 @@ MonoBehaviour:
   freeButton: {fileID: 1670807408}
   unlimitedButton: {fileID: 1875644443}
   closeButton: {fileID: 1304228311}
+  freeButtonText: {fileID: 1225661893}
 --- !u!1 &2004667206
 GameObject:
   m_ObjectHideFlags: 0

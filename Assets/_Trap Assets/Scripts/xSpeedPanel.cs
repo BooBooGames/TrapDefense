@@ -1,10 +1,12 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class xSpeedPanel : MonoBehaviour
 {
     public Button freeButton, unlimitedButton, closeButton;
+    public TextMeshProUGUI freeButtonText;
 
     private Action onFreeButtonClicked;
     private Action onUnlimitedButtonClicked;
