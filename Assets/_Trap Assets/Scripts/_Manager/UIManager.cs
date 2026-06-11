@@ -28,6 +28,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject FTUEPanel;
     [SerializeField] private PerksCardInfoPanel perksCardInfoPanel;
     [SerializeField] private SummonScreenView summonScreenView;
+    [SerializeField] private xSpeedPanel xSpeedPanel;
     [SerializeField] private Image damageImage;
     [SerializeField][Range(0f, 1f)] private float damageFlashMaxAlpha = 0.55f;
     [SerializeField][Min(0.01f)] private float damageFlashFadeInDuration = 0.08f;
