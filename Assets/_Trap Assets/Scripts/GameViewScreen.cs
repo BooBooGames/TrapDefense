@@ -92,6 +92,7 @@ public class GameViewScreen : MonoBehaviour
     {
         ApplyPersistentUpgradeState();
         BindWeaponUpgradeUi();
+        BindXGameplayButton();
         PlayerUpgradeSystem.UpgradeStateChanged -= HandlePlayerUpgradeStateChanged;
         PlayerUpgradeSystem.UpgradeStateChanged += HandlePlayerUpgradeStateChanged;
 
@@ -107,6 +108,7 @@ public class GameViewScreen : MonoBehaviour
     private void OnDisable()
     {
         PlayerUpgradeSystem.UpgradeStateChanged -= HandlePlayerUpgradeStateChanged;
+        UnbindXGameplayButton();
         BindWeaponUpgradeStateEvents(false);
         StopUiFeedbackAnimations();
 
@@ -145,7 +147,7 @@ public class GameViewScreen : MonoBehaviour
 
         if (!gameOverTriggered)
         {
-            Time.timeScale = 1f;
+            GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
         }
 
         gameOverPanel.SetActive(false);
@@ -193,7 +195,7 @@ public class GameViewScreen : MonoBehaviour
 
         if (pauseOnGameOver)
         {
-            Time.timeScale = 1f;
+            GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
         }
 
         UpdatePlayerHealthUi();
@@ -364,6 +366,27 @@ public class GameViewScreen : MonoBehaviour
             chest2TriggerImage.SetActive(false);
         }
         chest2TriggerImage.transform.parent.gameObject.SetActive(isChest2Available);
+    }
+
+    private void BindXGameplayButton()
+    {
+        if (xGamePlayButton == null || UIManager.Instance == null)
+        {
+            return;
+        }
+
+        xGamePlayButton.onClick.RemoveListener(UIManager.Instance.ShowXSpeedPanel);
+        xGamePlayButton.onClick.AddListener(UIManager.Instance.ShowXSpeedPanel);
+    }
+
+    private void UnbindXGameplayButton()
+    {
+        if (xGamePlayButton == null || UIManager.Instance == null)
+        {
+            return;
+        }
+
+        xGamePlayButton.onClick.RemoveListener(UIManager.Instance.ShowXSpeedPanel);
     }
 
     private void BindWeaponUpgradeUi()
