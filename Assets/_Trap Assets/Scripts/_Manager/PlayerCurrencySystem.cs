@@ -140,6 +140,25 @@ public static class PlayerCurrencySystem
         NotifyElixirChanged();
     }
 
+    public static bool TrySpendElixir(int amount)
+    {
+        if (amount <= 0)
+        {
+            return true;
+        }
+
+        EnsureInitialized();
+        if (elixir < amount)
+        {
+            return false;
+        }
+
+        elixir -= amount;
+        SaveElixir();
+        NotifyElixirChanged();
+        return true;
+    }
+
     public static void ReloadElixirFromSave()
     {
         SaveGameData saveData = GameSaveSystem.Load();

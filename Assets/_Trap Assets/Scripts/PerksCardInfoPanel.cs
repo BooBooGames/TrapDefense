@@ -28,7 +28,6 @@ public class PerksCardInfoPanel : MonoBehaviour
         if (upgradeButton != null)
         {
             upgradeButton.gameObject.SetActive(true);
-            upgradeButton.interactable = true;
             upgradeButton.onClick.RemoveAllListeners();
             upgradeButton.onClick.AddListener(HandleUpgradeClicked);
         }
@@ -52,8 +51,10 @@ public class PerksCardInfoPanel : MonoBehaviour
             return;
         }
 
-        PowerCardUpgradeSystem.UpgradeCard(currentCardData);
-        RefreshCardInfo();
+        if (PowerCardUpgradeSystem.TryUpgradeCard(currentCardData, out _))
+        {
+            RefreshCardInfo();
+        }
     }
 
     private void RefreshCardInfo()
@@ -72,6 +73,17 @@ public class PerksCardInfoPanel : MonoBehaviour
         SetText(cardTypeText, currentCardData.cardType);
         SetText(cardLevelText, $"Lv. {currentLevel}");
         SetText(cardDescriptionText, FormatDescriptions(PowerCardUpgradeSystem.GetCurrentDescriptions(currentCardData)));
+        SetText(fillerText, PowerCardUpgradeSystem.GetCardCopyProgressText(currentCardData));
+        if (fillerImage != null)
+        {
+            fillerImage.fillAmount = PowerCardUpgradeSystem.GetCardCopyFillAmount(currentCardData);
+        }
+
+        if (upgradeButton != null)
+        {
+            upgradeButton.interactable = PowerCardUpgradeSystem.CanUpgradeCard(currentCardData);
+        }
+
         if (upgradeDescriptionText != null)
         {
             upgradeDescriptionText.gameObject.SetActive(true);

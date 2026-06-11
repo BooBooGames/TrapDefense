@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -61,6 +63,7 @@ public class UIManager : MonoBehaviour
         currencyView.BindEvolutionButton(ShowEvolutionPanel);
         PlayerUpgradeSystem.Initialize(upgradeConfig);
         ClosePerksCardInfoPanel();
+        CloseSummonScreen();
         SetDamageImageAlpha(0f);
 
         if (FTUEController.IsCompleted)
@@ -199,6 +202,52 @@ public class UIManager : MonoBehaviour
         perksCardInfoPanel.Hide();
     }
 
+    public void ShowSummonScreen(
+        PowerCardDefinition cardData,
+        Sprite cardBackgroundSprite,
+        Func<bool> canSummonX1,
+        Func<bool> canSummonX10,
+        UnityAction onSummonX1,
+        UnityAction onSummonX10,
+        UnityAction onContinue,
+        UnityAction onRevealComplete)
+    {
+        if (summonScreenView == null || cardData == null)
+        {
+            return;
+        }
+
+        summonScreenView.Show(
+            cardData,
+            cardBackgroundSprite,
+            canSummonX1,
+            canSummonX10,
+            onSummonX1,
+            onSummonX10,
+            onContinue,
+            onRevealComplete);
+    }
+
+    public void RefreshSummonScreenButtonStates()
+    {
+        if (summonScreenView == null || !summonScreenView.gameObject.activeSelf)
+        {
+            return;
+        }
+
+        summonScreenView.RefreshButtonStates();
+    }
+
+    public void CloseSummonScreen()
+    {
+        if (summonScreenView == null)
+        {
+            return;
+        }
+
+        summonScreenView.Hide();
+    }
+
     public void PlayDamageScreenFlash()
     {
         if (damageImage == null)
@@ -249,6 +298,7 @@ public class UIManager : MonoBehaviour
         SetPanelActive(ageChangePanel, false);
         SetPanelActive(FTUEPanel, false);
         ClosePerksCardInfoPanel();
+        CloseSummonScreen();
         UpdateGameViewBGImageVisibility();
     }
 

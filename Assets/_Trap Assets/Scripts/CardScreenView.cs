@@ -31,6 +31,8 @@ public class CardScreenView : MonoBehaviour
     {
         PlayerCurrencySystem.ElixirChanged += HandleElixirChanged;
         PowerCardUpgradeSystem.CardLevelChanged += HandleCardLevelChanged;
+        PowerCardUpgradeSystem.CardCopiesChanged += HandleCardCopiesChanged;
+        BindSummonButtons();
         RefreshCardData();
         RefreshSummonButtonStates();
     }
@@ -39,16 +41,38 @@ public class CardScreenView : MonoBehaviour
     {
         PlayerCurrencySystem.ElixirChanged -= HandleElixirChanged;
         PowerCardUpgradeSystem.CardLevelChanged -= HandleCardLevelChanged;
+        PowerCardUpgradeSystem.CardCopiesChanged -= HandleCardCopiesChanged;
     }
 
     private void HandleElixirChanged(int _)
     {
         RefreshSummonButtonStates();
+        UIManager.Instance?.RefreshSummonScreenButtonStates();
     }
 
     private void HandleCardLevelChanged(PowerCardDefinition _, int __)
     {
         RefreshCardData();
+    }
+
+    private void HandleCardCopiesChanged(PowerCardDefinition _, int __)
+    {
+        RefreshCardData();
+    }
+
+    private void BindSummonButtons()
+    {
+        if (summonx1Button != null)
+        {
+            summonx1Button.onClick.RemoveListener(HandleSummonX1Clicked);
+            summonx1Button.onClick.AddListener(HandleSummonX1Clicked);
+        }
+
+        if (summonx10Button != null)
+        {
+            summonx10Button.onClick.RemoveListener(HandleSummonX10Clicked);
+            summonx10Button.onClick.AddListener(HandleSummonX10Clicked);
+        }
     }
 
     private void RefreshSummonButtonStates()
@@ -65,6 +89,125 @@ public class CardScreenView : MonoBehaviour
         {
             summonx10Button.interactable = currentElixir >= SummonX10ElixirCost;
         }
+    }
+
+    private void HandleSummonX1Clicked()
+    {
+        TryStartSummon(1);
+    }
+
+    private void HandleSummonX10Clicked()
+    {
+        TryStartSummon(10);
+    }
+
+    private bool TryStartSummon(int summonCount)
+    {
+        PowerCardDefinition[] summonableCards = GetSummonableCards();
+        if (summonableCards.Length == 0)
+        {
+            return false;
+        }
+
+        if (UIManager.Instance == null)
+        {
+            return false;
+        }
+
+        int summonCost = GetSummonCost(summonCount);
+        if (!PlayerCurrencySystem.TrySpendElixir(summonCost))
+        {
+            RefreshSummonButtonStates();
+            UIManager.Instance?.RefreshSummonScreenButtonStates();
+            return false;
+        }
+
+        List<PowerCardDefinition> drawnCards = DrawRandomCards(summonableCards, summonCount);
+        if (drawnCards.Count == 0)
+        {
+            PlayerCurrencySystem.AddElixir(summonCost);
+            return false;
+        }
+
+        PowerCardDefinition displayedCard = drawnCards[drawnCards.Count - 1];
+        Sprite cardBackgroundSprite = GetCardBackgroundSprite(displayedCard.cardType);
+
+        UIManager.Instance.ShowSummonScreen(
+            displayedCard,
+            cardBackgroundSprite,
+            CanSummonX1,
+            CanSummonX10,
+            HandleSummonX1Clicked,
+            HandleSummonX10Clicked,
+            HandleSummonContinueClicked,
+            () => CompleteSummon(drawnCards));
+
+        RefreshSummonButtonStates();
+        return true;
+    }
+
+    private void CompleteSummon(List<PowerCardDefinition> drawnCards)
+    {
+        for (int i = 0; i < drawnCards.Count; i++)
+        {
+            PowerCardUpgradeSystem.AddCardCopies(drawnCards[i], 1);
+        }
+
+        RefreshCardData();
+        RefreshSummonButtonStates();
+        UIManager.Instance?.RefreshSummonScreenButtonStates();
+    }
+
+    private void HandleSummonContinueClicked()
+    {
+        UIManager.Instance?.CloseSummonScreen();
+        RefreshCardData();
+        RefreshSummonButtonStates();
+    }
+
+    private bool CanSummonX1()
+    {
+        return PlayerCurrencySystem.Elixir >= SummonX1ElixirCost;
+    }
+
+    private bool CanSummonX10()
+    {
+        return PlayerCurrencySystem.Elixir >= SummonX10ElixirCost;
+    }
+
+    private int GetSummonCost(int summonCount)
+    {
+        return summonCount >= 10 ? SummonX10ElixirCost : SummonX1ElixirCost;
+    }
+
+    private PowerCardDefinition[] GetSummonableCards()
+    {
+        PowerCardCatalog catalog = ResolvePowerCardCatalog();
+        PowerCardDefinition[] cards = catalog != null && catalog.Cards != null ? catalog.Cards : Array.Empty<PowerCardDefinition>();
+        List<PowerCardDefinition> summonableCards = new List<PowerCardDefinition>();
+
+        for (int i = 0; i < cards.Length; i++)
+        {
+            if (cards[i] != null)
+            {
+                summonableCards.Add(cards[i]);
+            }
+        }
+
+        return summonableCards.ToArray();
+    }
+
+    private List<PowerCardDefinition> DrawRandomCards(PowerCardDefinition[] summonableCards, int summonCount)
+    {
+        List<PowerCardDefinition> drawnCards = new List<PowerCardDefinition>();
+        int drawCount = Mathf.Max(1, summonCount);
+
+        for (int i = 0; i < drawCount; i++)
+        {
+            drawnCards.Add(summonableCards[UnityEngine.Random.Range(0, summonableCards.Length)]);
+        }
+
+        return drawnCards;
     }
 
     private void RefreshCardData()
@@ -121,7 +264,7 @@ public class CardScreenView : MonoBehaviour
         SetImage(cardData.iconImage, card.cardImage);
         SetImage(cardData.levelBgImage, GetLevelBackgroundSprite(card.cardType));
         SetText(cardData.levelText, $"Lv. {PowerCardUpgradeSystem.GetCardLevel(card)}");
-        SetText(cardData.countText, string.Empty);
+        SetText(cardData.countText, PowerCardUpgradeSystem.GetCardCopyProgressText(card));
         BindCardButton(cardData, card);
     }
 

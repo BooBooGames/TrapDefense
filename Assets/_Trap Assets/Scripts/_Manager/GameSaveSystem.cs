@@ -14,6 +14,7 @@ public class SaveGameData
     public int gearFlowLevel;
     public int baseHealthLevel;
     public PowerCardLevelSaveData[] powerCardLevels;
+    public PowerCardCopySaveData[] powerCardCopies;
     public ChestSlotSaveData[] chestSlots;
     public int currentLevel = 1;
     public int chestRewardLevel = 1;
@@ -35,6 +36,13 @@ public class PowerCardLevelSaveData
 {
     public string cardId;
     public int level = 1;
+}
+
+[Serializable]
+public class PowerCardCopySaveData
+{
+    public string cardId;
+    public int count;
 }
 
 [Serializable]

@@ -5,6 +5,7 @@ using UnityEngine;
 public static class PowerCardUpgradeSystem
 {
     private const int DefaultLevel = 1;
+    public const int CopiesRequiredForUpgrade = 4;
 
     private const string TrapAcceleratorId = "1";
     private const string TrapAcceleratorName = "Trap Accelerator";
@@ -38,11 +39,13 @@ public static class PowerCardUpgradeSystem
     private const string ToughBaseName = "Tough Base";
 
     public static event Action<PowerCardDefinition, int> CardLevelChanged;
+    public static event Action<PowerCardDefinition, int> CardCopiesChanged;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStaticState()
     {
         CardLevelChanged = null;
+        CardCopiesChanged = null;
     }
 
     public static int GetCardLevel(PowerCardDefinition cardData)
@@ -50,22 +53,25 @@ public static class PowerCardUpgradeSystem
         return cardData == null ? DefaultLevel : GetCardLevel(cardData.cardId, cardData.cardName);
     }
 
-    public static int UpgradeCard(PowerCardDefinition cardData)
+    public static bool TryUpgradeCard(PowerCardDefinition cardData, out int newLevel)
     {
+        newLevel = GetCardLevel(cardData);
         if (cardData == null)
         {
-            return DefaultLevel;
+            return false;
         }
 
         string saveKey = GetSaveKey(cardData.cardId, cardData.cardName);
         if (string.IsNullOrWhiteSpace(saveKey))
         {
-            return DefaultLevel;
+            return false;
         }
 
         SaveGameData saveData = GameSaveSystem.Load();
         List<PowerCardLevelSaveData> savedLevels = new List<PowerCardLevelSaveData>(saveData.powerCardLevels ?? Array.Empty<PowerCardLevelSaveData>());
+        List<PowerCardCopySaveData> savedCopies = new List<PowerCardCopySaveData>(saveData.powerCardCopies ?? Array.Empty<PowerCardCopySaveData>());
         PowerCardLevelSaveData levelData = null;
+        PowerCardCopySaveData copyData = null;
 
         for (int i = 0; i < savedLevels.Count; i++)
         {
@@ -76,18 +82,97 @@ public static class PowerCardUpgradeSystem
             }
         }
 
+        for (int i = 0; i < savedCopies.Count; i++)
+        {
+            if (savedCopies[i] != null && string.Equals(savedCopies[i].cardId, saveKey, StringComparison.OrdinalIgnoreCase))
+            {
+                copyData = savedCopies[i];
+                break;
+            }
+        }
+
+        if (copyData == null || copyData.count < CopiesRequiredForUpgrade)
+        {
+            return false;
+        }
+
         if (levelData == null)
         {
             levelData = new PowerCardLevelSaveData { cardId = saveKey, level = DefaultLevel };
             savedLevels.Add(levelData);
         }
 
+        copyData.count = Mathf.Max(0, copyData.count - CopiesRequiredForUpgrade);
         levelData.level = Mathf.Max(DefaultLevel, levelData.level) + 1;
+        newLevel = levelData.level;
         saveData.powerCardLevels = savedLevels.ToArray();
+        saveData.powerCardCopies = savedCopies.ToArray();
         GameSaveSystem.Save(saveData);
 
         CardLevelChanged?.Invoke(cardData, levelData.level);
-        return levelData.level;
+        CardCopiesChanged?.Invoke(cardData, copyData.count);
+        return true;
+    }
+
+    public static int AddCardCopies(PowerCardDefinition cardData, int amount)
+    {
+        if (cardData == null || amount <= 0)
+        {
+            return GetCardCopyCount(cardData);
+        }
+
+        string saveKey = GetSaveKey(cardData.cardId, cardData.cardName);
+        if (string.IsNullOrWhiteSpace(saveKey))
+        {
+            return 0;
+        }
+
+        SaveGameData saveData = GameSaveSystem.Load();
+        List<PowerCardCopySaveData> savedCopies = new List<PowerCardCopySaveData>(saveData.powerCardCopies ?? Array.Empty<PowerCardCopySaveData>());
+        PowerCardCopySaveData copyData = null;
+
+        for (int i = 0; i < savedCopies.Count; i++)
+        {
+            if (savedCopies[i] != null && string.Equals(savedCopies[i].cardId, saveKey, StringComparison.OrdinalIgnoreCase))
+            {
+                copyData = savedCopies[i];
+                break;
+            }
+        }
+
+        if (copyData == null)
+        {
+            copyData = new PowerCardCopySaveData { cardId = saveKey };
+            savedCopies.Add(copyData);
+        }
+
+        copyData.count = Mathf.Max(0, copyData.count + amount);
+        saveData.powerCardCopies = savedCopies.ToArray();
+        GameSaveSystem.Save(saveData);
+
+        CardCopiesChanged?.Invoke(cardData, copyData.count);
+        return copyData.count;
+    }
+
+    public static int GetCardCopyCount(PowerCardDefinition cardData)
+    {
+        return cardData == null ? 0 : GetCardCopyCount(cardData.cardId, cardData.cardName);
+    }
+
+    public static bool CanUpgradeCard(PowerCardDefinition cardData)
+    {
+        return GetCardCopyCount(cardData) >= CopiesRequiredForUpgrade;
+    }
+
+    public static float GetCardCopyFillAmount(PowerCardDefinition cardData)
+    {
+        return Mathf.Clamp01(GetCardCopyCount(cardData) / (float)CopiesRequiredForUpgrade);
+    }
+
+    public static string GetCardCopyProgressText(PowerCardDefinition cardData)
+    {
+        int displayCount = Mathf.Min(GetCardCopyCount(cardData), CopiesRequiredForUpgrade);
+        return $"{displayCount}/{CopiesRequiredForUpgrade}";
     }
 
     public static string[] GetCurrentDescriptions(PowerCardDefinition cardData)
@@ -279,6 +364,17 @@ public static class PowerCardUpgradeSystem
         return FindSavedLevel(saveKey);
     }
 
+    private static int GetCardCopyCount(string cardId, string cardName)
+    {
+        string saveKey = GetSaveKey(cardId, cardName);
+        if (string.IsNullOrWhiteSpace(saveKey))
+        {
+            return 0;
+        }
+
+        return FindSavedCopyCount(saveKey);
+    }
+
     private static int GetKnownCardLevel(string cardId, string cardName)
     {
         int idLevel = string.IsNullOrWhiteSpace(cardId) ? DefaultLevel : FindSavedLevel(cardId.Trim());
@@ -305,6 +401,27 @@ public static class PowerCardUpgradeSystem
         }
 
         return DefaultLevel;
+    }
+
+    private static int FindSavedCopyCount(string saveKey)
+    {
+        if (string.IsNullOrWhiteSpace(saveKey))
+        {
+            return 0;
+        }
+
+        SaveGameData saveData = GameSaveSystem.Load();
+        PowerCardCopySaveData[] savedCopies = saveData.powerCardCopies ?? Array.Empty<PowerCardCopySaveData>();
+        for (int i = 0; i < savedCopies.Length; i++)
+        {
+            PowerCardCopySaveData copyData = savedCopies[i];
+            if (copyData != null && string.Equals(copyData.cardId, saveKey, StringComparison.OrdinalIgnoreCase))
+            {
+                return Mathf.Max(0, copyData.count);
+            }
+        }
+
+        return 0;
     }
 
     private static string GetSaveKey(string cardId, string cardName)
