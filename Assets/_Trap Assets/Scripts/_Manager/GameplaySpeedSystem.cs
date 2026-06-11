@@ -67,7 +67,20 @@ public static class GameplaySpeedSystem
         {
             GameSaveSystem.Save(saveData);
         }
+    }
 
+    public static SaveGameData RefreshSavedState(bool saveChanges = true)
+    {
+        SaveGameData saveData = GameSaveSystem.Load();
+        ApplySaveData(saveData);
+        bool saveChanged = ValidateFreeBoost(saveData);
+
+        if (saveChanged && saveChanges)
+        {
+            GameSaveSystem.Save(saveData);
+        }
+
+        return saveData;
     }
 
     public static void ActivateFreeBoost()

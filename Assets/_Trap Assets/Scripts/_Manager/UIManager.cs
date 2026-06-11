@@ -85,7 +85,9 @@ public class UIManager : MonoBehaviour
     {
         GameplaySpeedSystem.Tick();
 
-        if (currentScreenPanel == gameViewPanel && Time.timeScale > 0f)
+        if (currentScreenPanel == gameViewPanel
+            && Time.timeScale > 0f
+            && (xSpeedPanel == null || !xSpeedPanel.gameObject.activeSelf))
         {
             GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
         }
@@ -209,6 +211,7 @@ public class UIManager : MonoBehaviour
             WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
         }
 
+        xSpeedPanel.RefreshState();
         SetPanelActive(xSpeedPanel.gameObject, true);
         SoundManager.Instance.PlayButtonClickSound();
     }
@@ -425,13 +428,23 @@ public class UIManager : MonoBehaviour
     private void ActivateFreeXSpeedBoost()
     {
         GameplaySpeedSystem.ActivateFreeBoost();
-        CloseXSpeedPanel();
+        xSpeedPanel.RefreshState();
+        PauseGameplayIfXSpeedPanelIsOpen();
     }
 
     private void ActivateUnlimitedXSpeedBoost()
     {
         GameplaySpeedSystem.ActivateUnlimitedBoost();
-        CloseXSpeedPanel();
+        xSpeedPanel.RefreshState();
+        PauseGameplayIfXSpeedPanelIsOpen();
+    }
+
+    private void PauseGameplayIfXSpeedPanelIsOpen()
+    {
+        if (xSpeedPanelOpenedFromGameView && xSpeedPanel != null && xSpeedPanel.gameObject.activeSelf)
+        {
+            Time.timeScale = 0f;
+        }
     }
 
     private void ResumeGameIfXSpeedPanelPaused()
