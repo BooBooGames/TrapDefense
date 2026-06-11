@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -83,6 +84,23 @@ public class EndPointTrigger : MonoBehaviour
         if (disableTriggerAfterGateBreak)
         {
             triggerCollider.enabled = false;
+        }
+        StartCoroutine(SetLogPhysicsAfterPlay());
+    }
+
+    private IEnumerator SetLogPhysicsAfterPlay()
+    {
+        yield return new WaitForSeconds(2f);
+
+        for (int i = 0; i < gateVisualRigidbodies.Count; i++)
+        {
+            if (gateVisualRigidbodies[i] != null)
+            {
+                gateVisualColliders[i].enabled = false;
+                // gateVisualRigidbodies[i].isKinematic = false;
+                gateVisualRigidbodies[i].useGravity = true;
+                // gateVisualRigidbodies[i].WakeUp();
+            }
         }
     }
 

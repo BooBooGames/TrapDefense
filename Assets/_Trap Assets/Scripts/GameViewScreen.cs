@@ -11,6 +11,7 @@ public class GameViewScreen : MonoBehaviour
     UpgradeScreenConfig upgradeConfig;
     CurrencyView currencyView;
 
+    public Button xGamePlayButton;
     public TextMeshProUGUI inGameCoinLabel;
     [SerializeField] private Image waveProgressBarFill;
     [SerializeField] private GameObject chestBG1, chestBG2, chest1TriggerImage, chest2TriggerImage;
