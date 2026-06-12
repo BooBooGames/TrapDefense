@@ -12308,11 +12308,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2034648453}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -4, y: -8.200012}
-  m_SizeDelta: {x: 400, y: 400}
-  m_Pivot: {x: 1, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 5, y: 32}
+  m_SizeDelta: {x: 512, y: 512}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &404339215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12333,7 +12333,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 618260391197d4099b4704c1bb64cbc1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 30b66bb2d25c237488dce1f248350293, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -33438,7 +33438,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1111428225
 RectTransform:
   m_ObjectHideFlags: 0
@@ -44775,11 +44775,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FTUEController
   allIcons:
-  - {fileID: 21300000, guid: 18518c00af04e47b3a37dbf830c9b135, type: 3}
-  - {fileID: 21300000, guid: 78adcc3c27e5f4459ba2c4496b01e4fa, type: 3}
-  - {fileID: 21300000, guid: 77f114155eebd4ed69cedc01b4d7e574, type: 3}
-  - {fileID: 21300000, guid: 122d0abcb31a74b159cc597499724035, type: 3}
-  - {fileID: 21300000, guid: 618260391197d4099b4704c1bb64cbc1, type: 3}
+  - {fileID: 21300000, guid: 30b66bb2d25c237488dce1f248350293, type: 3}
+  - {fileID: 21300000, guid: be4fa3b3fee4ca34ebf2f6179725e19c, type: 3}
+  - {fileID: 21300000, guid: 4c508dac50808dd47a61d50c623af98f, type: 3}
+  - {fileID: 21300000, guid: 28d5f2081bf32954a8e79c8af8d4aeb4, type: 3}
+  - {fileID: 21300000, guid: 70382a202315bb445b148d9b5ca12f5f, type: 3}
   allDescriptions:
   - ENEMIES ARE COMING FROM FRONT
   - SAVE YOUR WITH THE TRAP IN YOUR POSSESSION
@@ -45691,7 +45691,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1426481039
 RectTransform:
   m_ObjectHideFlags: 0
@@ -46180,11 +46180,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2034648453}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 55, y: 0}
-  m_SizeDelta: {x: 700, y: 280}
-  m_Pivot: {x: 0, y: 0.5}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -55, y: 0}
+  m_SizeDelta: {x: 553, y: 280}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1437974786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46205,7 +46205,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'ENEMIES ARE '
+  m_text: 'ENEMIES ARE ENEMIES ARE ENEMIES ARE ENEMIES ARE ENEMIES ARE ENEMIES ARE
+    ENEMIES ARE ENEMIES ARE ENEMIES ARE ENEMIES ARE ENEMIES ARE ENEMIES ARE ENEMIES
+    ARE '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f4b5e6139330b47f59e522dc55f705be, type: 2}
   m_sharedMaterial: {fileID: 3356854672400571278, guid: f4b5e6139330b47f59e522dc55f705be, type: 2}
@@ -46232,7 +46234,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 55
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
