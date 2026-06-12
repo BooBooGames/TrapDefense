@@ -95,6 +95,21 @@ public static class PlayerCurrencySystem
         return true;
     }
 
+    public static void ResetCoins()
+    {
+        EnsureInitialized();
+
+        if (coins == 0)
+        {
+            SaveCoins();
+            return;
+        }
+
+        coins = 0;
+        SaveCoins();
+        NotifyCurrencyChanged();
+    }
+
     public static void AddGems(int amount)
     {
         if (amount == 0)

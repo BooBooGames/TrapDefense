@@ -564,6 +564,7 @@ public class UIManager : MonoBehaviour
         CollectElixir(elixirReward, elixirMultiplier);
         ResetGameplaySessionData();
         LevelManager.Instance.LoadNextLevel();
+        PlayerCurrencySystem.ResetCoins();
         PlayerUpgradeSystem.ResetProgressionStateToDefaults(LevelManager.Instance.activeLevelInstance.upgradeScreenConfig);
         gameViewScreen.ResetSessionDataForNextLevel();
         Time.timeScale = 1f;
