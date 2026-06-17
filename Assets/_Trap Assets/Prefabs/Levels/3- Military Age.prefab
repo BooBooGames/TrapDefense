@@ -1349,6 +1349,7 @@ MonoBehaviour:
   zombieLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  passResetFrameGrace: 2
 --- !u!1 &2404246647686751349 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 111912, guid: 8118656e898f2fb4daa469e2393514dd, type: 3}
@@ -1765,6 +1766,7 @@ MonoBehaviour:
   zombieLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  passResetFrameGrace: 2
 --- !u!1 &4305981692818645264 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 111912, guid: 8118656e898f2fb4daa469e2393514dd, type: 3}
@@ -1886,7 +1888,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -331651790200047710, guid: 9e11d724d054ac643b9a200284452436, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.000015258788
+      value: -0.5599979
       objectReference: {fileID: 0}
     - target: {fileID: -331651790200047710, guid: 9e11d724d054ac643b9a200284452436, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -1898,7 +1900,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 260621442332053551, guid: 9e11d724d054ac643b9a200284452436, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.000015258788
+      value: -0.5599979
       objectReference: {fileID: 0}
     - target: {fileID: 260621442332053551, guid: 9e11d724d054ac643b9a200284452436, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -1930,7 +1932,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6718800618596465567, guid: 9e11d724d054ac643b9a200284452436, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.000015258788
+      value: -0.5599979
       objectReference: {fileID: 0}
     - target: {fileID: 6718800618596465567, guid: 9e11d724d054ac643b9a200284452436, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -2691,6 +2693,7 @@ MonoBehaviour:
   zombieLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  passResetFrameGrace: 2
 --- !u!1 &5939500751742744008 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 111912, guid: 8118656e898f2fb4daa469e2393514dd, type: 3}

@@ -22,7 +22,7 @@ MonoBehaviour:
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
-      count: 30
+      count: 25
       health: 1
       moveSpeed: 5
       coinReward: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
-      count: 40
+      count: 35
       health: 1
       moveSpeed: 5.4
       coinReward: 1
@@ -48,7 +48,7 @@ MonoBehaviour:
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
-      count: 50
+      count: 45
       health: 1
       moveSpeed: 5.8
       coinReward: 1
@@ -57,7 +57,7 @@ MonoBehaviour:
       killEffectPrefab: {fileID: 4571265055208692986, guid: 445b4482d95bb4718952934421862dfb, type: 3}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
-      count: 10
+      count: 7
       health: 2
       moveSpeed: 5.8
       coinReward: 2
@@ -70,7 +70,7 @@ MonoBehaviour:
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
-      count: 50
+      count: 45
       health: 1
       moveSpeed: 6.2
       coinReward: 1
@@ -79,7 +79,7 @@ MonoBehaviour:
       killEffectPrefab: {fileID: 4571265055208692986, guid: 445b4482d95bb4718952934421862dfb, type: 3}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
-      count: 20
+      count: 15
       health: 2
       moveSpeed: 6.2
       coinReward: 2
@@ -92,7 +92,7 @@ MonoBehaviour:
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
-      count: 50
+      count: 40
       health: 1
       moveSpeed: 6.6
       coinReward: 1
@@ -101,7 +101,7 @@ MonoBehaviour:
       killEffectPrefab: {fileID: 4571265055208692986, guid: 445b4482d95bb4718952934421862dfb, type: 3}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
-      count: 50
+      count: 40
       health: 2
       moveSpeed: 6.6
       coinReward: 2
@@ -110,7 +110,7 @@ MonoBehaviour:
       killEffectPrefab: {fileID: 4571265055208692986, guid: fb5a0ee305d9d4c7fbf65eb47a5af8e9, type: 3}
     - zombieTypeName: Tank
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
-      count: 40
+      count: 30
       health: 3
       moveSpeed: 6.6
       coinReward: 3
@@ -123,7 +123,7 @@ MonoBehaviour:
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
-      count: 70
+      count: 60
       health: 1
       moveSpeed: 7.2
       coinReward: 1
@@ -132,7 +132,7 @@ MonoBehaviour:
       killEffectPrefab: {fileID: 4571265055208692986, guid: 445b4482d95bb4718952934421862dfb, type: 3}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
-      count: 120
+      count: 100
       health: 2
       moveSpeed: 7.2
       coinReward: 2
@@ -141,7 +141,7 @@ MonoBehaviour:
       killEffectPrefab: {fileID: 4571265055208692986, guid: fb5a0ee305d9d4c7fbf65eb47a5af8e9, type: 3}
     - zombieTypeName: Tenk
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
-      count: 80
+      count: 70
       health: 3
       moveSpeed: 7.2
       coinReward: 3
@@ -154,7 +154,7 @@ MonoBehaviour:
     zombieEntries:
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
-      count: 240
+      count: 200
       health: 2
       moveSpeed: 7.6
       coinReward: 2
@@ -163,7 +163,7 @@ MonoBehaviour:
       killEffectPrefab: {fileID: 4571265055208692986, guid: fb5a0ee305d9d4c7fbf65eb47a5af8e9, type: 3}
     - zombieTypeName: Tank
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
-      count: 200
+      count: 150
       health: 2
       moveSpeed: 7.6
       coinReward: 3
@@ -176,7 +176,7 @@ MonoBehaviour:
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
-      count: 60
+      count: 40
       health: 1
       moveSpeed: 8
       coinReward: 1
@@ -185,7 +185,7 @@ MonoBehaviour:
       killEffectPrefab: {fileID: 4571265055208692986, guid: 445b4482d95bb4718952934421862dfb, type: 3}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
-      count: 255
+      count: 200
       health: 2
       moveSpeed: 8
       coinReward: 2
@@ -194,7 +194,7 @@ MonoBehaviour:
       killEffectPrefab: {fileID: 4571265055208692986, guid: fb5a0ee305d9d4c7fbf65eb47a5af8e9, type: 3}
     - zombieTypeName: Tank
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
-      count: 255
+      count: 200
       health: 3
       moveSpeed: 8
       coinReward: 3
@@ -207,7 +207,7 @@ MonoBehaviour:
     zombieEntries:
     - zombieTypeName: Walker
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
-      count: 70
+      count: 50
       health: 1
       moveSpeed: 8.4
       coinReward: 1
@@ -216,7 +216,7 @@ MonoBehaviour:
       killEffectPrefab: {fileID: 4571265055208692986, guid: 445b4482d95bb4718952934421862dfb, type: 3}
     - zombieTypeName: Runner
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
-      count: 315
+      count: 250
       health: 2
       moveSpeed: 8.4
       coinReward: 2
@@ -225,7 +225,7 @@ MonoBehaviour:
       killEffectPrefab: {fileID: 4571265055208692986, guid: fb5a0ee305d9d4c7fbf65eb47a5af8e9, type: 3}
     - zombieTypeName: Tank
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
-      count: 315
+      count: 250
       health: 3
       moveSpeed: 8.4
       coinReward: 3
