@@ -24,7 +24,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 25
       health: 1
-      moveSpeed: 5
+      moveSpeed: 6
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
@@ -37,7 +37,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 35
       health: 1
-      moveSpeed: 5.4
+      moveSpeed: 6.4
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
@@ -50,7 +50,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 45
       health: 1
-      moveSpeed: 5.8
+      moveSpeed: 6.8
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
@@ -59,7 +59,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 7
       health: 2
-      moveSpeed: 5.8
+      moveSpeed: 6.8
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 0.9
@@ -72,7 +72,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 45
       health: 1
-      moveSpeed: 6.2
+      moveSpeed: 7.2
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
@@ -81,7 +81,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 15
       health: 2
-      moveSpeed: 6.2
+      moveSpeed: 7.2
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 0.9
@@ -94,7 +94,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 40
       health: 1
-      moveSpeed: 6.6
+      moveSpeed: 7.6
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
@@ -103,7 +103,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 40
       health: 2
-      moveSpeed: 6.6
+      moveSpeed: 7.6
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 0.95
@@ -112,7 +112,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 30
       health: 3
-      moveSpeed: 6.6
+      moveSpeed: 7.6
       coinReward: 3
       gemReward: 0
       roadWidthUsage: 0.95
@@ -125,7 +125,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 60
       health: 1
-      moveSpeed: 7.2
+      moveSpeed: 8
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
@@ -134,7 +134,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 100
       health: 2
-      moveSpeed: 7.2
+      moveSpeed: 8
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 0.9
@@ -143,7 +143,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 70
       health: 3
-      moveSpeed: 7.2
+      moveSpeed: 8
       coinReward: 3
       gemReward: 0
       roadWidthUsage: 0.9
@@ -156,7 +156,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 200
       health: 2
-      moveSpeed: 7.6
+      moveSpeed: 8.4
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 1
@@ -165,7 +165,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 150
       health: 2
-      moveSpeed: 7.6
+      moveSpeed: 8.4
       coinReward: 3
       gemReward: 0
       roadWidthUsage: 0.9
@@ -178,7 +178,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 40
       health: 1
-      moveSpeed: 8
+      moveSpeed: 8.8
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
@@ -187,7 +187,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 200
       health: 2
-      moveSpeed: 8
+      moveSpeed: 8.8
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 1
@@ -196,7 +196,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 200
       health: 3
-      moveSpeed: 8
+      moveSpeed: 8.8
       coinReward: 3
       gemReward: 0
       roadWidthUsage: 0.9
@@ -209,7 +209,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: dda48530dc64544eb9f18ac1604dda8f, type: 3}
       count: 50
       health: 1
-      moveSpeed: 8.4
+      moveSpeed: 9
       coinReward: 1
       gemReward: 0
       roadWidthUsage: 1
@@ -218,7 +218,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: fdcef724acc7f4c1492a09721755788a, type: 3}
       count: 250
       health: 2
-      moveSpeed: 8.4
+      moveSpeed: 9
       coinReward: 2
       gemReward: 0
       roadWidthUsage: 1
@@ -227,7 +227,7 @@ MonoBehaviour:
       prefab: {fileID: 2614573586669108347, guid: d5b8e0a690eef49ec9e3e691efc8a684, type: 3}
       count: 250
       health: 3
-      moveSpeed: 8.4
+      moveSpeed: 9
       coinReward: 3
       gemReward: 0
       roadWidthUsage: 0.9
