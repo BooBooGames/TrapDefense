@@ -14,6 +14,9 @@ public static class PlayerCurrencySystem
     public static int Coins => coins;
     public static int Gems => gems;
     public static int Elixir => elixir;
+    public static bool RemoveAdsActive => GameSaveSystem.Load().removeAdsActive;
+    public static int SkipAds => Mathf.Max(0, GameSaveSystem.Load().skipAds);
+    public static int PermanentCoinMultiplier => Mathf.Max(1, GameSaveSystem.Load().permanentCoinMultiplier);
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStaticState()
@@ -187,6 +190,56 @@ public static class PlayerCurrencySystem
         {
             NotifyElixirChanged();
         }
+    }
+
+    public static void SetRemoveAdsActive(bool isActive)
+    {
+        SaveGameData saveData = GameSaveSystem.Load();
+        if (saveData.removeAdsActive == isActive)
+        {
+            return;
+        }
+
+        saveData.removeAdsActive = isActive;
+        GameSaveSystem.Save(saveData);
+    }
+
+    public static void AddSkipAds(int amount)
+    {
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        SaveGameData saveData = GameSaveSystem.Load();
+        saveData.skipAds = Mathf.Max(0, saveData.skipAds + amount);
+        GameSaveSystem.Save(saveData);
+    }
+
+    public static bool TrySpendSkipAd()
+    {
+        SaveGameData saveData = GameSaveSystem.Load();
+        if (saveData.skipAds <= 0)
+        {
+            return false;
+        }
+
+        saveData.skipAds--;
+        GameSaveSystem.Save(saveData);
+        return true;
+    }
+
+    public static void SetPermanentCoinMultiplier(int multiplier)
+    {
+        int safeMultiplier = Mathf.Max(1, multiplier);
+        SaveGameData saveData = GameSaveSystem.Load();
+        if (saveData.permanentCoinMultiplier >= safeMultiplier)
+        {
+            return;
+        }
+
+        saveData.permanentCoinMultiplier = safeMultiplier;
+        GameSaveSystem.Save(saveData);
     }
 
     private static void EnsureInitialized()

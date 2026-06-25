@@ -1,0 +1,467 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f5862d669a84b6b9b54d1eaf9e4fb20, type: 3}
+  m_Name: ShopCatalog
+  m_EditorClassIdentifier:
+  items:
+  - itemId: remove_ads
+    productId: remove_ads
+    displayName: Remove Ads
+    category: 0
+    purchaseType: 0
+    iapProductKind: 1
+    costCurrency: 1
+    costAmount: 1100
+    displayPrice: 1100
+    isEnabled: 1
+    rewards:
+    - rewardType: 4
+      amount: 1
+      chestType: 0
+      rewardId:
+  - itemId: gems_pack_1
+    productId: gems_pack_1
+    displayName: Gems 1
+    category: 1
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 320
+    displayPrice: 320
+    isEnabled: 1
+    rewards:
+    - rewardType: 1
+      amount: 10
+      chestType: 0
+      rewardId:
+  - itemId: gems_pack_2
+    productId: gems_pack_2
+    displayName: Gems 2
+    category: 1
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 620
+    displayPrice: 620
+    isEnabled: 1
+    rewards:
+    - rewardType: 1
+      amount: 50
+      chestType: 0
+      rewardId:
+  - itemId: gems_pack_3
+    productId: gems_pack_3
+    displayName: Gems 3
+    category: 1
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 1250
+    displayPrice: 1250
+    isEnabled: 1
+    rewards:
+    - rewardType: 1
+      amount: 100
+      chestType: 0
+      rewardId:
+  - itemId: gems_pack_4
+    productId: gems_pack_4
+    displayName: Gems 4
+    category: 1
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 2500
+    displayPrice: 2500
+    isEnabled: 1
+    rewards:
+    - rewardType: 1
+      amount: 500
+      chestType: 0
+      rewardId:
+  - itemId: gems_pack_5
+    productId: gems_pack_5
+    displayName: Gems 5
+    category: 1
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 5800
+    displayPrice: 5800
+    isEnabled: 1
+    rewards:
+    - rewardType: 1
+      amount: 1000
+      chestType: 0
+      rewardId:
+  - itemId: gems_pack_6
+    productId: gems_pack_6
+    displayName: Gems 6
+    category: 1
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 8800
+    displayPrice: 8800
+    isEnabled: 1
+    rewards:
+    - rewardType: 1
+      amount: 2500
+      chestType: 0
+      rewardId:
+  - itemId: gems_rv_1
+    productId:
+    displayName: Gems 7
+    category: 1
+    purchaseType: 2
+    iapProductKind: 0
+    costCurrency: 3
+    costAmount: 3
+    displayPrice: 3
+    isEnabled: 1
+    rewards:
+    - rewardType: 1
+      amount: 1
+      chestType: 0
+      rewardId:
+  - itemId: coins_pack_1
+    productId:
+    displayName: Coins 1
+    category: 2
+    purchaseType: 1
+    iapProductKind: 0
+    costCurrency: 2
+    costAmount: 5
+    displayPrice: 5
+    isEnabled: 1
+    rewards:
+    - rewardType: 0
+      amount: 500
+      chestType: 0
+      rewardId:
+  - itemId: coins_pack_2
+    productId:
+    displayName: Coins 2
+    category: 2
+    purchaseType: 1
+    iapProductKind: 0
+    costCurrency: 2
+    costAmount: 50
+    displayPrice: 50
+    isEnabled: 1
+    rewards:
+    - rewardType: 0
+      amount: 5000
+      chestType: 0
+      rewardId:
+  - itemId: coins_pack_3
+    productId:
+    displayName: Coins 3
+    category: 2
+    purchaseType: 1
+    iapProductKind: 0
+    costCurrency: 2
+    costAmount: 250
+    displayPrice: 250
+    isEnabled: 1
+    rewards:
+    - rewardType: 0
+      amount: 25000
+      chestType: 0
+      rewardId:
+  - itemId: elixir_pack_1
+    productId:
+    displayName: Elixir 1
+    category: 3
+    purchaseType: 1
+    iapProductKind: 0
+    costCurrency: 2
+    costAmount: 5
+    displayPrice: 5
+    isEnabled: 1
+    rewards:
+    - rewardType: 2
+      amount: 20
+      chestType: 0
+      rewardId:
+  - itemId: elixir_pack_2
+    productId:
+    displayName: Elixir 2
+    category: 3
+    purchaseType: 1
+    iapProductKind: 0
+    costCurrency: 2
+    costAmount: 30
+    displayPrice: 30
+    isEnabled: 1
+    rewards:
+    - rewardType: 2
+      amount: 120
+      chestType: 0
+      rewardId:
+  - itemId: elixir_pack_3
+    productId:
+    displayName: Elixir 3
+    category: 3
+    purchaseType: 1
+    iapProductKind: 0
+    costCurrency: 2
+    costAmount: 100
+    displayPrice: 100
+    isEnabled: 1
+    rewards:
+    - rewardType: 2
+      amount: 400
+      chestType: 0
+      rewardId:
+  - itemId: skip_ads_pack_1
+    productId: skip_ads_pack_1
+    displayName: Skip Ads 1
+    category: 4
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 220
+    displayPrice: 220
+    isEnabled: 1
+    rewards:
+    - rewardType: 3
+      amount: 10
+      chestType: 0
+      rewardId:
+  - itemId: skip_ads_pack_2
+    productId: skip_ads_pack_2
+    displayName: Skip Ads 2
+    category: 4
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 550
+    displayPrice: 550
+    isEnabled: 1
+    rewards:
+    - rewardType: 3
+      amount: 25
+      chestType: 0
+      rewardId:
+  - itemId: skip_ads_pack_3
+    productId: skip_ads_pack_3
+    displayName: Skip Ads 3
+    category: 4
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 1100
+    displayPrice: 1100
+    isEnabled: 1
+    rewards:
+    - rewardType: 3
+      amount: 60
+      chestType: 0
+      rewardId:
+  - itemId: skip_ads_pack_4
+    productId: skip_ads_pack_4
+    displayName: Skip Ads 4
+    category: 4
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 2700
+    displayPrice: 2700
+    isEnabled: 1
+    rewards:
+    - rewardType: 3
+      amount: 150
+      chestType: 0
+      rewardId:
+  - itemId: skip_ads_pack_5
+    productId: skip_ads_pack_5
+    displayName: Skip Ads 5
+    category: 4
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 6500
+    displayPrice: 6500
+    isEnabled: 1
+    rewards:
+    - rewardType: 3
+      amount: 440
+      chestType: 0
+      rewardId:
+  - itemId: skip_ads_pack_6
+    productId: skip_ads_pack_6
+    displayName: Skip Ads 6
+    category: 4
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 16200
+    displayPrice: 16200
+    isEnabled: 1
+    rewards:
+    - rewardType: 3
+      amount: 1000
+      chestType: 0
+      rewardId:
+  - itemId: speed_booster
+    productId: speed_booster
+    displayName: Speed Booster
+    category: 5
+    purchaseType: 0
+    iapProductKind: 1
+    costCurrency: 1
+    costAmount: 1550
+    displayPrice: 1550
+    isEnabled: 1
+    rewards:
+    - rewardType: 5
+      amount: 1
+      chestType: 0
+      rewardId:
+  - itemId: premium_coins
+    productId: premium_coins
+    displayName: Premium Coins
+    category: 5
+    purchaseType: 0
+    iapProductKind: 1
+    costCurrency: 1
+    costAmount: 1550
+    displayPrice: 1550
+    isEnabled: 1
+    rewards:
+    - rewardType: 6
+      amount: 3
+      chestType: 0
+      rewardId:
+    - rewardType: 1
+      amount: 30
+      chestType: 0
+      rewardId:
+  - itemId: starter_coin
+    productId: starter_coin
+    displayName: Starter Coin
+    category: 5
+    purchaseType: 0
+    iapProductKind: 1
+    costCurrency: 1
+    costAmount: 1050
+    displayPrice: 1050
+    isEnabled: 1
+    rewards:
+    - rewardType: 6
+      amount: 2
+      chestType: 0
+      rewardId:
+    - rewardType: 1
+      amount: 15
+      chestType: 0
+      rewardId:
+  - itemId: chest_frenzy
+    productId: chest_frenzy
+    displayName: Chest Frenzy
+    category: 6
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 2700
+    displayPrice: 2700
+    isEnabled: 1
+    rewards:
+    - rewardType: 7
+      amount: 1
+      chestType: 0
+      rewardId:
+    - rewardType: 7
+      amount: 1
+      chestType: 1
+      rewardId:
+    - rewardType: 7
+      amount: 1
+      chestType: 2
+      rewardId:
+    - rewardType: 7
+      amount: 1
+      chestType: 3
+      rewardId:
+  - itemId: chest_storm
+    productId: chest_storm
+    displayName: Chest Storm
+    category: 6
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 8100
+    displayPrice: 8100
+    isEnabled: 1
+    rewards:
+    - rewardType: 7
+      amount: 3
+      chestType: 0
+      rewardId:
+    - rewardType: 7
+      amount: 3
+      chestType: 1
+      rewardId:
+    - rewardType: 7
+      amount: 3
+      chestType: 2
+      rewardId:
+    - rewardType: 7
+      amount: 3
+      chestType: 3
+      rewardId:
+  - itemId: starter_hero_bundle
+    productId: starter_hero_bundle
+    displayName: Starter Hero Bundle
+    category: 7
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 850
+    displayPrice: 850
+    isEnabled: 1
+    rewards:
+    - rewardType: 1
+      amount: 20
+      chestType: 0
+      rewardId:
+  - itemId: gold_hero_bundle
+    productId: gold_hero_bundle
+    displayName: Gold Hero Bundle
+    category: 7
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 2700
+    displayPrice: 2700
+    isEnabled: 1
+    rewards:
+    - rewardType: 1
+      amount: 50
+      chestType: 0
+      rewardId:
+  - itemId: diamond_hero_bundle
+    productId: diamond_hero_bundle
+    displayName: Diamond Hero Bundle
+    category: 7
+    purchaseType: 0
+    iapProductKind: 0
+    costCurrency: 1
+    costAmount: 6500
+    displayPrice: 6500
+    isEnabled: 1
+    rewards:
+    - rewardType: 1
+      amount: 100
+      chestType: 0
+      rewardId:

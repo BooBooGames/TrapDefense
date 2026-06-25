@@ -196,6 +196,26 @@ public class HomeViewScreen : MonoBehaviour
         return true;
     }
 
+    public static void AwardShopChests(ChestType chestType, int amount)
+    {
+        int chestCount = Mathf.Max(0, amount);
+        if (chestCount <= 0)
+        {
+            return;
+        }
+
+        SaveGameData data = GameSaveSystem.Load();
+        EnsureChestSlots(data);
+        SetQueuedChestCount(data, chestType, GetQueuedChestCount(data, chestType) + chestCount);
+        FillQueuedShopChests(data);
+        GameSaveSystem.Save(data);
+
+        if (instance != null)
+        {
+            instance.LoadAndRefresh();
+        }
+    }
+
     public static long GetUtcNowSeconds()
     {
         return DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -218,6 +238,7 @@ public class HomeViewScreen : MonoBehaviour
         saveData = GameSaveSystem.Load();
         EnsureChestSlots(saveData);
         ResolveCompletedTimers();
+        FillQueuedShopChests(saveData);
         SaveCurrentData();
         RefreshChestSlots();
     }
@@ -385,6 +406,7 @@ public class HomeViewScreen : MonoBehaviour
         }
 
         saveData.chestSlots[chestIndex] = new ChestSlotSaveData();
+        FillQueuedShopChests(saveData);
         SaveCurrentData();
         RefreshChestSlots();
     }
@@ -478,6 +500,73 @@ public class HomeViewScreen : MonoBehaviour
             gemsReward = reward != null ? reward.gems : 0,
             cardsReward = reward != null ? reward.cards : 0
         };
+    }
+
+    private static void FillQueuedShopChests(SaveGameData data)
+    {
+        if (data == null)
+        {
+            return;
+        }
+
+        EnsureChestSlots(data);
+        FillQueuedShopChests(data, ChestType.Common);
+        FillQueuedShopChests(data, ChestType.Rare);
+        FillQueuedShopChests(data, ChestType.Epic);
+        FillQueuedShopChests(data, ChestType.Magic);
+    }
+
+    private static void FillQueuedShopChests(SaveGameData data, ChestType chestType)
+    {
+        int queuedCount = GetQueuedChestCount(data, chestType);
+        while (queuedCount > 0)
+        {
+            int slotIndex = FindEmptyChestSlot(data.chestSlots);
+            if (slotIndex < 0)
+            {
+                break;
+            }
+
+            ChestDefinition definition = instance != null
+                ? instance.GetChestDefinition(chestType)
+                : ChestDefinition.CreateFallback(chestType);
+
+            data.chestSlots[slotIndex] = CreateChestSlot(chestType, definition);
+            queuedCount--;
+        }
+
+        SetQueuedChestCount(data, chestType, queuedCount);
+    }
+
+    private static int GetQueuedChestCount(SaveGameData data, ChestType chestType)
+    {
+        return chestType switch
+        {
+            ChestType.Rare => Mathf.Max(0, data.queuedRareChests),
+            ChestType.Epic => Mathf.Max(0, data.queuedEpicChests),
+            ChestType.Magic => Mathf.Max(0, data.queuedMagicChests),
+            _ => Mathf.Max(0, data.queuedCommonChests),
+        };
+    }
+
+    private static void SetQueuedChestCount(SaveGameData data, ChestType chestType, int count)
+    {
+        int safeCount = Mathf.Max(0, count);
+        switch (chestType)
+        {
+            case ChestType.Rare:
+                data.queuedRareChests = safeCount;
+                break;
+            case ChestType.Epic:
+                data.queuedEpicChests = safeCount;
+                break;
+            case ChestType.Magic:
+                data.queuedMagicChests = safeCount;
+                break;
+            default:
+                data.queuedCommonChests = safeCount;
+                break;
+        }
     }
 
     private static void MarkChestRewardClaimed(int completedWave)

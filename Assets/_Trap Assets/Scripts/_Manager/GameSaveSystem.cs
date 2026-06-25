@@ -20,11 +20,20 @@ public class SaveGameData
     public int chestRewardLevel = 1;
     public bool wave4ChestClaimed;
     public bool wave8ChestClaimed;
+    public int queuedCommonChests;
+    public int queuedRareChests;
+    public int queuedEpicChests;
+    public int queuedMagicChests;
 
     public bool freeSpeedBoostActive;
     public int freeSpeedBoostRemainingSeconds;
     public long freeSpeedBoostExpirationUtc;
     public bool unlimitedSpeedBoostActive;
+
+    public bool removeAdsActive;
+    public int skipAds;
+    public int permanentCoinMultiplier = 1;
+    public string[] purchasedShopProductIds;
 
     public bool musicEnabled = true;
     public bool soundEnabled = true;

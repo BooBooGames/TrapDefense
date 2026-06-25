@@ -208,7 +208,9 @@ public class GameViewScreen : MonoBehaviour
             return;
         }
 
-        inGameCoins = Mathf.Max(0, inGameCoins + amount);
+        long multipliedAmount = (long)amount * PlayerCurrencySystem.PermanentCoinMultiplier;
+        int safeAmount = (int)System.Math.Min(int.MaxValue, multipliedAmount);
+        inGameCoins = Mathf.Max(0, inGameCoins + safeAmount);
         RefreshInGameCoinLabel();
     }
 
