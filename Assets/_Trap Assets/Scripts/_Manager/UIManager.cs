@@ -427,9 +427,15 @@ public class UIManager : MonoBehaviour
 
     private void ActivateFreeXSpeedBoost()
     {
-        GameplaySpeedSystem.ActivateFreeBoost();
-        xSpeedPanel.RefreshState();
-        PauseGameplayIfXSpeedPanelIsOpen();
+        HCSDKManager.INSTANCE.DisplayRV("2X_Speed", () =>
+        {
+            GameplaySpeedSystem.ActivateFreeBoost();
+            xSpeedPanel.RefreshState();
+            PauseGameplayIfXSpeedPanelIsOpen();
+        });
+        /*  GameplaySpeedSystem.ActivateFreeBoost();
+         xSpeedPanel.RefreshState();
+         PauseGameplayIfXSpeedPanelIsOpen(); */
     }
 
     private void ActivateUnlimitedXSpeedBoost()

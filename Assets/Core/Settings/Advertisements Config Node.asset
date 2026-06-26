@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc4f805d579b4394ba2aefe80c3dbd71, type: 3}
+  m_Name: Advertisements Config Node
+  m_EditorClassIdentifier: Coredian.Advertisements::Coredian.Advertisements.Configuration.AdvertisementsConfigNode
+  useThisConfig: 1
+  isUpToDateWithConfig: 1
+  googleSheetsCache:
+    url: 
+    sheetsNames: []
+    sheetsGuids: []
+    preferredSheet: 
+  adUnitConfigs:
+  - adUnitName: AppOpen
+    adUnitResultType: IAppOpenAdResult
+    selectorType: Coredian.Advertisements.Selectors.PatternSelector`1
+    autoPrepare: 1
+    autoPrepareOnFinished: 1
+    autoRetryOnPrepareFailed: 1
+  - adUnitName: Banner
+    adUnitResultType: IBannerAdResult
+    selectorType: Coredian.Advertisements.Selectors.PatternSelector`1
+    autoPrepare: 1
+    autoPrepareOnFinished: 1
+    autoRetryOnPrepareFailed: 1
+  - adUnitName: Interstitial
+    adUnitResultType: IInterstitialAdResult
+    selectorType: Coredian.Advertisements.Selectors.PatternSelector`1
+    autoPrepare: 1
+    autoPrepareOnFinished: 1
+    autoRetryOnPrepareFailed: 1
+  - adUnitName: Rewarded
+    adUnitResultType: IRewardedAdResult
+    selectorType: Coredian.Advertisements.Selectors.PatternSelector`1
+    autoPrepare: 1
+    autoPrepareOnFinished: 1
+    autoRetryOnPrepareFailed: 1
+  - adUnitName: CrossPromoMoreGames
+    adUnitResultType: IMoreGamesAdResult
+    selectorType: Coredian.Advertisements.Selectors.PatternSelector`1
+    autoPrepare: 1
+    autoPrepareOnFinished: 1
+    autoRetryOnPrepareFailed: 1
+  bannerRefreshTimeMs: 25000
+  timeoutPrepareAfterMs: 10000
+  timeoutShowPrepareAfterMs: 1500
+  useDummyProvidersOnDevice: 0
+  mediationProviderSource: 
+  enableSelectorLocking: 1
+  destroyBannersOnFocusLost: 0
+  debugProviderStateChanges: 0

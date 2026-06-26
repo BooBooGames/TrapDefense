@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installedModules fileVersion="3">
+  <modules>
+    <module id="advertisements" version="2.8.5.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="advertisements_interface" version="2.10.0.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="advertisements_pattern_selector" version="2.0.1.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="advertising_id" version="1.0.6.2" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="app_open_ads_interface" version="1.3.0.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="apple_build_tools" version="1.7.8.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="application_metadata" version="1.1.7.1" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="application_metadata_interface" version="1.1.0.2" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="applovin_max" version="1.1.38.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="applovin_max_app_open_ads" version="1.3.6.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="appsflyer_sdk" version="1.3.9.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="attribution_interface" version="1.3.1.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="boombit_ids_importer" version="3.1.3.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="build_defines" version="3.0.5.3" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="business_logic" version="1.5.5.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="business_logic_interface" version="1.1.3.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="consent" version="3.1.12.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="consent_interface" version="3.6.0.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="core_android_build_tools" version="1.15.7.1" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="core_assets" version="0.9.8.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="core_json_serializer" version="0.17.6.3" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="core_logger_configurator" version="3.0.2.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="core_main" version="3.9.0.1" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="core_modules_facade" version="0.89.1.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="core_monobehaviour_host" version="0.16.7.2" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="core_native_utilities" version="0.4.0.2" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="core_unity" version="5.9.2.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="cross_promo_waterfall_source" version="2.8.15.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="cross_promotion_advertisements_provider" version="1.3.1.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="cross_promotion_interface" version="1.6.0.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="data_interface" version="0.12.0.2" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="decoreator_cross_promotion" version="3.4.20.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="facebook_interface" version="0.8.0.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="facebook_sdk" version="18.0.4.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="firebase_crashlytics" version="1.1.5.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="firebase_interface" version="1.6.0.1" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="firebase_remote_config" version="1.6.1.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="firebase_sdk" version="1.1.16.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="game_services_interface" version="1.0.2.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="hcsdk_facade" version="2.6.0.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="idfa_consent_native" version="3.2.0.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="inapp_purchases" version="2.1.12.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="inapp_purchases_interface" version="2.1.0.2" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="json_schema" version="2.0.0.1" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="logger" version="3.0.4.1" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="plugins_interface" version="0.36.3.1" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="skadnetwork_support" version="1.0.3.5" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="stores_variants" version="4.6.3.1" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="testergui_interface" version="1.6.0.1" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="tiktok_app_events_sdk_interface" version="1.0.0.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="user_age_range" version="1.0.2.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="user_journey_interface" version="1.0.3.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+    <module id="usercentrics" version="2.27.0.0" subscriptionStream="public">
+      <installedWith />
+    </module>
+  </modules>
+</installedModules>
