@@ -39,6 +39,8 @@ public class ZombiePath : MonoBehaviour
 
     public float UsableHalfWidth => Mathf.Max(0f, (roadWidth * 0.5f) - boundaryPadding);
 
+    public int SourceWaypointCount => GetSourcePoints().Count;
+
     public void SetRoadWidth(float newRoadWidth)
     {
         roadWidth = Mathf.Max(0.5f, newRoadWidth);
@@ -228,6 +230,29 @@ public class ZombiePath : MonoBehaviour
         }
 
         return bestDistance;
+    }
+
+    public bool TryGetSourceWaypointDistance(int waypointIndex, out float distance)
+    {
+        RebuildIfNeeded();
+        distance = 0f;
+
+        int sourceWaypointCount = SourceWaypointCount;
+        if (waypointIndex < 0 ||
+            waypointIndex >= sourceWaypointCount ||
+            cumulativeLengths.Count == 0)
+        {
+            return false;
+        }
+
+        if (sourceWaypointCount == 1)
+        {
+            return waypointIndex == 0;
+        }
+
+        int sampleIndex = Mathf.Clamp(waypointIndex * samplesPerSegment, 0, cumulativeLengths.Count - 1);
+        distance = cumulativeLengths[sampleIndex];
+        return true;
     }
 
     private void OnDrawGizmos()

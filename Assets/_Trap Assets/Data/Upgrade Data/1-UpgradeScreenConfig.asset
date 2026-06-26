@@ -23,14 +23,14 @@ MonoBehaviour:
   - weaponName: Ground Anchors
     weaponSprite: {fileID: 21300000, guid: a6ffaae9c694a4be9b0be99a53e9fbce, type: 3}
     unlockCost:
-      coins: 50
+      coins: 175
       gears: 0
     unlockedByDefault: 0
     requiredGearCostForUpgrade: 3
   - weaponName: Obsidian Arrow
     weaponSprite: {fileID: 21300000, guid: 873167d55fe5c4338bece6f5aaa0f67b, type: 3}
     unlockCost:
-      coins: 100
+      coins: 650
       gears: 0
     unlockedByDefault: 0
     requiredGearCostForUpgrade: 5

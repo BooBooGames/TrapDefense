@@ -5964,6 +5964,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7109873a616f149e68106a0d5ab9030c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 677830133883905549}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7109873a616f149e68106a0d5ab9030c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1750001534306550965}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7109873a616f149e68106a0d5ab9030c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7803517413012202846}
     - targetCorrespondingSourceObject: {fileID: -6772934989500917516, guid: 7109873a616f149e68106a0d5ab9030c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6700726978619868028}
@@ -6068,6 +6074,41 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1750001534306550965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176922898295902397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3b7a6d05c0443db1d49a8df9b2de10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
+  path: {fileID: 7341280001858959408}
+  inputCamera: {fileID: 0}
+--- !u!65 &7803517413012202846
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 176922898295902397}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 4.2940784, z: 3}
+  m_Center: {x: -0, y: 1.6470392, z: -0}
 --- !u!1 &464304277441359985 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 631750684111560093, guid: 7109873a616f149e68106a0d5ab9030c, type: 3}
@@ -8242,6 +8283,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: caa63b44a50b8426887bada20fde03ff, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4533103436815571025}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: caa63b44a50b8426887bada20fde03ff, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8210013122164510874}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: caa63b44a50b8426887bada20fde03ff, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7471923273132267648}
     - targetCorrespondingSourceObject: {fileID: -2665169414540505905, guid: caa63b44a50b8426887bada20fde03ff, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8679000605019661944}
@@ -8483,6 +8530,41 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8210013122164510874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5035266481040553194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3b7a6d05c0443db1d49a8df9b2de10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
+  path: {fileID: 7341280001858959408}
+  inputCamera: {fileID: 0}
+--- !u!65 &7471923273132267648
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5035266481040553194}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.9851694, y: 1, z: 2.1726534}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &5668638313383865936 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: caa63b44a50b8426887bada20fde03ff, type: 3}
@@ -8825,6 +8907,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b65f94d673868494994699c1f0922f78, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1919462825227493168}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b65f94d673868494994699c1f0922f78, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1482749545453166790}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b65f94d673868494994699c1f0922f78, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 904406564602862629}
     - targetCorrespondingSourceObject: {fileID: -8982694183418607225, guid: b65f94d673868494994699c1f0922f78, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2185534977592107149}
@@ -8991,6 +9079,41 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1482749545453166790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7475014017371442432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c3b7a6d05c0443db1d49a8df9b2de10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
+  path: {fileID: 7341280001858959408}
+  inputCamera: {fileID: 0}
+--- !u!65 &904406564602862629
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7475014017371442432}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.1, y: 0.05156473, z: 0.08361167}
+  m_Center: {x: 8.787326e-14, y: -2.3789226e-12, z: 0.0918057}
 --- !u!1 &7506079247969909206 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8982694183418607225, guid: b65f94d673868494994699c1f0922f78, type: 3}

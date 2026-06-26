@@ -23,14 +23,14 @@ MonoBehaviour:
   - weaponName: Rotating bells
     weaponSprite: {fileID: 21300000, guid: 150bf60108e5c451590d8f25fd24c3c0, type: 3}
     unlockCost:
-      coins: 50
+      coins: 175
       gears: 0
     unlockedByDefault: 0
     requiredGearCostForUpgrade: 3
   - weaponName: Cutter
     weaponSprite: {fileID: 21300000, guid: 19ded8aa750e7444ab1ba091ce8de5f9, type: 3}
     unlockCost:
-      coins: 100
+      coins: 750
       gears: 0
     unlockedByDefault: 0
     requiredGearCostForUpgrade: 5

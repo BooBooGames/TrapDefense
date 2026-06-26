@@ -23,14 +23,14 @@ MonoBehaviour:
   - weaponName: Rotating Chains
     weaponSprite: {fileID: 21300000, guid: 4c63193197c284c25a042923ab578dfd, type: 3}
     unlockCost:
-      coins: 50
+      coins: 350
       gears: 0
     unlockedByDefault: 0
     requiredGearCostForUpgrade: 3
   - weaponName: Flipping Spikes
     weaponSprite: {fileID: 21300000, guid: ecc746b9364c54ab19a34239902bd170, type: 3}
     unlockCost:
-      coins: 100
+      coins: 1250
       gears: 0
     unlockedByDefault: 0
     requiredGearCostForUpgrade: 5

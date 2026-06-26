@@ -23,14 +23,14 @@ MonoBehaviour:
   - weaponName: Guillotine
     weaponSprite: {fileID: 21300000, guid: 61015c9cc9ada49478f372af470431c6, type: 3}
     unlockCost:
-      coins: 50
+      coins: 500
       gears: 0
     unlockedByDefault: 0
     requiredGearCostForUpgrade: 3
   - weaponName: Crusher Spikes
     weaponSprite: {fileID: 21300000, guid: 883eb9d912a8c473ea9560295255b969, type: 3}
     unlockCost:
-      coins: 100
+      coins: 1750
       gears: 0
     unlockedByDefault: 0
     requiredGearCostForUpgrade: 5
