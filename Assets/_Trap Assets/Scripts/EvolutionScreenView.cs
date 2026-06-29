@@ -9,6 +9,10 @@ public class EvolutionScreenView : MonoBehaviour
     public Button evolveButton;
     public TextMeshProUGUI descriptionText1, descriptionText2, evolutionCostText;
 
+    public Image fillBarCurrentTimelineIcon, fillBar, dot1, dot2, dot3, dot4;
+
+    public Sprite UnlockedDotSprite, currentDotSprite, LockedDotSprite;
+
     public void ShowEvolutionBackground(UpgradeScreenConfig config)
     {
         gameObject.SetActive(true);

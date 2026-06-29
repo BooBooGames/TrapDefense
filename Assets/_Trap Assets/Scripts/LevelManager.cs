@@ -4,6 +4,7 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance { get; private set; }
     public int CurrentLevel { get; private set; } = 1;
+    public int CurrentDifficultyLevel { get; private set; } = 1;
     public LevelHandler[] Levels;
 
     public LevelHandler activeLevelInstance;
@@ -15,7 +16,9 @@ public class LevelManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            CurrentLevel = GetSavedLevel();
+            SaveGameData saveData = GameSaveSystem.Load();
+            CurrentLevel = GetSavedLevel(saveData);
+            CurrentDifficultyLevel = GetSavedDifficultyLevel(saveData);
             LoadLevel(CurrentLevel);
         }
         else
@@ -27,24 +30,31 @@ public class LevelManager : MonoBehaviour
     public void LoadNextLevel()
     {
         CurrentLevel = CurrentLevel >= Levels.Length ? 1 : CurrentLevel + 1;
+        CurrentDifficultyLevel = Mathf.Max(1, CurrentDifficultyLevel + 1);
         LoadLevel(CurrentLevel);
-        SaveCurrentLevel();
+        SaveProgressState();
         HomeViewScreen.ResetChestRewardsForLevel(CurrentLevel);
-        Debug.Log("Loading Level: " + CurrentLevel);
+        Debug.Log($"Loading Level: {CurrentLevel} | Difficulty Level: {CurrentDifficultyLevel}");
     }
 
-    private int GetSavedLevel()
+    private int GetSavedLevel(SaveGameData saveData)
     {
-        SaveGameData saveData = GameSaveSystem.Load();
         int maxLevel = Mathf.Max(1, Levels.Length);
         int savedLevel = saveData.currentLevel <= 0 ? 1 : saveData.currentLevel;
         return Mathf.Clamp(savedLevel, 1, maxLevel);
     }
 
-    private void SaveCurrentLevel()
+    private int GetSavedDifficultyLevel(SaveGameData saveData)
+    {
+        int savedDifficultyLevel = saveData.difficultyLevel > 0 ? saveData.difficultyLevel : saveData.currentLevel;
+        return Mathf.Max(1, savedDifficultyLevel);
+    }
+
+    private void SaveProgressState()
     {
         SaveGameData saveData = GameSaveSystem.Load();
         saveData.currentLevel = CurrentLevel;
+        saveData.difficultyLevel = CurrentDifficultyLevel;
         GameSaveSystem.Save(saveData);
     }
 

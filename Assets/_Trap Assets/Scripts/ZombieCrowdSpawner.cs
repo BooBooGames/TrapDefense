@@ -117,7 +117,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
             }
 
             currentWaveNumber = waveIndex + 1;
-            currentWavePlannedZombies = wave.GetTotalZombieCount();
+            currentWavePlannedZombies = CalculateWaveZombieCount(wave);
             currentWaveCompletedZombies = 0;
             NotifyProgressChanged();
 
@@ -196,8 +196,8 @@ public class ZombieCrowdSpawner : MonoBehaviour
             runtime = zombie.AddComponent<ZombieRuntime>();
         }
 
-        float healthMultiplier = PlayerXpSystem.Instance != null ? PlayerXpSystem.Instance.GetEnemyHealthMultiplier() : 1f;
-        runtime.Configure(entry.health * healthMultiplier);
+        float cardHealthMultiplier = PlayerXpSystem.Instance != null ? PlayerXpSystem.Instance.GetEnemyHealthMultiplier() : 1f;
+        runtime.Configure(entry.health * cardHealthMultiplier);
         runtime.ConfigureRewards(entry.coinReward, entry.gemReward);
         runtime.ConfigureKillEffect(entry.killEffectPrefab);
         runtime.Despawned += OnZombieDespawned;
@@ -215,7 +215,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
              weaponCollision = zombie.AddComponent<ZombieWeaponCollision>();
          } */
 
-        follower.ConfigureMovement(entry.moveSpeed, entry.roadWidthUsage);
+        follower.ConfigureMovement(LevelDifficultySystem.GetScaledEnemyMoveSpeed(entry.moveSpeed), entry.roadWidthUsage);
         follower.Initialize(sharedPath, initialDistance, spawnedCount + 1, _ => HandleZombieReachedEnd(runtime));
 
         aliveZombies++;
@@ -283,7 +283,7 @@ public class ZombieCrowdSpawner : MonoBehaviour
                 continue;
             }
 
-            int count = Mathf.Max(0, entry.count);
+            int count = LevelDifficultySystem.GetScaledEnemyCount(entry.count);
             for (int spawnIndex = 0; spawnIndex < count; spawnIndex++)
             {
                 queue.Add(entry);
@@ -313,7 +313,27 @@ public class ZombieCrowdSpawner : MonoBehaviour
             WaveDefinition wave = levelConfig.Waves[i];
             if (wave != null)
             {
-                total += wave.GetTotalZombieCount();
+                total += CalculateWaveZombieCount(wave);
+            }
+        }
+
+        return total;
+    }
+
+    private int CalculateWaveZombieCount(WaveDefinition wave)
+    {
+        if (wave == null || wave.zombieEntries == null)
+        {
+            return 0;
+        }
+
+        int total = 0;
+        for (int i = 0; i < wave.zombieEntries.Length; i++)
+        {
+            ZombieWaveEntry entry = wave.zombieEntries[i];
+            if (entry != null)
+            {
+                total += LevelDifficultySystem.GetScaledEnemyCount(entry.count);
             }
         }
 

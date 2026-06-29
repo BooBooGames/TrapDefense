@@ -17,6 +17,7 @@ public class SaveGameData
     public PowerCardCopySaveData[] powerCardCopies;
     public ChestSlotSaveData[] chestSlots;
     public int currentLevel = 1;
+    public int difficultyLevel;
     public int chestRewardLevel = 1;
     public bool wave4ChestClaimed;
     public bool wave8ChestClaimed;
