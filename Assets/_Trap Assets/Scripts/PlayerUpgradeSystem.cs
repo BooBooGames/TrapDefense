@@ -18,7 +18,21 @@ public static class PlayerUpgradeSystem
     public static int CurrentBaseHealthValue => CurrentConfig.BaseHealth.EvaluateValue(baseHealthLevel);
     public static int CurrentBaseHealthBonus => Mathf.Max(0, CurrentBaseHealthValue - CurrentConfig.BaseHealth.defaultValue);
 
-    private static UpgradeScreenConfig CurrentConfig => config != null ? config : UpgradeScreenConfig.Resolve(null);
+    private static UpgradeScreenConfig CurrentConfig
+    {
+        get
+        {
+            UpgradeScreenConfig activeLevelConfig = GetActiveLevelUpgradeConfig();
+            if (activeLevelConfig != null)
+            {
+                config = UpgradeScreenConfig.Resolve(activeLevelConfig);
+                return config;
+            }
+
+            config = UpgradeScreenConfig.Resolve(config);
+            return config;
+        }
+    }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStaticState()
@@ -33,7 +47,7 @@ public static class PlayerUpgradeSystem
 
     public static void Initialize(UpgradeScreenConfig sourceConfig)
     {
-        config = UpgradeScreenConfig.Resolve(sourceConfig);
+        config = UpgradeScreenConfig.Resolve(sourceConfig != null ? sourceConfig : GetActiveLevelUpgradeConfig());
 
         SaveGameData saveData = GameSaveSystem.Load();
         bool saveChanged = EnsureSaveDefaults(saveData);
@@ -170,7 +184,7 @@ public static class PlayerUpgradeSystem
 
     public static void ResetProgressionStateToDefaults(UpgradeScreenConfig sourceConfig)
     {
-        config = UpgradeScreenConfig.Resolve(sourceConfig);
+        config = UpgradeScreenConfig.Resolve(sourceConfig != null ? sourceConfig : GetActiveLevelUpgradeConfig());
         unlockedWeaponStates = CreateDefaultWeaponUnlockStates();
         gearFlowLevel = 0;
         baseHealthLevel = 0;
@@ -196,6 +210,17 @@ public static class PlayerUpgradeSystem
         {
             Initialize(null);
         }
+    }
+
+    private static UpgradeScreenConfig GetActiveLevelUpgradeConfig()
+    {
+        LevelManager levelManager = LevelManager.Instance;
+        if (levelManager == null || levelManager.activeLevelInstance == null)
+        {
+            return null;
+        }
+
+        return levelManager.activeLevelInstance.upgradeScreenConfig;
     }
 
     private static bool EnsureSaveDefaults(SaveGameData saveData)

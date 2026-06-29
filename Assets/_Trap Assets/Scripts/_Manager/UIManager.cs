@@ -47,7 +47,6 @@ public class UIManager : MonoBehaviour
     private bool xSpeedPanelOpenedFromGameView;
     private float timeScaleBeforeSettings = 1f;
     private Coroutine damageFlashRoutine;
-    public UpgradeScreenConfig ConfigAsset => upgradeConfig;
 
     private void Awake()
     {
@@ -64,7 +63,7 @@ public class UIManager : MonoBehaviour
         evolutionScreenView = evolutionScreenPanel.GetComponent<EvolutionScreenView>();
         currencyView.BindEvolutionButton(ShowEvolutionPanel);
         BindXSpeedPanel();
-        PlayerUpgradeSystem.Initialize(upgradeConfig);
+        PlayerUpgradeSystem.Initialize(GetActiveLevelUpgradeConfig());
         CloseXSpeedPanel(false);
         ClosePerksCardInfoPanel();
         CloseSummonScreen();
@@ -479,9 +478,21 @@ public class UIManager : MonoBehaviour
 
     private void ShowEvolutionPanel()
     {
-        UpgradeScreenConfig config = PlayerUpgradeSystem.Config;
+        UpgradeScreenConfig config = UpgradeScreenConfig.Resolve(GetActiveLevelUpgradeConfig());
+        PlayerUpgradeSystem.Initialize(config);
         evolutionScreenView.ShowEvolutionBackground(config);
         SoundManager.Instance.PlayButtonClickSound();
+    }
+
+    private static UpgradeScreenConfig GetActiveLevelUpgradeConfig()
+    {
+        LevelManager levelManager = LevelManager.Instance;
+        if (levelManager == null || levelManager.activeLevelInstance == null)
+        {
+            return null;
+        }
+
+        return levelManager.activeLevelInstance.upgradeScreenConfig;
     }
 
     private void ResumeGameIfSettingsPaused()
@@ -564,7 +575,7 @@ public class UIManager : MonoBehaviour
         ResetGameplaySessionData();
         LevelManager.Instance.LoadNextLevel();
         PlayerCurrencySystem.ResetCoins();
-        PlayerUpgradeSystem.ResetProgressionStateToDefaults(LevelManager.Instance.activeLevelInstance.upgradeScreenConfig);
+        PlayerUpgradeSystem.ResetProgressionStateToDefaults(GetActiveLevelUpgradeConfig());
         gameViewScreen.ResetSessionDataForNextLevel();
         Time.timeScale = 1f;
         ShowHomeScreen(true);

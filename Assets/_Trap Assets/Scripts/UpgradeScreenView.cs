@@ -35,7 +35,7 @@ public class UpgradeScreenView : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerUpgradeSystem.Initialize(UIManager.Instance.ConfigAsset);
+        PlayerUpgradeSystem.Initialize(null);
         PlayerUpgradeSystem.UpgradeStateChanged += HandleUpgradeStateChanged;
         PlayerCurrencySystem.CurrencyChanged += HandleCurrencyChanged;
         ShowUpgradeBackground();
@@ -136,7 +136,7 @@ public class UpgradeScreenView : MonoBehaviour
 
     private void RefreshUi()
     {
-        PlayerUpgradeSystem.Initialize(UIManager.Instance.ConfigAsset);
+        PlayerUpgradeSystem.Initialize(null);
 
         UpgradeScreenConfig config = PlayerUpgradeSystem.Config;
         RefreshWeaponSlot(0, config, weapon1Image, weapon1Text, null, null, null);

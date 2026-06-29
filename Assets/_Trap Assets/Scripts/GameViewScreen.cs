@@ -8,7 +8,6 @@ public class GameViewScreen : MonoBehaviour
     public static GameViewScreen Instance { get; private set; }
 
     ZombieCrowdSpawner zombieCrowdSpawner;
-    UpgradeScreenConfig upgradeConfig;
     CurrencyView currencyView;
 
     public Button xGamePlayButton;
@@ -460,7 +459,9 @@ public class GameViewScreen : MonoBehaviour
 
     private UpgradeScreenConfig ResolveUpgradeConfig()
     {
-        return upgradeConfig;
+        return LevelManager.Instance != null && LevelManager.Instance.activeLevelInstance != null
+            ? LevelManager.Instance.activeLevelInstance.upgradeScreenConfig
+            : null;
     }
 
     private void RefreshLevelReferences()
@@ -471,7 +472,6 @@ public class GameViewScreen : MonoBehaviour
         }
 
         zombieCrowdSpawner = LevelManager.Instance.activeLevelInstance.crowdSpawner;
-        upgradeConfig = LevelManager.Instance.activeLevelInstance.upgradeScreenConfig;
         zombieCrowdSpawner.SetGameViewScreen(this);
 
         zombieCrowdSpawner.ProgressChanged -= HandleWaveProgressChanged;
