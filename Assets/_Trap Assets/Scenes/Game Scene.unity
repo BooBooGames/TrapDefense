@@ -11891,7 +11891,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &394536139
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11931,7 +11931,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Upgrades
+  m_text: CONTINUE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f4b5e6139330b47f59e522dc55f705be, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 11150593ece6d4c6bb388c4056f499ca, type: 2}
@@ -11958,8 +11958,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 35
-  m_fontSizeBase: 35
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -43323,7 +43323,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 17.4}
+  m_AnchoredPosition: {x: 0, y: 17.400002}
   m_SizeDelta: {x: 450, y: 87.400024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1347651369
@@ -54357,7 +54357,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1648035863
 RectTransform:
   m_ObjectHideFlags: 0
@@ -54374,11 +54374,11 @@ RectTransform:
   - {fileID: 1136491455}
   m_Father: {fileID: 996822018}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 45.400024, y: 61.19995}
-  m_SizeDelta: {x: 120, y: 124}
-  m_Pivot: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -737.1}
+  m_SizeDelta: {x: 320, y: 154}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1648035864
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54455,7 +54455,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4f2e558c186364f99b57cf5843c7bca7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 65212cac2caa64890a0ef3725a19b7d0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -55182,7 +55182,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1670095469
 RectTransform:
   m_ObjectHideFlags: 0
@@ -60492,7 +60492,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1842302467
 RectTransform:
   m_ObjectHideFlags: 0
@@ -60572,14 +60572,14 @@ MonoBehaviour:
   descriptionText1: {fileID: 1597667293}
   descriptionText2: {fileID: 694340882}
   evolutionCostText: {fileID: 1298506867}
-  fillBarCurrentAgeIcon: {fileID: 234341846}
+  fillBarCurrentTimelineIcon: {fileID: 234341846}
   fillBar: {fileID: 1803556066}
   dot1: {fileID: 1774423942}
   dot2: {fileID: 1348374006}
   dot3: {fileID: 1928709696}
   dot4: {fileID: 1158481935}
   UnlockedDotSprite: {fileID: 21300000, guid: 0c0ae10a3bad8440282ff4f294614191, type: 3}
-  currentDotSprite: {fileID: 21300000, guid: c80e85bfdb8cd4d2faaa3ce9c4a2b26e, type: 3}
+  CurrentDotSprite: {fileID: 21300000, guid: c80e85bfdb8cd4d2faaa3ce9c4a2b26e, type: 3}
   LockedDotSprite: {fileID: 21300000, guid: f589af13b29a54fcea35646e149c4b62, type: 3}
 --- !u!1 &1843679042
 GameObject:

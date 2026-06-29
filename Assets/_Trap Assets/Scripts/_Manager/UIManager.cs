@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
-    [SerializeField] private UpgradeScreenConfig upgradeConfig;
 
 
     [SerializeField] private GameObject gameViewPanel;
