@@ -61,6 +61,16 @@ public class WeaponPathPlacement : MonoBehaviour
 
     private void Update()
     {
+        if (!CanMoveWeaponsOnCurrentScreen())
+        {
+            if (activeDrag == this)
+            {
+                activeDrag = null;
+            }
+
+            return;
+        }
+
         if (path == null || inputCamera == null)
         {
             return;
@@ -333,5 +343,10 @@ public class WeaponPathPlacement : MonoBehaviour
     private static Vector3 GetPointerScreenPosition()
     {
         return Input.touchCount > 0 ? Input.GetTouch(0).position : Input.mousePosition;
+    }
+
+    private static bool CanMoveWeaponsOnCurrentScreen()
+    {
+        return UIManager.Instance != null && UIManager.Instance.IsWeaponMovementAllowed;
     }
 }

@@ -9,6 +9,18 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
 
+    public bool IsWeaponMovementAllowed =>
+        currentScreenPanel == gameViewPanel &&
+        IsPanelActive(gameViewPanel) &&
+        !IsPanelActive(settingPanel) &&
+        !IsPanelActive(winPreviewPanel) &&
+        !IsPanelActive(failPreviewPanel) &&
+        !IsPanelActive(chestPreviewPanel) &&
+        !IsPanelActive(evolutionScreenPanel) &&
+        !IsPanelActive(ageChangePanel) &&
+        (xSpeedPanel == null || !IsPanelActive(xSpeedPanel.gameObject)) &&
+        (perksCardInfoPanel == null || !IsPanelActive(perksCardInfoPanel.gameObject)) &&
+        (summonScreenView == null || !IsPanelActive(summonScreenView.gameObject));
 
     [SerializeField] private GameObject gameViewPanel;
     [SerializeField] private GameObject homeScreenPanel;
@@ -411,6 +423,11 @@ public class UIManager : MonoBehaviour
     private void SetPanelActive(GameObject panel, bool isActive)
     {
         panel.SetActive(isActive);
+    }
+
+    private static bool IsPanelActive(GameObject panel)
+    {
+        return panel != null && panel.activeSelf;
     }
 
     private void BindXSpeedPanel()
