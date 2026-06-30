@@ -735,7 +735,7 @@ public class PlayerXpSystem : MonoBehaviour
             return;
         }
 
-        GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
+        Time.timeScale = previousTimeScale <= 0f ? 1f : previousTimeScale;
         pausedByCardSelection = false;
     }
 

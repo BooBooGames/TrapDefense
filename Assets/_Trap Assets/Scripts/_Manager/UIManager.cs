@@ -83,12 +83,6 @@ public class UIManager : MonoBehaviour
     {
         GameplaySpeedSystem.Tick();
 
-        if (currentScreenPanel == gameViewPanel
-            && Time.timeScale > 0f
-            && (xSpeedPanel == null || !xSpeedPanel.gameObject.activeSelf))
-        {
-            GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
-        }
     }
 
     private void OnApplicationPause(bool pauseStatus)
@@ -456,7 +450,7 @@ public class UIManager : MonoBehaviour
 
         if (currentScreenPanel == gameViewPanel)
         {
-            GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
+            Time.timeScale = 1f;
             WeaponRotator.SetGameplayMotionEnabled(true);
             WeaponUpgradeController.SetGameplayAnimationsEnabled(true);
             return;
@@ -505,7 +499,7 @@ public class UIManager : MonoBehaviour
         settingsOpenedFromGameView = false;
         if (currentScreenPanel == gameViewPanel)
         {
-            GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
+            Time.timeScale = 1f;
         }
         else
         {

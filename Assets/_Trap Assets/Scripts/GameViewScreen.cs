@@ -146,7 +146,7 @@ public class GameViewScreen : MonoBehaviour
 
         if (!gameOverTriggered)
         {
-            GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
+            Time.timeScale = 1f;
         }
 
         gameOverPanel.SetActive(false);
@@ -194,7 +194,7 @@ public class GameViewScreen : MonoBehaviour
 
         if (pauseOnGameOver)
         {
-            GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
+            Time.timeScale = 1f;
         }
 
         UpdatePlayerHealthUi();
