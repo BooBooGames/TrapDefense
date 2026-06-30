@@ -82,7 +82,6 @@ public class ZombiePathFollower : MonoBehaviour
         travelledDistance += moveSpeed
             * stackingSpeedMultiplier
             * temporarySpeedMultiplier
-            * GameplaySpeedSystem.CurrentEnemyMovementMultiplier
             * Time.deltaTime;
 
         if (travelledDistance >= path.Length)

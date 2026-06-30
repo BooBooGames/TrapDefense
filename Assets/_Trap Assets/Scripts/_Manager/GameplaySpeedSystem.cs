@@ -20,7 +20,7 @@ public static class GameplaySpeedSystem
     public static long FreeBoostExpirationUtc => freeBoostExpirationUtc;
     public static bool UnlimitedBoostActive => unlimitedBoostActive;
     public static bool IsBoostActive => unlimitedBoostActive || freeBoostActive;
-    public static float CurrentEnemyMovementMultiplier => IsBoostActive ? BoostedSpeedMultiplier : NormalSpeedMultiplier;
+    public static float CurrentGameplayTimeScale => IsBoostActive ? BoostedSpeedMultiplier : NormalSpeedMultiplier;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetRuntimeState()
@@ -94,6 +94,7 @@ public static class GameplaySpeedSystem
 
         ApplySaveData(saveData);
         GameSaveSystem.Save(saveData);
+        ApplyCurrentSpeedToTimeScale(true);
     }
 
     public static void ActivateUnlimitedBoost()
@@ -107,6 +108,7 @@ public static class GameplaySpeedSystem
 
         ApplySaveData(saveData);
         GameSaveSystem.Save(saveData);
+        ApplyCurrentSpeedToTimeScale(true);
     }
 
     public static void Flush()
@@ -125,6 +127,16 @@ public static class GameplaySpeedSystem
         {
             GameSaveSystem.Save(saveData);
         }
+    }
+
+    public static void ApplyCurrentSpeedToTimeScale(bool forceWhenPaused = false)
+    {
+        if (!forceWhenPaused && Time.timeScale <= 0f)
+        {
+            return;
+        }
+
+        Time.timeScale = CurrentGameplayTimeScale;
     }
 
     private static void ApplySaveData(SaveGameData saveData)
