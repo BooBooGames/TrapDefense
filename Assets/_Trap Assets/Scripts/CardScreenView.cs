@@ -129,6 +129,12 @@ public class CardScreenView : MonoBehaviour
             return false;
         }
 
+        foreach(var card in drawnCards)
+        {
+            Debug.Log($"card name = {card.cardName}");
+        }
+
+        Debug.Log($"Drawn cards count = {drawnCards.Count}");
         PowerCardDefinition displayedCard = drawnCards[drawnCards.Count - 1];
         Sprite cardBackgroundSprite = GetCardBackgroundSprite(displayedCard.cardType);
 

@@ -29,7 +29,7 @@ public class HomeViewScreen : MonoBehaviour
             playButton.onClick.AddListener(() =>
             {
                 UIManager.Instance.StartGame();
-                SoundManager.Instance.PlayButtonClickSound();
+                SoundManager.PlayButtonClickSound();
             });
         }
 
@@ -279,7 +279,7 @@ public class HomeViewScreen : MonoBehaviour
         {
             return;
         }
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
         ResolveCompletedTimers();
         selectedChestIndex = chestIndex;
         ChestSlotSaveData slot = saveData.chestSlots[chestIndex];
@@ -294,7 +294,7 @@ public class HomeViewScreen : MonoBehaviour
 
     private void UnlockSelectedChestWithTime()
     {
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
 
         if (!IsValidChestIndex(selectedChestIndex))
         {
@@ -321,7 +321,7 @@ public class HomeViewScreen : MonoBehaviour
 
     private void ReduceChestTimer(int chestIndex)
     {
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
         if (!IsValidChestIndex(chestIndex))
         {
             return;
@@ -372,7 +372,7 @@ public class HomeViewScreen : MonoBehaviour
 
     private void UnlockSelectedChestWithGems()
     {
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
 
         if (!IsValidChestIndex(selectedChestIndex))
         {
@@ -398,7 +398,7 @@ public class HomeViewScreen : MonoBehaviour
 
     private void OpenChest(int chestIndex)
     {
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
 
         if (!IsValidChestIndex(chestIndex))
         {

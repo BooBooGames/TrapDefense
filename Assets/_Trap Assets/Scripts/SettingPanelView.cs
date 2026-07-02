@@ -65,7 +65,7 @@ public class SettingPanelView : MonoBehaviour
 
     public void OnCloseButtonClicked()
     {
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
         if (UIManager.Instance != null)
         {
             UIManager.Instance.CloseSettingsScreen();
@@ -78,19 +78,19 @@ public class SettingPanelView : MonoBehaviour
     public void OnMusicButtonClicked()
     {
         GameSettingsSystem.ToggleMusic();
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
     }
 
     public void OnSoundButtonClicked()
     {
         GameSettingsSystem.ToggleSound();
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
     }
 
     public void OnHapticButtonClicked()
     {
         GameSettingsSystem.ToggleHaptic();
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
     }
 
     public void OnHomeButtonClicked()
@@ -101,7 +101,7 @@ public class SettingPanelView : MonoBehaviour
         }
 
         UIManager.Instance.EndGameAndShowHomeFromSettings();
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
     }
 
     private static void SetButtonVisible(Button button, bool isVisible)

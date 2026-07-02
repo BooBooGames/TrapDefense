@@ -110,7 +110,7 @@ public class PlayerXpSystem : MonoBehaviour
             {
                 GenerateCardChoices();
                 RefreshCardUi();
-                SoundManager.Instance.PlayButtonClickSound();
+                SoundManager.PlayButtonClickSound();
             }
         });
     }
@@ -139,6 +139,7 @@ public class PlayerXpSystem : MonoBehaviour
         {
             currentXp = CurrentTarget;
             awaitingCardSelection = true;
+            SoundManager.PlayAudio(AudioType.Level_Up);
             GenerateCardChoices();
             RefreshCardUi();
             SetCardPanelVisible(true);
@@ -164,7 +165,7 @@ public class PlayerXpSystem : MonoBehaviour
         RefreshCardUi();
         SetCardPanelVisible(false);
         NotifyProgressChanged();
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
         return true;
     }
 

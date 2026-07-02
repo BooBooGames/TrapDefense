@@ -220,7 +220,7 @@ public class ShopPanel : MonoBehaviour
             return;
         }
 
-        SoundManager.Instance?.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
 
         if (item.IsNonConsumableIap && ShopRewardSystem.IsNonConsumablePurchased(item))
         {

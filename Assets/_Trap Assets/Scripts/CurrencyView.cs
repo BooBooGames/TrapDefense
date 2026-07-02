@@ -29,7 +29,7 @@ public class CurrencyView : MonoBehaviour
         BindBottomHudButton(() =>
         {
             uiManager.ShowSettingsScreen();
-            SoundManager.Instance.PlayButtonClickSound();
+            SoundManager.PlayButtonClickSound();
         });
         SetEvolutionButtonVisible(false);
         SetElixirCounterVisible(false);

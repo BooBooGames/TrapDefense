@@ -137,28 +137,28 @@ public class UIManager : MonoBehaviour
         WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
         ShowScreen(homeScreenPanel, true);
         bottomHudController.SetSelectedButton(BottomHudView.HomeButtonIndex);
-        if (!fromFTUE) SoundManager.Instance.PlayButtonClickSound();
+        if (!fromFTUE) SoundManager.PlayButtonClickSound();
     }
 
     public void ShowUpgradeScreen()
     {
         ShowScreen(upgradeScreenPanel, true);
         bottomHudController.SetSelectedButton(BottomHudView.UpgradeButtonIndex);
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
     }
 
     public void ShowCardScreen()
     {
         ShowScreen(cardUpgradePanel, true);
         bottomHudController.SetSelectedButton(BottomHudView.CardButtonIndex);
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
     }
 
     public void ShowShopScreen()
     {
         ShowScreen(shopPanel, true);
         bottomHudController.SetSelectedButton(BottomHudView.ShopButtonIndex);
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
     }
 
     public void ShowSettingsScreen()
@@ -189,7 +189,7 @@ public class UIManager : MonoBehaviour
     {
         SetPanelActive(settingPanel, false);
         settingsOpenedFromGameView = false;
-        ShowFailPreview(gameViewScreen.InGameCoins);
+        ShowFailPreview(gameViewScreen.InGameCoins, isFromSettings: true);
     }
 
     public void StartGame()
@@ -223,7 +223,7 @@ public class UIManager : MonoBehaviour
 
         xSpeedPanel.RefreshState();
         SetPanelActive(xSpeedPanel.gameObject, true);
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
     }
 
     public void CloseXSpeedPanel(bool playSound = true)
@@ -238,7 +238,7 @@ public class UIManager : MonoBehaviour
 
         if (playSound)
         {
-            SoundManager.Instance.PlayButtonClickSound();
+            SoundManager.PlayButtonClickSound();
         }
     }
 
@@ -254,11 +254,19 @@ public class UIManager : MonoBehaviour
             multiplier => CollectGameCoinsAndStartNextLevel(coins, multiplier, elixirReward, 2, winPreviewPanelView.Hide));
     }
 
-    public void ShowFailPreview(int coins, int elixirReward = 0)
+    public void ShowFailPreview(int coins, int elixirReward = 0, bool isFromSettings = false)
     {
         WeaponRotator.SetGameplayMotionEnabled(false);
         WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
         SetPanelActive(winPreviewPanel, false);
+
+        if(isFromSettings)
+        {
+            CollectGameCoinsAndReturnHome(coins, 1, elixirReward, 1, failPreviewPanelView.Hide);
+
+            return;
+        }
+
         failPreviewPanelView.Show(
             coins,
             elixirReward,
@@ -498,7 +506,7 @@ public class UIManager : MonoBehaviour
         UpgradeScreenConfig config = UpgradeScreenConfig.Resolve(GetActiveLevelUpgradeConfig());
         PlayerUpgradeSystem.Initialize(config);
         evolutionScreenView.ShowEvolutionBackground(config);
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
     }
 
     private static UpgradeScreenConfig GetActiveLevelUpgradeConfig()
@@ -571,7 +579,7 @@ public class UIManager : MonoBehaviour
 
     private void CollectGameCoinsAndReturnHome(int coins, int multiplier, int elixirReward, int elixirMultiplier, UnityEngine.Events.UnityAction hidePanel)
     {
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
         hidePanel.Invoke();
 
         CollectGameCoins(coins, multiplier);
@@ -583,7 +591,7 @@ public class UIManager : MonoBehaviour
 
     private void CollectGameCoinsAndStartNextLevel(int coins, int multiplier, int elixirReward, int elixirMultiplier, UnityEngine.Events.UnityAction hidePanel)
     {
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
 
         hidePanel.Invoke();
 

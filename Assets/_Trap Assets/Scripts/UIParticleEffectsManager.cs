@@ -1,5 +1,6 @@
 using AssetKits.ParticleImage;
 using DG.Tweening;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -71,13 +72,17 @@ public class UIParticleEffectsManager : MonoBehaviour
         PlayParticleEffect(coinSpendEffect, effectPosition);
     }
 
-    void PlayParticleEffect(ParticleImage effect, Vector3 effectPosition)
+    private async void PlayParticleEffect(ParticleImage effect, Vector3 effectPosition)
     {
         Debug.Log("PlayParticleEffect at " + effect.name);
+
+        SoundManager.PlayAudio(AudioType.Get_Reward);
         effect.transform.position = effectPosition;
         effect.Play();
-        /*  effect.gameObject.SetActive(false);
-         effect.gameObject.SetActive(true); */
+
+        await Awaitable.WaitForSecondsAsync(1f);
+
+        SoundManager.PlayAudio(AudioType.Reward_Animation);
     }
 
     public void ShowRewardCountText(int cashAmount, int gemsAmount, int ticketsAmount, Vector3 pos)

@@ -291,6 +291,7 @@ GameObject:
   - component: {fileID: 2748716015469248659}
   - component: {fileID: 2229830071060421872}
   - component: {fileID: 4129182387429508746}
+  - component: {fileID: 251200011951927289}
   m_Layer: 0
   m_Name: Cutter_Trap
   m_TagString: Untagged
@@ -349,6 +350,52 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.926978, y: 2, z: 1.874487}
   m_Center: {x: 0, y: 4.24, z: 0}
+--- !u!114 &251200011951927289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2497253613660631095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ca3266c44f3e47f1ab0ec3bfd16cd83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damagePower: 1
+  speedTargets:
+  - {fileID: 7010086018306730340}
+  levelVisuals:
+  - {fileID: 4407695010272557341}
+  - {fileID: 4407695010272557341}
+  - {fileID: 4407695010272557341}
+  - {fileID: 5355761214770460379}
+  - {fileID: 5355761214770460379}
+  - {fileID: 5355761214770460379}
+  - {fileID: 6383968548311131219}
+  - {fileID: 6383968548311131219}
+  - {fileID: 6383968548311131219}
+  upgradeLevels:
+  - weaponPower: 1
+    weaponSpeed: 0.3
+  - weaponPower: 1
+    weaponSpeed: 0.4
+  - weaponPower: 1
+    weaponSpeed: 0.5
+  - weaponPower: 1
+    weaponSpeed: 0.6
+  - weaponPower: 1
+    weaponSpeed: 0.7
+  - weaponPower: 1
+    weaponSpeed: 0.8
+  - weaponPower: 1
+    weaponSpeed: 0.9
+  - weaponPower: 1
+    weaponSpeed: 1
+  - weaponPower: 1
+    weaponSpeed: 1.1
+  currentLevel: 1
+  weaponUpgradeEffect: {fileID: 4265587156398186446}
 --- !u!1 &2539224108324342403
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,7 +841,7 @@ MonoBehaviour:
   upgradeScreenConfig: {fileID: 11400000, guid: 626b6ba137059447198c4eb43863a191, type: 2}
   defaultWeaponUpgradeTarget: {fileID: 480342141180528024}
   _1WeaponUpgradeTarget: {fileID: 7354719886715802841}
-  _2WeaponUpgradeTarget: {fileID: 5033823088904938817}
+  _2WeaponUpgradeTarget: {fileID: 251200011951927289}
 --- !u!1 &6514202649299464751
 GameObject:
   m_ObjectHideFlags: 0
@@ -3179,9 +3226,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ab9bd4550cb154ca4b01ab3866150911, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5033823088904938817}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ab9bd4550cb154ca4b01ab3866150911, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 7010086018306730340}
     - targetCorrespondingSourceObject: {fileID: 2858550281029811359, guid: ab9bd4550cb154ca4b01ab3866150911, type: 3}
       insertIndex: -1
@@ -3574,52 +3618,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ab9bd4550cb154ca4b01ab3866150911, type: 3}
   m_PrefabInstance: {fileID: 7613568393605346577}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5033823088904938817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7307580556167989312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ca3266c44f3e47f1ab0ec3bfd16cd83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damagePower: 1
-  speedTargets:
-  - {fileID: 7010086018306730340}
-  levelVisuals:
-  - {fileID: 4407695010272557341}
-  - {fileID: 4407695010272557341}
-  - {fileID: 4407695010272557341}
-  - {fileID: 5355761214770460379}
-  - {fileID: 5355761214770460379}
-  - {fileID: 5355761214770460379}
-  - {fileID: 6383968548311131219}
-  - {fileID: 6383968548311131219}
-  - {fileID: 6383968548311131219}
-  upgradeLevels:
-  - weaponPower: 1
-    weaponSpeed: 0.3
-  - weaponPower: 1
-    weaponSpeed: 0.4
-  - weaponPower: 1
-    weaponSpeed: 0.5
-  - weaponPower: 1
-    weaponSpeed: 0.6
-  - weaponPower: 1
-    weaponSpeed: 0.7
-  - weaponPower: 1
-    weaponSpeed: 0.8
-  - weaponPower: 1
-    weaponSpeed: 0.9
-  - weaponPower: 1
-    weaponSpeed: 1
-  - weaponPower: 1
-    weaponSpeed: 1.1
-  currentLevel: 1
-  weaponUpgradeEffect: {fileID: 4265587156398186446}
 --- !u!95 &7010086018306730340
 Animator:
   serializedVersion: 7

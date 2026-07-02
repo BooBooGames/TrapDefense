@@ -214,6 +214,7 @@ public class ZombieRuntime : MonoBehaviour
         killNotified = true;
         ClearMovementSlow();
         Killed?.Invoke(this, transform.position);
+        ZombieAudioManager.RequestSound(transform, AudioType.Zombie_Death);
         pathFollower?.StopMovement();
         DisablePhysicsInteractions();
         // Make sure animator is running so death animation plays even if frozen

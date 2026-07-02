@@ -414,7 +414,7 @@ public class GameViewScreen : MonoBehaviour
         WeaponUnlockDefinition weaponDefinition = PlayerUpgradeSystem.Config.GetWeapon(weaponIndex);
         target.TryUpgrade(this, GetRequiredGearCost(target, weaponDefinition));
         RefreshWeaponUpgradeUi();
-        SoundManager.Instance.PlayButtonClickSound();
+        SoundManager.PlayButtonClickSound();
     }
 
     private void HandleWeaponUpgradeStateChanged(WeaponUpgradeController _)
