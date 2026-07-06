@@ -149,6 +149,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowCardScreen()
     {
+
         ShowScreen(cardUpgradePanel, true);
         bottomHudController.SetSelectedButton(BottomHudView.CardButtonIndex);
         SoundManager.PlayButtonClickSound();
@@ -244,6 +245,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowWinPreview(int coins, int elixirReward = 0)
     {
+        SoundManager.PlayAudio(AudioType.Win_Level);
         WeaponRotator.SetGameplayMotionEnabled(false);
         WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
         SetPanelActive(failPreviewPanel, false);
@@ -258,6 +260,8 @@ public class UIManager : MonoBehaviour
     {
         WeaponRotator.SetGameplayMotionEnabled(false);
         WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
+        AudioManager.StopAudio();
+
         SetPanelActive(winPreviewPanel, false);
 
         if(isFromSettings)
@@ -374,6 +378,8 @@ public class UIManager : MonoBehaviour
     private void ShowScreen(GameObject activePanel, bool showBottomHud)
     {
         currentScreenPanel = activePanel;
+
+        SetPanelActive(evolutionScreenPanel, activePanel == evolutionScreenPanel);
 
         SetPanelActive(currencyView.gameObject, true);
         SetPanelActive(homeScreenPanel, activePanel == homeScreenPanel);

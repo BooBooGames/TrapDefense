@@ -14,17 +14,7 @@ public class CardScreenView : MonoBehaviour
     public Button summonx1Button, summonx10Button;
     [SerializeField] private PowerCardCatalog powerCardCatalogData;
 
-    [Serializable]
-    public class UpgradeCardData
-    {
-        [HideInInspector] public string cardId, cardName, cardType;
-        [HideInInspector] public Sprite cardSprite;
-        [HideInInspector] public string[] descriptions = Array.Empty<string>();
-
-        public Image bgImage, iconImage, levelBgImage;
-        public TextMeshProUGUI levelText, countText;
-    }
-    public List<UpgradeCardData> upgradeCardDatas;
+    public List<PerkUpgradeInfoUI> perkUpgradeInfoUiList;
     // public Button perksButton, heroButton;
 
     private void OnEnable()
@@ -129,14 +119,10 @@ public class CardScreenView : MonoBehaviour
             return false;
         }
 
-        foreach(var card in drawnCards)
-        {
-            Debug.Log($"card name = {card.cardName}");
-        }
-
-        Debug.Log($"Drawn cards count = {drawnCards.Count}");
         PowerCardDefinition displayedCard = drawnCards[drawnCards.Count - 1];
         Sprite cardBackgroundSprite = GetCardBackgroundSprite(displayedCard.cardType);
+
+        SoundManager.PlayAudio(AudioType.Perk_Card_Summon);
 
         UIManager.Instance.ShowSummonScreen(
             displayedCard,
@@ -218,7 +204,7 @@ public class CardScreenView : MonoBehaviour
 
     private void RefreshCardData()
     {
-        if (upgradeCardDatas == null)
+        if (perkUpgradeInfoUiList == null)
         {
             return;
         }
@@ -226,10 +212,10 @@ public class CardScreenView : MonoBehaviour
         PowerCardCatalog catalog = ResolvePowerCardCatalog();
         PowerCardDefinition[] cards = catalog != null && catalog.Cards != null ? catalog.Cards : Array.Empty<PowerCardDefinition>();
 
-        for (int i = 0; i < upgradeCardDatas.Count; i++)
+        for (int i = 0; i < perkUpgradeInfoUiList.Count; i++)
         {
             PowerCardDefinition card = i < cards.Length ? cards[i] : null;
-            ApplyCardData(upgradeCardDatas[i], card);
+            ApplyCardData(perkUpgradeInfoUiList[i], card);
         }
     }
 
@@ -247,7 +233,7 @@ public class CardScreenView : MonoBehaviour
         return playerXpSystem != null ? playerXpSystem.PowerCardCatalogData : null;
     }
 
-    private void ApplyCardData(UpgradeCardData cardData, PowerCardDefinition card)
+    private void ApplyCardData(PerkUpgradeInfoUI cardData, PowerCardDefinition card)
     {
         if (cardData == null)
         {
@@ -270,11 +256,13 @@ public class CardScreenView : MonoBehaviour
         SetImage(cardData.iconImage, card.cardImage);
         SetImage(cardData.levelBgImage, GetLevelBackgroundSprite(card.cardType));
         SetText(cardData.levelText, $"Lv. {PowerCardUpgradeSystem.GetCardLevel(card)}");
-        SetText(cardData.countText, PowerCardUpgradeSystem.GetCardCopyProgressText(card));
+
+        cardData.UpdateProgress(PowerCardUpgradeSystem.GetCardCopyCount(card), PowerCardUpgradeSystem.GetNumberCopiesRequiredForUpgrade());
+        //SetText(cardData.countText, PowerCardUpgradeSystem.GetCardCopyProgressText(card));
         BindCardButton(cardData, card);
     }
 
-    private void ClearCardData(UpgradeCardData cardData)
+    private void ClearCardData(PerkUpgradeInfoUI cardData)
     {
         cardData.cardId = string.Empty;
         cardData.cardName = string.Empty;
@@ -329,7 +317,7 @@ public class CardScreenView : MonoBehaviour
         return string.IsNullOrWhiteSpace(cardType) ? string.Empty : cardType.Trim().ToLowerInvariant();
     }
 
-    private void BindCardButton(UpgradeCardData cardData, PowerCardDefinition card)
+    private void BindCardButton(PerkUpgradeInfoUI cardData, PowerCardDefinition card)
     {
         if (cardData.bgImage == null)
         {

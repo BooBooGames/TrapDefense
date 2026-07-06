@@ -49,6 +49,8 @@ public class PlayerXpSystem : MonoBehaviour
     [SerializeField] private PowerCardCatalog powerCardCatalogData;
     [SerializeField] private int[] xpTargets = { 10, 16, 26, 46, 75, 127, 255, 470, 970, 1430 };
 
+    [SerializeField] private bool _useAdditiveStackingForSamePerks;
+
     private readonly List<PowerCardChoice> currentChoices = new List<PowerCardChoice>();
     private readonly List<PowerCardChoice> selectedCards = new List<PowerCardChoice>();
 
@@ -73,6 +75,8 @@ public class PlayerXpSystem : MonoBehaviour
     private int angelBlessingHealAmount;
     private int waveBonusGearAmount;
     private int secondWindHealAmount;
+    private float trapAcceleratorTrapSpeedMultiplier = 1f;
+
     private float thinArmorEnemyHealthMultiplier = 1f;
     private float weakeningStrikeSlowMultiplier = 1f;
     private float weakeningStrikeSlowDuration;
@@ -389,7 +393,19 @@ public class PlayerXpSystem : MonoBehaviour
     {
         if (IsTrapAcceleratorCard(chosenCard))
         {
-            WeaponUpgradeController.ApplySpeedMultiplierToCurrentTraps(PowerCardUpgradeSystem.GetTrapAcceleratorSpeedMultiplier(chosenCard.definition));
+            float multiplier = PowerCardUpgradeSystem.GetTrapAcceleratorSpeedMultiplier(chosenCard.definition);
+
+            if (_useAdditiveStackingForSamePerks)
+            {
+                multiplier -= 1f;
+                trapAcceleratorTrapSpeedMultiplier += multiplier;
+            }
+            else
+            {
+                trapAcceleratorTrapSpeedMultiplier *= multiplier;
+            }
+
+            WeaponUpgradeController.ApplySpeedMultiplierToCurrentTraps(trapAcceleratorTrapSpeedMultiplier);
             return;
         }
 
@@ -411,7 +427,11 @@ public class PlayerXpSystem : MonoBehaviour
             if (!thinArmorActive)
             {
                 thinArmorActive = true;
-                thinArmorEnemyHealthMultiplier = PowerCardUpgradeSystem.GetThinArmorEnemyHealthMultiplier();
+
+                float multiplier = PowerCardUpgradeSystem.GetThinArmorEnemyHealthMultiplier();
+
+                // health decrease should always use multiplicative stacking
+                thinArmorEnemyHealthMultiplier *= multiplier;
                 ApplyThinArmorToCurrentEnemies();
             }
 
@@ -459,7 +479,19 @@ public class PlayerXpSystem : MonoBehaviour
         if (IsSharpTrapsCard(chosenCard))
         {
             sharpTrapsActive = true;
-            sharpTrapsDamageMultiplier = PowerCardUpgradeSystem.GetSharpTrapsDamageMultiplier();
+
+            float multiplier = PowerCardUpgradeSystem.GetSharpTrapsDamageMultiplier();
+
+            if (_useAdditiveStackingForSamePerks)
+            {
+                multiplier -= 1f;
+                sharpTrapsDamageMultiplier += multiplier;
+            }
+            else
+            {
+                sharpTrapsDamageMultiplier *= multiplier;
+            }
+
             return;
         }
 

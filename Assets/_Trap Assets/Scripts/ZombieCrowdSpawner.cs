@@ -141,7 +141,13 @@ public class ZombieCrowdSpawner : MonoBehaviour
             Debug.Log($"Wave {currentWaveNumber} completed. Total completed zombies: {completedZombies}/{totalPlannedZombies}");
             HomeViewScreen.AwardChestForCompletedWave(currentWaveNumber);
             gameViewScreen.ShowChestTriggerImage(currentWaveNumber);
-            PlayerXpSystem.Instance?.AwardWaveCompletionBonus();
+
+            if (waveIndex != waves.Length - 1)
+            {
+                PlayerXpSystem.Instance?.AwardWaveCompletionBonus();
+            }
+
+            AnalyticsManager.RequestInterstitialAdAfterWaveEnd();
 
             if (waveIndex < waves.Length - 1 && wave.delayBeforeNextWave > 0f)
             {

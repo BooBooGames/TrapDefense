@@ -414,7 +414,7 @@ public class GameViewScreen : MonoBehaviour
         WeaponUnlockDefinition weaponDefinition = PlayerUpgradeSystem.Config.GetWeapon(weaponIndex);
         target.TryUpgrade(this, GetRequiredGearCost(target, weaponDefinition));
         RefreshWeaponUpgradeUi();
-        SoundManager.PlayButtonClickSound();
+        //SoundManager.PlayButtonClickSound();
     }
 
     private void HandleWeaponUpgradeStateChanged(WeaponUpgradeController _)
@@ -690,6 +690,7 @@ public class GameViewScreen : MonoBehaviour
         int elixirReward = GetGameOverElixirReward();
 
         UIManager.Instance.ShowFailPreview(inGameCoins, elixirReward);
+        SoundManager.PlayAudio(AudioType.Lose_Level);
 
         if (pauseOnGameOver)
         {

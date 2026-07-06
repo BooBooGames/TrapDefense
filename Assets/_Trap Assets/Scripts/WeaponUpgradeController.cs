@@ -64,6 +64,7 @@ public class WeaponUpgradeController : MonoBehaviour
             return false;
         }
 
+        SoundManager.PlayAudio(AudioType.UI_Upgrade_Button_Click);
         currentLevel++;
         ApplyCurrentLevelState();
         PlayUpgradeEffect();

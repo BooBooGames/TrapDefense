@@ -65,6 +65,7 @@ public class EndPointTrigger : MonoBehaviour
         }
 
         ResolveGameViewScreen().DamagePlayer(damagePerZombie);
+        SoundManager.PlayAudio(AudioType.Zombie_Reached_Base);
 
         if (!gateBroken)
         {
@@ -74,6 +75,7 @@ public class EndPointTrigger : MonoBehaviour
 
     private void BreakGate()
     {
+        SoundManager.PlayAudio(AudioType.Base_Barrier_Destroyed);
         gateBroken = true;
 
         ParticleSystem effectInstance = Instantiate(gateBreakEffectPrefab, transform.position, Quaternion.identity);

@@ -30,6 +30,8 @@ public class HomeViewScreen : MonoBehaviour
             {
                 UIManager.Instance.StartGame();
                 SoundManager.PlayButtonClickSound();
+                AudioManager.StartAudio();
+                AnalyticsManager.ResetISParameters();
             });
         }
 

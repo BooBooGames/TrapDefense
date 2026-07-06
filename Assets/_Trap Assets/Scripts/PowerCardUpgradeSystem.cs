@@ -159,6 +159,11 @@ public static class PowerCardUpgradeSystem
         return cardData == null ? 0 : GetCardCopyCount(cardData.cardId, cardData.cardName);
     }
 
+    public static int GetNumberCopiesRequiredForUpgrade()
+    {
+        return CopiesRequiredForUpgrade;
+    }
+
     public static bool CanUpgradeCard(PowerCardDefinition cardData)
     {
         return GetCardCopyCount(cardData) >= CopiesRequiredForUpgrade;

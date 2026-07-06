@@ -14,6 +14,15 @@ public enum AudioType
     Get_Reward,
     Reward_Animation,
     Level_Up,
+    Base_Barrier_Destroyed,
+    UI_Upgrade_Button_Click,
+    Spend_Coins,
+
+    Win_Level,
+    Lose_Level,
+    Perk_Card_Summon,
+    Perk_Upgraded,
+    Zombie_Reached_Base,
 }
 
 [Serializable]

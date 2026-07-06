@@ -53,6 +53,9 @@ public class PerksCardInfoPanel : MonoBehaviour
 
         if (PowerCardUpgradeSystem.TryUpgradeCard(currentCardData, out _))
         {
+            SoundManager.PlayAudio(AudioType.Perk_Upgraded);
+
+            upgradeButton.transform.DoClick();
             RefreshCardInfo();
         }
     }

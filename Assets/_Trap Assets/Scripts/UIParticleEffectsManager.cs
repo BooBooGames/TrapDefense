@@ -69,20 +69,23 @@ public class UIParticleEffectsManager : MonoBehaviour
 
     public void PlayCoinSpendEffect(Vector3 effectPosition)
     {
-        PlayParticleEffect(coinSpendEffect, effectPosition);
+        PlayParticleEffect(coinSpendEffect, effectPosition, pShouldPlayAudio: false);
     }
 
-    private async void PlayParticleEffect(ParticleImage effect, Vector3 effectPosition)
+    private async void PlayParticleEffect(ParticleImage effect, Vector3 effectPosition, bool pShouldPlayAudio = true)
     {
-        Debug.Log("PlayParticleEffect at " + effect.name);
-
-        SoundManager.PlayAudio(AudioType.Get_Reward);
+        if (pShouldPlayAudio)
+        {
+            SoundManager.PlayAudio(AudioType.Get_Reward);
+        }
         effect.transform.position = effectPosition;
         effect.Play();
 
-        await Awaitable.WaitForSecondsAsync(1f);
-
-        SoundManager.PlayAudio(AudioType.Reward_Animation);
+        if (pShouldPlayAudio)
+        {
+            await Awaitable.WaitForSecondsAsync(1f);
+            SoundManager.PlayAudio(AudioType.Reward_Animation);
+        }
     }
 
     public void ShowRewardCountText(int cashAmount, int gemsAmount, int ticketsAmount, Vector3 pos)
