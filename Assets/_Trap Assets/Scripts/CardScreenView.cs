@@ -124,6 +124,9 @@ public class CardScreenView : MonoBehaviour
 
         SoundManager.PlayAudio(AudioType.Perk_Card_Summon);
 
+        summonx1Button.gameObject.SetActive(false);
+        summonx10Button.gameObject.SetActive(false);
+
         UIManager.Instance.ShowSummonScreen(
             displayedCard,
             cardBackgroundSprite,
@@ -152,6 +155,9 @@ public class CardScreenView : MonoBehaviour
 
     private void HandleSummonContinueClicked()
     {
+        summonx1Button.gameObject.SetActive(true);
+        summonx10Button.gameObject.SetActive(true);
+
         UIManager.Instance?.CloseSummonScreen();
         RefreshCardData();
         RefreshSummonButtonStates();

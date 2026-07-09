@@ -120,6 +120,7 @@ public class WeaponUpgradeController : MonoBehaviour
         damagePower = Mathf.Max(1f, level.weaponPower);
 
         float effectiveWeaponSpeed = level.weaponSpeed * speedMultiplier;
+
         for (int i = 0; i < speedTargets.Length; i++)
         {
             speedTargets[i].speed = effectiveWeaponSpeed;

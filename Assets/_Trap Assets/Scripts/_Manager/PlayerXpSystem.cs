@@ -85,6 +85,7 @@ public class PlayerXpSystem : MonoBehaviour
     private float doomTrapsTrapDamageMultiplier = 1f;
     private float sharpTrapsDamageMultiplier = 1f;
     private float scrapCollectorGearChance;
+    private float rvTrapDamageMultiplier = 1f;
 
     public event Action<float, int, int> XpProgressChanged;
     public event Action<IReadOnlyList<PowerCardChoice>> CardChoicesPresented;
@@ -242,6 +243,8 @@ public class PlayerXpSystem : MonoBehaviour
         {
             multiplier *= sharpTrapsDamageMultiplier;
         }
+
+        multiplier *= rvTrapDamageMultiplier;
 
         return multiplier;
     }
@@ -807,6 +810,17 @@ public class PlayerXpSystem : MonoBehaviour
         }
 
         return 0;
+    }
+
+    public void AddGearsWithRv(int amount)
+    {
+        AddGearsWithEffect(amount);
+    }
+
+    public void SetTrapDamageMultiplierWithRv(float multiplier)
+    {
+        Debug.Log($"Rv trap damage mult = {multiplier}");
+        rvTrapDamageMultiplier = multiplier;
     }
 }
 

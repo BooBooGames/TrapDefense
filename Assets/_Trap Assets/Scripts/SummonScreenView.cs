@@ -21,6 +21,8 @@ public class SummonScreenView : MonoBehaviour
     private Quaternion cardBgBaseRotation = Quaternion.identity;
     private Quaternion cardIconBaseRotation = Quaternion.identity;
     private bool hasCachedBaseTransforms;
+
+    private UnityAction OnCardRevealAnimationComplete;
     private UnityAction currentSummonX1Action;
     private UnityAction currentSummonX10Action;
     private UnityAction currentContinueAction;
@@ -45,7 +47,21 @@ public class SummonScreenView : MonoBehaviour
         BindButton(summonx10Button, ref currentSummonX10Action, onSummonX10);
         BindButton(tapToContinueButton, ref currentContinueAction, onContinue);
 
-        PlayReveal(cardData, cardBackgroundSprite, onRevealComplete);
+        summonx1Button.gameObject.SetActive(false);
+        summonx10Button.gameObject.SetActive(false);
+        tapToContinueButton.gameObject.SetActive(false);
+
+        OnCardRevealAnimationComplete = onRevealComplete;
+        PlayReveal(cardData, cardBackgroundSprite, OnCardRevealComplete);
+    }
+
+    private void OnCardRevealComplete()
+    {
+        OnCardRevealAnimationComplete?.Invoke();
+
+        summonx1Button.gameObject.SetActive(true);
+        summonx10Button.gameObject.SetActive(true);
+        tapToContinueButton.gameObject.SetActive(true);
     }
 
     public void Hide()

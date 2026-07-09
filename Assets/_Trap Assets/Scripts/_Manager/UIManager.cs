@@ -18,7 +18,7 @@ public class UIManager : MonoBehaviour
         !IsPanelActive(chestPreviewPanel) &&
         !IsPanelActive(evolutionScreenPanel) &&
         !IsPanelActive(ageChangePanel) &&
-        (xSpeedPanel == null || !IsPanelActive(xSpeedPanel.gameObject)) &&
+        (xSpeedPanel == null || !IsPanelActive(xSpeedPanel._mainContainer)) &&
         (perksCardInfoPanel == null || !IsPanelActive(perksCardInfoPanel.gameObject)) &&
         (summonScreenView == null || !IsPanelActive(summonScreenView.gameObject));
 
@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
 
         if (currentScreenPanel == gameViewPanel
             && Time.timeScale > 0f
-            && (xSpeedPanel == null || !xSpeedPanel.gameObject.activeSelf))
+            && (xSpeedPanel == null || !xSpeedPanel._mainContainer.activeSelf))
         {
             GameplaySpeedSystem.ApplyCurrentSpeedToTimeScale(true);
         }
@@ -135,6 +135,10 @@ public class UIManager : MonoBehaviour
     {
         WeaponRotator.SetGameplayMotionEnabled(false);
         WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
+
+        RvManager.ToggleRVsSpawn(false);
+        GameplaySpeedSystem.ToggleFreeSpeedBoostTimer(false);
+
         ShowScreen(homeScreenPanel, true);
         bottomHudController.SetSelectedButton(BottomHudView.HomeButtonIndex);
         if (!fromFTUE) SoundManager.PlayButtonClickSound();
@@ -223,7 +227,7 @@ public class UIManager : MonoBehaviour
         }
 
         xSpeedPanel.RefreshState();
-        SetPanelActive(xSpeedPanel.gameObject, true);
+        SetPanelActive(xSpeedPanel._mainContainer, true);
         SoundManager.PlayButtonClickSound();
     }
 
@@ -234,7 +238,7 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        SetPanelActive(xSpeedPanel.gameObject, false);
+        SetPanelActive(xSpeedPanel._mainContainer, false);
         ResumeGameIfXSpeedPanelPaused();
 
         if (playSound)
@@ -436,6 +440,15 @@ public class UIManager : MonoBehaviour
 
     private void SetPanelActive(GameObject panel, bool isActive)
     {
+        //if (isActive)
+        //{
+        //    Debug.Log($"Turn on {panel.name}");
+        //}
+        //else
+        //{
+        //    Debug.Log($"Turn off {panel.name}");
+
+        //}
         panel.SetActive(isActive);
     }
 

@@ -14,7 +14,9 @@ public static class GameplaySpeedSystem
     private static long freeBoostExpirationUtc;
     private static bool unlimitedBoostActive;
     private static float nextRemainingSaveTime;
+    private static float lastTimerTickTime;
 
+    public static bool IsFreeBoostTimerActive = false;
     public static bool FreeBoostActive => freeBoostActive;
     public static int FreeBoostRemainingSeconds => freeBoostRemainingSeconds;
     public static long FreeBoostExpirationUtc => freeBoostExpirationUtc;
@@ -46,26 +48,28 @@ public static class GameplaySpeedSystem
 
     public static void Tick()
     {
-        SaveGameData saveData = null;
-        bool saveChanged = false;
-
-        if (freeBoostActive)
-        {
-            saveData = GameSaveSystem.Load();
-            ApplySaveData(saveData);
+        if (!IsFreeBoostTimerActive) return; 
+        
+        SaveGameData saveData = null; 
+        bool saveChanged = false; 
+        
+        if (freeBoostActive) 
+        { 
+            saveData = GameSaveSystem.Load(); 
+            ApplySaveData(saveData); 
             saveChanged = ValidateFreeBoost(saveData);
 
-            if (freeBoostActive && Time.unscaledTime >= nextRemainingSaveTime)
-            {
-                saveData.freeSpeedBoostRemainingSeconds = freeBoostRemainingSeconds;
-                saveChanged = true;
-                nextRemainingSaveTime = Time.unscaledTime + RemainingSaveIntervalSeconds;
-            }
+            if (freeBoostActive && Time.unscaledDeltaTime >= nextRemainingSaveTime) 
+            { 
+                saveData.freeSpeedBoostRemainingSeconds = freeBoostRemainingSeconds; 
+                saveChanged = true; 
+                nextRemainingSaveTime = Time.unscaledDeltaTime + RemainingSaveIntervalSeconds; 
+            } 
         }
 
-        if (saveChanged)
-        {
-            GameSaveSystem.Save(saveData);
+        if (saveChanged) 
+        { 
+            GameSaveSystem.Save(saveData); 
         }
     }
 
@@ -185,6 +189,11 @@ public static class GameplaySpeedSystem
         }
 
         return changed;
+    }
+
+    public static void ToggleFreeSpeedBoostTimer(bool pActivate)
+    {
+        IsFreeBoostTimerActive = pActivate;
     }
 
     private static long GetUtcNowSeconds()

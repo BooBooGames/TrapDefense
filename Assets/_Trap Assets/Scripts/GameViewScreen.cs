@@ -135,6 +135,17 @@ public class GameViewScreen : MonoBehaviour
         UpdateGearUi(GetGearProgress());
     }
 
+    public void MultiplyGearFlowSpeedWithRv(float pMultiplier)
+    {
+        gearGenerationDuration /= pMultiplier;
+        gearGenerationTimer = Mathf.Clamp(gearGenerationTimer, 0f, gearGenerationDuration);
+    }
+
+    public void FullyHealWithRv()
+    {
+        AddHealth(maxPlayerHealth);
+    }
+
     public void StartGameplay()
     {
         RefreshLevelReferences();
@@ -151,6 +162,7 @@ public class GameViewScreen : MonoBehaviour
 
         gameOverPanel.SetActive(false);
 
+        GameplaySpeedSystem.ToggleFreeSpeedBoostTimer(pActivate: true);
         zombieCrowdSpawner.StartWaves();
     }
 

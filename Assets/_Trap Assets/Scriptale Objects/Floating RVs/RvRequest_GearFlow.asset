@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 810cba611221ee145bb71002671a8952, type: 3}
+  m_Name: RvRequest_GearFlow
+  m_EditorClassIdentifier: Assembly-CSharp::RvRequestSO
+  _RvType: 0
+  _RvEventName: activate_2x_gear_flow_speed
+  _RvDisplayName: Faster Gears
+  _RvEffectDescriptionText: +{0}%
+  _RvIcon: {fileID: 21300000, guid: e91e50f141da54189bf178c46fde7654, type: 3}
+  _DisplayDuration: 15
+  _HasTimedEffect: 1
+  _EffectDuration: 30
+  _EffectMultiplier: 1.5

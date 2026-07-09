@@ -6,13 +6,24 @@ using UnityEngine.UI;
 public class xSpeedPanel : MonoBehaviour
 {
     private const string FreeButtonDefaultText = "FREE";
+    private const string UnlimitedButtonDefaultText = "INR1550"; // Do the actual IAP price here
+    private const string BoostActiveText = "ACTIVE";
+
+    public GameObject _mainContainer;
 
     public Button freeButton, unlimitedButton, closeButton;
     public TextMeshProUGUI freeButtonText;
+    public TextMeshProUGUI unlimitedButtonText;
+
+    [SerializeField] private GameObject _freeButtonRvIconObject;
+    [SerializeField] private GameObject _bonusInfoContainer;
+    [SerializeField] private TextMeshProUGUI _remainingDurationText;
+    [SerializeField] private GameObject _infiniteDurationIcon;
 
     private Action onFreeButtonClicked;
     private Action onUnlimitedButtonClicked;
     private Action onCloseButtonClicked;
+
     private int lastDisplayedFreeBoostSeconds = -1;
     private bool lastDisplayedFreeBoostActive;
     private bool lastDisplayedUnlimitedBoostActive;
@@ -65,33 +76,45 @@ public class xSpeedPanel : MonoBehaviour
 
         bool unlimitedActive = GameplaySpeedSystem.UnlimitedBoostActive;
         bool freeActive = !unlimitedActive && GameplaySpeedSystem.FreeBoostActive;
+        _bonusInfoContainer.SetActive(freeActive || unlimitedActive);
 
         if (freeButton != null)
         {
-            freeButton.interactable = !freeActive && !unlimitedActive;
+            freeButton.transform.parent.gameObject.SetActive(!unlimitedActive);
+
+            freeButton.interactable = !freeActive;
+            _freeButtonRvIconObject.SetActive(!freeActive);
+            _remainingDurationText.gameObject.SetActive(freeActive);
         }
 
         if (unlimitedButton != null)
         {
+            unlimitedButton.transform.parent.gameObject.SetActive(!freeActive);
+
             unlimitedButton.interactable = !unlimitedActive;
+
+            _infiniteDurationIcon.SetActive(unlimitedActive);
         }
 
-        if (freeButtonText != null)
+        int remainingSeconds = GameplaySpeedSystem.FreeBoostRemainingSeconds;
+
+        if (freeActive != lastDisplayedFreeBoostActive
+            || unlimitedActive != lastDisplayedUnlimitedBoostActive
+            || remainingSeconds != lastDisplayedFreeBoostSeconds)
         {
-            int remainingSeconds = GameplaySpeedSystem.FreeBoostRemainingSeconds;
-
-            if (freeActive != lastDisplayedFreeBoostActive
-                || unlimitedActive != lastDisplayedUnlimitedBoostActive
-                || remainingSeconds != lastDisplayedFreeBoostSeconds)
+            if (freeActive)
             {
-                freeButtonText.text = freeActive
-                    ? FormatRemainingTime(remainingSeconds)
-                    : FreeButtonDefaultText;
-
-                lastDisplayedFreeBoostActive = freeActive;
-                lastDisplayedUnlimitedBoostActive = unlimitedActive;
-                lastDisplayedFreeBoostSeconds = remainingSeconds;
+                _remainingDurationText.text = FormatRemainingTime(remainingSeconds);
             }
+
+            freeButtonText.text = freeActive ? BoostActiveText : FreeButtonDefaultText;
+
+            // TODO: THIS WILL WORK WITH IAPS, SO MAKE SURE TO FETCH THE PRICE FROM THE STORE, WHEN NOT ACTIVE
+            unlimitedButtonText.text = unlimitedActive ? BoostActiveText : UnlimitedButtonDefaultText;
+
+            lastDisplayedFreeBoostActive = freeActive;
+            lastDisplayedUnlimitedBoostActive = unlimitedActive;
+            lastDisplayedFreeBoostSeconds = remainingSeconds;
         }
     }
 

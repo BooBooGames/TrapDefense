@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 810cba611221ee145bb71002671a8952, type: 3}
+  m_Name: RvRequest_InstantGears
+  m_EditorClassIdentifier: Assembly-CSharp::RvRequestSO
+  _RvType: 2
+  _RvEventName: get_instant_gears
+  _RvDisplayName: Instant Gears
+  _RvEffectDescriptionText: +{0}
+  _RvIcon: {fileID: 21300000, guid: 2f3f24521a11e4460b67b2a0de326f9b, type: 3}
+  _DisplayDuration: 15
+  _HasTimedEffect: 0
+  _EffectDuration: 15
+  _EffectMultiplier: 0

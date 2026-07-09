@@ -28,6 +28,7 @@ public class HomeViewScreen : MonoBehaviour
             playButton.onClick.RemoveAllListeners();
             playButton.onClick.AddListener(() =>
             {
+                RvManager.ToggleRVsSpawn(true);
                 UIManager.Instance.StartGame();
                 SoundManager.PlayButtonClickSound();
                 AudioManager.StartAudio();
