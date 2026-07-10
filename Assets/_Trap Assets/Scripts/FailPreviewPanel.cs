@@ -8,11 +8,12 @@ public class FailPreviewPanel : MonoBehaviour
 {
     [FormerlySerializedAs("coinRewardLabel")] public TextMeshProUGUI inGameCoinLabel;
     [FormerlySerializedAs("collectButton")] public Button tryAgainButton;
+    public Button reviveButton;
     public GameObject elixirHolder;
     public TextMeshProUGUI elixirAmountLabel;
     public Button rvCollectButton;
 
-    public void Show(int coins, int elixirReward, UnityAction onCollect, UnityAction onRewardedCollect)
+    public void Show(int coins, int elixirReward, UnityAction onCollect, UnityAction onRewardedCollect, UnityAction onRevive)
     {
         gameObject.SetActive(true);
         inGameCoinLabel.text = CoinFormatter.FormatCoins(coins);
@@ -20,6 +21,7 @@ public class FailPreviewPanel : MonoBehaviour
 
         SetButton(tryAgainButton, onCollect);
         SetButton(rvCollectButton, onRewardedCollect);
+        SetButton(reviveButton, onRevive);
         /*  if (rvCollectButton != null)
          {
              rvCollectButton.gameObject.SetActive(false);

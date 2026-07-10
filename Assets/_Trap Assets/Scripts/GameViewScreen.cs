@@ -166,6 +166,14 @@ public class GameViewScreen : MonoBehaviour
         zombieCrowdSpawner.StartWaves();
     }
 
+    public void Revive()
+    {
+        gameOverTriggered = false;
+
+        AddHealth(maxPlayerHealth);
+        UpdatePlayerHealthUi();
+    }
+
     public void ResetSessionDataForNextLevel()
     {
         RefreshLevelReferences();
@@ -747,6 +755,11 @@ public class GameViewScreen : MonoBehaviour
         {
             chest2TriggerImage.SetActive(true);
         }
+    }
+
+    public bool ShouldPauseOnGameOver()
+    {
+        return pauseOnGameOver;
     }
 
     private void ResetWeaponUpgradeTargets()

@@ -6088,6 +6088,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
   path: {fileID: 7341280001858959408}
   inputCamera: {fileID: 0}
+  dragHoldTime: 1
 --- !u!65 &7803517413012202846
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8544,6 +8545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
   path: {fileID: 7341280001858959408}
   inputCamera: {fileID: 0}
+  dragHoldTime: 1
 --- !u!65 &7471923273132267648
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9093,6 +9095,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
   path: {fileID: 7341280001858959408}
   inputCamera: {fileID: 0}
+  dragHoldTime: 1
 --- !u!65 &904406564602862629
 BoxCollider:
   m_ObjectHideFlags: 0

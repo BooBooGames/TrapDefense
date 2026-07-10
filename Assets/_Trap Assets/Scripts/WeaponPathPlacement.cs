@@ -12,6 +12,12 @@ public class WeaponPathPlacement : MonoBehaviour
 
     [SerializeField] private ZombiePath path;
     [SerializeField] private Camera inputCamera;
+
+    [SerializeField] private float dragHoldTime = 0.5f;
+
+    private float dragTimer;
+    private bool dragHoldTriggered;
+
     private float minimumPathSpacing = 4f;
 
     private float lockedDistanceAlongPath;
@@ -66,6 +72,7 @@ public class WeaponPathPlacement : MonoBehaviour
             if (activeDrag == this)
             {
                 activeDrag = null;
+                ResetDragTimer();
             }
 
             return;
@@ -81,6 +88,8 @@ public class WeaponPathPlacement : MonoBehaviour
             if (PointerPressedThisFrame() && IsPointerOverThisWeapon())
             {
                 activeDrag = this;
+                dragTimer = 0f;
+                dragHoldTriggered = false;
             }
 
             return;
@@ -91,13 +100,28 @@ public class WeaponPathPlacement : MonoBehaviour
             return;
         }
 
+        dragTimer += Time.deltaTime;
+
+        if (!dragHoldTriggered && dragTimer >= dragHoldTime)
+        {
+            dragHoldTriggered = true;
+            TutorialManager.Instance.OnDraggedWeaponForSomeTime();
+        }
+
         if (PointerReleasedThisFrame())
         {
             activeDrag = null;
+            ResetDragTimer();
             return;
         }
 
         UpdateDraggedPlacement();
+    }
+
+    private void ResetDragTimer()
+    {
+        dragTimer = 0f;
+        dragHoldTriggered = false;
     }
 
     private void CacheInitialPlacement()

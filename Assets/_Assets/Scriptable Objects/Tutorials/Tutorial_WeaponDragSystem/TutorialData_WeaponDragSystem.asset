@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afeae4bb0aca64e4fad23a02a2f9c996, type: 3}
+  m_Name: TutorialData_WeaponDragSystem
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialData
+  _TutorialType: 0
+  TutorialSteps:
+  - WaitTimeAfterStepEnd: 0
+    OnStepStartActions:
+    - {fileID: 11400000, guid: 1dc2842efa965184580f2a6cf543de9d, type: 2}
+    EndConstraints:
+    - {fileID: 11400000, guid: c6e6ca61e15509d47956c3ff8b4cc369, type: 2}
+    OnStepEndActions:
+    - {fileID: 11400000, guid: 497abaf710ddb5c4293f2d524d598bc0, type: 2}
+  StartTrigger: {fileID: 11400000, guid: 71ee1e5562515d149b3e708859a4d1ea, type: 2}

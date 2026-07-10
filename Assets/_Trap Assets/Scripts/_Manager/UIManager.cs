@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,7 +11,9 @@ public class UIManager : MonoBehaviour
     public static UIManager Instance { get; private set; }
 
     public bool IsWeaponMovementAllowed =>
-        currentScreenPanel == gameViewPanel &&
+        !TutorialManager.Instance.IsTutorialDone(TutorialType.WeaponDragSystem) ||
+
+        (currentScreenPanel == gameViewPanel &&
         IsPanelActive(gameViewPanel) &&
         !IsPanelActive(settingPanel) &&
         !IsPanelActive(winPreviewPanel) &&
@@ -20,7 +23,7 @@ public class UIManager : MonoBehaviour
         !IsPanelActive(ageChangePanel) &&
         (xSpeedPanel == null || !IsPanelActive(xSpeedPanel._mainContainer)) &&
         (perksCardInfoPanel == null || !IsPanelActive(perksCardInfoPanel.gameObject)) &&
-        (summonScreenView == null || !IsPanelActive(summonScreenView.gameObject));
+        (summonScreenView == null || !IsPanelActive(summonScreenView.gameObject)));
 
     [SerializeField] private GameObject gameViewPanel;
     [SerializeField] private GameObject homeScreenPanel;
@@ -57,6 +60,8 @@ public class UIManager : MonoBehaviour
     private GameObject currentScreenPanel;
     private bool settingsOpenedFromGameView;
     private bool xSpeedPanelOpenedFromGameView;
+    private bool didUseReviveInThisRun = false;
+
     private float timeScaleBeforeSettings = 1f;
     private Coroutine damageFlashRoutine;
 
@@ -202,6 +207,14 @@ public class UIManager : MonoBehaviour
         ShowScreen(gameViewPanel, false);
         WeaponRotator.SetGameplayMotionEnabled(true);
         WeaponUpgradeController.SetGameplayAnimationsEnabled(true);
+
+        didUseReviveInThisRun = false;
+
+        if(!TutorialManager.Instance.IsTutorialDone(TutorialType.WeaponDragSystem))
+        {
+            TutorialManager.Instance.OnPlayingForFirstTime();
+        }
+
         gameViewScreen.StartGameplay();
     }
 
@@ -262,24 +275,22 @@ public class UIManager : MonoBehaviour
 
     public void ShowFailPreview(int coins, int elixirReward = 0, bool isFromSettings = false)
     {
-        WeaponRotator.SetGameplayMotionEnabled(false);
-        WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
         AudioManager.StopAudio();
 
         SetPanelActive(winPreviewPanel, false);
 
         if(isFromSettings)
         {
-            CollectGameCoinsAndReturnHome(coins, 1, elixirReward, 1, failPreviewPanelView.Hide);
-
+            OnFailLevel(1, coins, elixirReward);
             return;
         }
 
         failPreviewPanelView.Show(
             coins,
             elixirReward,
-            () => CollectGameCoinsAndReturnHome(coins, 1, elixirReward, 1, failPreviewPanelView.Hide),
-            () => CollectGameCoinsAndReturnHome(coins, 2, elixirReward, 2, failPreviewPanelView.Hide));
+            () => OnFailLevel(1, coins, elixirReward),
+            () => OnFailLevel(2, coins, elixirReward),
+            HandleReviveButtonClickOnFail);
     }
 
     public void ShowPerksCardInfoPanel(PowerCardDefinition cardData, Sprite cardBackgroundSprite)
@@ -403,6 +414,26 @@ public class UIManager : MonoBehaviour
         ClosePerksCardInfoPanel();
         CloseSummonScreen();
         UpdateGameViewBGImageVisibility();
+    }
+
+    private void HandleReviveButtonClickOnFail()
+    {
+        didUseReviveInThisRun = true;
+        gameViewScreen.Revive();
+        failPreviewPanelView.Hide();
+
+        if (gameViewScreen.ShouldPauseOnGameOver())
+        {
+            Time.timeScale = 1f;
+        }
+    }
+
+    private void OnFailLevel(int pRewardMultiplier, int coins, int elixirReward)
+    {
+        WeaponRotator.SetGameplayMotionEnabled(false);
+        WeaponUpgradeController.SetGameplayAnimationsEnabled(false);
+
+        CollectGameCoinsAndReturnHome(coins, pRewardMultiplier, elixirReward, pRewardMultiplier, failPreviewPanelView.Hide);
     }
 
     private void ShowFTUE()
