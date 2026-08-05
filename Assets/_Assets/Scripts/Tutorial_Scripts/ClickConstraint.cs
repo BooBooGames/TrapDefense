@@ -13,7 +13,7 @@ public class ClickConstraint : TutorialConstraint
     public override void Begin(Action onComplete)
     {
         _onComplete = onComplete;
-        //_timerCoroutine = TutorialManager.Instance.StartCoroutine(Routine(onComplete));
+        _timerCoroutine = TutorialManager.Instance.StartCoroutine(Routine(onComplete));
     }
 
     public override void End()

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afeae4bb0aca64e4fad23a02a2f9c996, type: 3}
+  m_Name: Tutorial_FirstPlay
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialData
+  _TutorialType: 1
+  TutorialSteps:
+  - WaitTimeAfterStepEnd: 0
+    OnStepStartActions:
+    - {fileID: 11400000, guid: 95871d6b1aa536446a3603616bd071dd, type: 2}
+    EndConstraints:
+    - {fileID: 11400000, guid: c77a039fba84eda418c8a201a64fc403, type: 2}
+    OnStepEndActions:
+    - {fileID: 11400000, guid: 864a8f3ff46c32a409e8f7d365aed5dd, type: 2}
+  - WaitTimeAfterStepEnd: 0
+    OnStepStartActions:
+    - {fileID: 11400000, guid: 2f9c2024ca8ce7f44ab984303cb428ee, type: 2}
+    EndConstraints:
+    - {fileID: 11400000, guid: 9fc62f6224e814c42ada109890d4a42f, type: 2}
+    OnStepEndActions:
+    - {fileID: 11400000, guid: b37793679e0300041a526f77bcd7fe1a, type: 2}
+  StartTrigger: {fileID: 11400000, guid: 7360dc389eca40841902e9232324830a, type: 2}

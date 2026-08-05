@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d1a8be0b3f5e96142ac5263bb6466348, type: 3}
-  m_Name: Start Action
+  m_Name: Start Action 1
   m_EditorClassIdentifier: Assembly-CSharp::ShowPopupAction
-  _PopupType: 500
+  _PopupType: 1
   _HudButtonTypeArray: 

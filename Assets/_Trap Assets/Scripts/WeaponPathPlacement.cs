@@ -100,12 +100,12 @@ public class WeaponPathPlacement : MonoBehaviour
             return;
         }
 
-        dragTimer += Time.deltaTime;
+        dragTimer += Time.unscaledDeltaTime;
 
         if (!dragHoldTriggered && dragTimer >= dragHoldTime)
         {
             dragHoldTriggered = true;
-            TutorialManager.Instance.OnDraggedWeaponForSomeTime();
+            TutorialManager.RegisterEvent(TutorialEventType.DraggedWeapon);
         }
 
         if (PointerReleasedThisFrame())

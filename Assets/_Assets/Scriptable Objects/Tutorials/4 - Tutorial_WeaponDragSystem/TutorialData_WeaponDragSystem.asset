@@ -17,8 +17,10 @@ MonoBehaviour:
   - WaitTimeAfterStepEnd: 0
     OnStepStartActions:
     - {fileID: 11400000, guid: 1dc2842efa965184580f2a6cf543de9d, type: 2}
+    - {fileID: 11400000, guid: aa9dbfaba5a199b468db6254749d2644, type: 2}
     EndConstraints:
     - {fileID: 11400000, guid: c6e6ca61e15509d47956c3ff8b4cc369, type: 2}
     OnStepEndActions:
     - {fileID: 11400000, guid: 497abaf710ddb5c4293f2d524d598bc0, type: 2}
+    - {fileID: 11400000, guid: c47ac10cc873a2b44a8cf9ba71c7d6fc, type: 2}
   StartTrigger: {fileID: 11400000, guid: 71ee1e5562515d149b3e708859a4d1ea, type: 2}

@@ -5,14 +5,11 @@ public enum ButtonClickType
 {
     None,
 
-    WeaponPurchase,
-
-    EditWeaponPlacementButton,
-    SlotButton,
-    UnequipButton,
-    SelectWeaponForSlotButton,
-    DoneButtonInSlotsSystem,
-    CancelSlotButton,
+    PlayGameFromHome,
+    UpgradeTrap,
+    UpgradeMaxHealth,
+    UpgradeGearFlow,
+    GoToUpgrades,
 }
 
 [CreateAssetMenu(menuName = "Tutorial/Constraints/ButtonClick")]

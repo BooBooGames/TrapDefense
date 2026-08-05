@@ -21,6 +21,8 @@ public class TutorialManager : MonoBehaviour
     private TutorialData _ongoingTutorial;
     private bool _areTutorialsRegistered;
 
+    private float _previousTimeScale;
+
     private void Awake()
     {
         Instance = this;
@@ -36,7 +38,7 @@ public class TutorialManager : MonoBehaviour
 
         WelcomeScreen.OnContinue += RegisterAllTutorials;
 
-        //UserInput.OnClicked += UserInput_OnClicked;
+        UserInput.OnClicked += UserInput_OnClicked;
 
         RegisterAllTutorials();
     }
@@ -59,11 +61,14 @@ public class TutorialManager : MonoBehaviour
     {
         if (_areTutorialsRegistered) return;
 
-        _areTutorialsRegistered = true;
         foreach (TutorialData tutorialData in _tutorialDataList)
         {
+            if (IsTutorialDone(tutorialData._TutorialType)) continue;
+
             RegisterTutorial(tutorialData);
         }
+
+        _areTutorialsRegistered = true;
     }
 
     private void RegisterTutorial(TutorialData pTutorial)
@@ -127,17 +132,35 @@ public class TutorialManager : MonoBehaviour
         }
         else if (pTutorialStepStartAction == TutorialStepStartAction.UnpauseGameplay)
         {
-            OnGamePauseStatusChanged?.Invoke(false);
+            ResumeGame();
         }
         else if (pTutorialStepStartAction == TutorialStepStartAction.PauseGameplay)
         {
-            OnGamePauseStatusChanged?.Invoke(true);
+            PauseGame();
         }
     }
 
-    private void HandleSpecialEvent(TutorialEventType pTutorialEventType)
+    private void PauseGame()
+    {
+        _previousTimeScale = Time.timeScale;
+        Time.timeScale = 0f;
+    }
+
+    private void ResumeGame()
+    {
+        Time.timeScale = _previousTimeScale;
+    }
+
+    private async void HandleSpecialEvent(TutorialEventType pTutorialEventType)
     {
         _currentTutorialStep?.OnEventOccured(pTutorialEventType);
+
+        while (!_areTutorialsRegistered)
+        {
+            await Awaitable.EndOfFrameAsync();
+        }
+
+        await Awaitable.EndOfFrameAsync();
 
         OnEventOccurred?.Invoke(pTutorialEventType);
     }
@@ -198,12 +221,12 @@ public class TutorialManager : MonoBehaviour
 
     public bool IsTutorialDone(TutorialType tutorialType)
     {
-        return PlayerPrefsExtension.GetBool(PlayerPrefsKeys.GetTutorialDoneKey(tutorialType.ToString()));
+        return Utils.IsTutorialDone(tutorialType);
     }
 
     public void SetTutorialDone(TutorialType tutorialType)
     {
-        PlayerPrefsExtension.SetBool(PlayerPrefsKeys.GetTutorialDoneKey(tutorialType.ToString()), true);
+        Utils.SetTutorialDone(tutorialType);
     }
 
     private void OnTutorialEventOccurred(TutorialEventType tutorialEventType)
@@ -213,12 +236,7 @@ public class TutorialManager : MonoBehaviour
 
     public void OnPlayingForFirstTime()
     {
-        OnTutorialEventOccurred(TutorialEventType.StartingGameForFirstTime);
-    }
-
-    public void OnDraggedWeaponForSomeTime()
-    {
-        HandleSpecialEvent(TutorialEventType.DraggedWeapon);
+        OnTutorialEventOccurred(TutorialEventType.StartingGameplayForFirstTime);
     }
 
     public bool IsAnyTutorialRunning() => _ongoingTutorial;
@@ -226,5 +244,15 @@ public class TutorialManager : MonoBehaviour
     public static bool IsThisTutorialRunning(TutorialType pTutorialType)
     {
         return Instance._ongoingTutorial != null ? Instance._ongoingTutorial._TutorialType == pTutorialType : false;
+    }
+
+    public static void RegisterEvent(TutorialEventType pTutorialEventType)
+    {
+        Instance.HandleSpecialEvent(pTutorialEventType);
+    }
+
+    public static void UnregisterAllTutorials()
+    {
+        Instance._areTutorialsRegistered = false;
     }
 }

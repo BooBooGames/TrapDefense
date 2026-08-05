@@ -86,14 +86,25 @@ public class UIManager : MonoBehaviour
         CloseSummonScreen();
         SetDamageImageAlpha(0f);
 
+        ShowHomeScreen(true);
+
         if (FTUEController.IsCompleted)
         {
-            ShowHomeScreen(true);
         }
         else
         {
-            ShowFTUE();
+            //ShowFTUE();
         }
+    }
+
+    private void Start()
+    {
+        if (Utils.IsTutorialDone(TutorialType.MainUpgrades)) return;
+
+        // Need to trigger this on first time game lose, the scene reloads every time the player goes back to the home screen, so this will fire at all scene reloads
+        if (!Utils.IsTutorialDone(TutorialType.FirstPlay)) return;
+
+        TutorialManager.RegisterEvent(TutorialEventType.LostGameForFirstTime);
     }
 
     private void Update()
@@ -204,16 +215,19 @@ public class UIManager : MonoBehaviour
 
     public void StartGame()
     {
+        if (Utils.IsTutorialDone(TutorialType.MainUpgrades))
+        {
+            if (!Utils.IsTutorialDone(TutorialType.WeaponDragSystem))
+            {
+                TutorialManager.RegisterEvent(TutorialEventType.SecondPlay);
+            }
+        }
+
         ShowScreen(gameViewPanel, false);
         WeaponRotator.SetGameplayMotionEnabled(true);
         WeaponUpgradeController.SetGameplayAnimationsEnabled(true);
 
         didUseReviveInThisRun = false;
-
-        if(!TutorialManager.Instance.IsTutorialDone(TutorialType.WeaponDragSystem))
-        {
-            TutorialManager.Instance.OnPlayingForFirstTime();
-        }
 
         gameViewScreen.StartGameplay();
     }
@@ -627,7 +641,7 @@ public class UIManager : MonoBehaviour
         damageImage.color = color;
     }
 
-    private void CollectGameCoinsAndReturnHome(int coins, int multiplier, int elixirReward, int elixirMultiplier, UnityEngine.Events.UnityAction hidePanel)
+    private void CollectGameCoinsAndReturnHome(int coins, int multiplier, int elixirReward, int elixirMultiplier, UnityAction hidePanel)
     {
         SoundManager.PlayButtonClickSound();
         hidePanel.Invoke();
@@ -639,7 +653,7 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
-    private void CollectGameCoinsAndStartNextLevel(int coins, int multiplier, int elixirReward, int elixirMultiplier, UnityEngine.Events.UnityAction hidePanel)
+    private void CollectGameCoinsAndStartNextLevel(int coins, int multiplier, int elixirReward, int elixirMultiplier, UnityAction hidePanel)
     {
         SoundManager.PlayButtonClickSound();
 

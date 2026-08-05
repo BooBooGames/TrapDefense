@@ -1,6 +1,8 @@
 using DG.Tweening;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class GameViewScreen : MonoBehaviour
@@ -63,6 +65,8 @@ public class GameViewScreen : MonoBehaviour
     private readonly Vector3[] weaponUpgradeButtonBaseScales = new Vector3[3];
     private readonly bool[] weaponUpgradeButtonScaleCached = new bool[3];
     private readonly Tween[] weaponUpgradeButtonTweens = new Tween[3];
+
+    private readonly Dictionary<Button, UnityAction> _buttonActions = new();
 
     public int GearCount => gearCount;
     public int InGameCoins => inGameCoins;
@@ -416,9 +420,22 @@ public class GameViewScreen : MonoBehaviour
         {
             Button button = GetWeaponUpgradeButton(i);
             int weaponIndex = i;
-            button.onClick.RemoveAllListeners();
-            button.onClick.AddListener(() => HandleWeaponUpgradeClicked(weaponIndex));
+
+            SetupButton(button, weaponIndex);
         }
+    }
+
+    private void SetupButton(Button button, int weaponIndex)
+    {
+        if (_buttonActions.TryGetValue(button, out var oldAction))
+        {
+            button.onClick.RemoveListener(oldAction);
+        }
+
+        UnityAction newAction = () => HandleWeaponUpgradeClicked(weaponIndex);
+
+        _buttonActions[button] = newAction;
+        button.onClick.AddListener(newAction);
     }
 
     private void HandleWeaponUpgradeClicked(int weaponIndex)
@@ -523,10 +540,14 @@ public class GameViewScreen : MonoBehaviour
             RefreshWeaponSlotLabels(target, weaponDefinition, levelLabel, costLabel);
 
             int requiredGearCost = GetRequiredGearCost(target, weaponDefinition);
-            button.interactable =
-                isUnlocked &&
-                target.CanUpgrade() &&
-                gearCount >= requiredGearCost;
+            bool isUpgradeAvailable = isUnlocked && target.CanUpgrade() && gearCount >= requiredGearCost;
+
+            if(!Utils.IsTutorialDone(TutorialType.TrapUpgrades) && isUpgradeAvailable)
+            {
+                TutorialManager.RegisterEvent(TutorialEventType.TrapUpgradeAvailable);
+            }
+
+            button.interactable = isUpgradeAvailable;
         }
     }
 

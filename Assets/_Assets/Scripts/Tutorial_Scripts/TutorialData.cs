@@ -5,6 +5,9 @@ using System;
 public enum TutorialType
 {
     WeaponDragSystem,
+    FirstPlay,
+    TrapUpgrades,
+    MainUpgrades,
 }
 
 public enum HudObjectType
@@ -17,15 +20,28 @@ public enum HudObjectType
 
 public enum TutorialPopupType
 {
+    StartGame,
+    GameIntro,
+    GearSystem,
+    TrapUpgrade,
+    GoToUpgrades,
+    ExplainGearFlowUpgrade,
+    ExplainMaxHealthUpgrade,
+    BuyTrapsExplain,
     WeaponPlacementSystem = 500,
+    SatoshiPanel,
 
     None = 1000000,
 }
 
 public enum TutorialEventType
 {
-    StartingGameForFirstTime,
+    SecondPlay,
+    StartingGameplayForFirstTime,
+    StartingGameplayForSecondTime,
     DraggedWeapon,
+    TrapUpgradeAvailable,
+    LostGameForFirstTime,
 }
 
 public enum TutorialStepStartAction

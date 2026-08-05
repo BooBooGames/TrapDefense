@@ -13,6 +13,9 @@ public class TutorialPopup : MonoBehaviour
 
     private void Awake()
     {
+        _allArrows.Clear();
+        _allMaskObjects.Clear();
+
         if (_arrowObject != null)
         {
             _allArrows.Add(_arrowObject);

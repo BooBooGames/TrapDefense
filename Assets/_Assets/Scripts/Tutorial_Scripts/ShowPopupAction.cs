@@ -10,6 +10,6 @@ public class ShowPopupAction : TutorialAction
     {
         TutorialActionsHandler.ShowTutorialPopup(_PopupType);
 
-        TutorialActionsHandler.HideTutorialHudItems(_HudButtonTypeArray);
+        TutorialActionsHandler.ShowTutorialHudItems(_HudButtonTypeArray);
     }
 }

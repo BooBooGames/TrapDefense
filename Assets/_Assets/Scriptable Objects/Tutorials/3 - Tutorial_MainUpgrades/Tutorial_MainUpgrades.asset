@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afeae4bb0aca64e4fad23a02a2f9c996, type: 3}
+  m_Name: Tutorial_MainUpgrades
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialData
+  _TutorialType: 3
+  TutorialSteps:
+  - WaitTimeAfterStepEnd: 0
+    OnStepStartActions:
+    - {fileID: 11400000, guid: e74858c75f713f44ca135ed11021560c, type: 2}
+    EndConstraints:
+    - {fileID: 11400000, guid: 207116464f8cb0e4286f72e36f8eb8c0, type: 2}
+    OnStepEndActions:
+    - {fileID: 11400000, guid: a491329f97876334cb56672215e18f1f, type: 2}
+  - WaitTimeAfterStepEnd: 0
+    OnStepStartActions:
+    - {fileID: 11400000, guid: bc3f19c5f42ee11488a5cf90dd7b616c, type: 2}
+    EndConstraints:
+    - {fileID: 11400000, guid: 41fdf87ace0b5e74b8ac26e37d5be723, type: 2}
+    OnStepEndActions:
+    - {fileID: 11400000, guid: 88d4de847fd3b5a4caa18a6e104d0c93, type: 2}
+  - WaitTimeAfterStepEnd: 0
+    OnStepStartActions:
+    - {fileID: 11400000, guid: 3791287c0d4f4d24f8ef2bb592b967ba, type: 2}
+    EndConstraints:
+    - {fileID: 11400000, guid: 2155fe851b664b94892fc78f4cdc2681, type: 2}
+    OnStepEndActions:
+    - {fileID: 11400000, guid: 89f13a00d5e6b4f449eca1fb597e58b6, type: 2}
+  - WaitTimeAfterStepEnd: 0
+    OnStepStartActions:
+    - {fileID: 11400000, guid: 757aa5b09ff5fe647a12c6ffb1bf1520, type: 2}
+    EndConstraints:
+    - {fileID: 11400000, guid: 8ae98cedb3fefa24482e4e5fb1a761f4, type: 2}
+    OnStepEndActions:
+    - {fileID: 11400000, guid: 52461cefb91dae34fa507d60da326929, type: 2}
+  - WaitTimeAfterStepEnd: 0
+    OnStepStartActions:
+    - {fileID: 11400000, guid: 0d0c49fa0176c784f8dfd3511bb2483f, type: 2}
+    EndConstraints:
+    - {fileID: 11400000, guid: cf147657fab29a448a51d222e0390bcf, type: 2}
+    OnStepEndActions:
+    - {fileID: 11400000, guid: 6d8a606d9a2d7134eb13ca5c21ec9599, type: 2}
+  StartTrigger: {fileID: 11400000, guid: 52c6921f6794a444eb01b00b6022d6c1, type: 2}
