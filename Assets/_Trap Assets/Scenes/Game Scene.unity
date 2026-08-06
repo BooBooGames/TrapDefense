@@ -18714,7 +18714,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7.5000005, y: 0}
+  m_AnchoredPosition: {x: -7.5, y: 0}
   m_SizeDelta: {x: 14.999999, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &558738794
@@ -51877,7 +51877,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 356.90005, y: -166.89966}
+  m_AnchoredPosition: {x: 356.90015, y: -166.89941}
   m_SizeDelta: {x: -895, y: -2396}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1452200768
@@ -67068,6 +67068,16 @@ MonoBehaviour:
   powerCardCatalogData: {fileID: 11400000, guid: 477221a95b80d4f1580a5532cf365bed, type: 2}
   xpTargets: 0a000000100000001a0000002e0000004b0000007f000000ff000000d6010000ca03000096050000
   _useAdditiveStackingForSamePerks: 0
+  _rarityToWeightMap:
+    _serializedList:
+    - Key: 0
+      Value: 60
+    - Key: 1
+      Value: 22
+    - Key: 2
+      Value: 13
+    - Key: 3
+      Value: 5
 --- !u!1001 &1863095609
 PrefabInstance:
   m_ObjectHideFlags: 0

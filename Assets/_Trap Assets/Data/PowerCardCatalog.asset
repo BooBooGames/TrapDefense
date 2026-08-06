@@ -17,89 +17,104 @@ MonoBehaviour:
     cardType: Common
     cardName: Trap Accelerator
     cardImage: {fileID: 21300000, guid: a146a6ff2a3b245648c6b1ee93407d03, type: 3}
+    _Rarity: 0
     descriptions:
     - +8% trap attack speed
   - cardId: 2
     cardType: Common
     cardName: Pocket Gears
     cardImage: {fileID: 21300000, guid: 2f3f24521a11e4460b67b2a0de326f9b, type: 3}
+    _Rarity: 0
     descriptions:
     - Instantly gain +3 gears
   - cardId: 3
     cardType: Common
     cardName: Minor Heal
     cardImage: {fileID: 21300000, guid: bba37440f470c44109bd42117f27a6c9, type: 3}
+    _Rarity: 0
     descriptions:
     - Instantly heal 5 HP
   - cardId: 4
     cardType: Rare
     cardName: Angel Blessing
     cardImage: {fileID: 21300000, guid: 909758b52a6d14b7593f59563e831bed, type: 3}
+    _Rarity: 1
     descriptions:
     - +5 HP at end of each wave
   - cardId: 5
     cardType: Common
     cardName: Thin Armor
     cardImage: {fileID: 21300000, guid: eae3ab270db604ca4a71b2884688507a, type: 3}
+    _Rarity: 0
     descriptions:
     - -10% enemy HP
   - cardId: 6
     cardType: Rare
     cardName: Wave Bonus
     cardImage: {fileID: 21300000, guid: 0662957288b124c93b09d8f648e5066c, type: 3}
+    _Rarity: 1
     descriptions:
     - +5 gears on wave complete
   - cardId: 7
     cardType: Rare
     cardName: Weakening Strike
     cardImage: {fileID: 21300000, guid: c8e1c0bcf899e4e82a6c72085c29df63, type: 3}
+    _Rarity: 1
     descriptions:
     - Trap hits slow enemy -10% for 2s
   - cardId: 8
     cardType: Epic
     cardName: Invulnerability Pulse
     cardImage: {fileID: 21300000, guid: 8ec02b6483ff94f4186a964fe42489cf, type: 3}
+    _Rarity: 2
     descriptions:
     - Every 30s enemies deal no damage for 5s
   - cardId: 9
     cardType: Epic
     cardName: Death Mark
     cardImage: {fileID: 21300000, guid: 6efedac627cc040d691acb8b079dace0, type: 3}
+    _Rarity: 2
     descriptions:
     - Enemies has a 5% Chance to die instantly
   - cardId: 10
     cardType: Legendary
     cardName: Doom Traps
     cardImage: {fileID: 21300000, guid: 9938c3c2ec51e4bb8a06fcfce15657fa, type: 3}
+    _Rarity: 3
     descriptions:
     - Each hit slows enemies speed by -5%\n+20% trap damage
   - cardId: 11
     cardType: Common
     cardName: Second wind
     cardImage: {fileID: 21300000, guid: 89861752bcf16460b8821e99e47ef603, type: 3}
+    _Rarity: 0
     descriptions:
     - At 1 HP base recovers 10 HP once
   - cardId: 12
     cardType: Common
     cardName: Sharp traps
     cardImage: {fileID: 21300000, guid: 50bd68a352eb641edb162ace52ba8de9, type: 3}
+    _Rarity: 0
     descriptions:
     - +8% trap damage
   - cardId: 13
     cardType: Common
     cardName: Scrap collector
     cardImage: {fileID: 21300000, guid: 1a7c4a5201ed94b39aa6c0c8d4f20278, type: 3}
+    _Rarity: 0
     descriptions:
     - 5% chance to drop +1 gear on enemy kill
   - cardId: 14
     cardType: Epic
     cardName: Resource mastery
     cardImage: {fileID: 21300000, guid: 8ea971430a7f141808c7534e9abc8e5e, type: 3}
+    _Rarity: 2
     descriptions:
     - +25% gear production -10% upgrade costs
   - cardId: 15
     cardType: Common
     cardName: Tough base
     cardImage: {fileID: 21300000, guid: 64f5cc5326ef74db1825104e1db3d641, type: 3}
+    _Rarity: 0
     descriptions:
     - +5 base HP

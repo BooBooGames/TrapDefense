@@ -9,6 +9,14 @@ public class PowerCardCatalog : ScriptableObject
     public PowerCardDefinition[] Cards => cards;
 }
 
+public enum Rarity
+{
+    Common,
+    Rare,
+    Epic,
+    Legendary,
+}
+
 [Serializable]
 public class PowerCardDefinition
 {
@@ -16,6 +24,7 @@ public class PowerCardDefinition
     public string cardType;
     public string cardName;
     public Sprite cardImage;
+    public Rarity _Rarity;
     [TextArea] public string[] descriptions = Array.Empty<string>();
 
     public string[] GetDescriptions()

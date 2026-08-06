@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using AYellowpaper.SerializedCollections;
 using UnityEngine.UI;
 
 public class PlayerXpSystem : MonoBehaviour
@@ -50,6 +51,8 @@ public class PlayerXpSystem : MonoBehaviour
     [SerializeField] private int[] xpTargets = { 10, 16, 26, 46, 75, 127, 255, 470, 970, 1430 };
 
     [SerializeField] private bool _useAdditiveStackingForSamePerks;
+
+    [SerializeField] private SerializedDictionary<Rarity, float> _rarityToWeightMap;
 
     private readonly List<PowerCardChoice> currentChoices = new List<PowerCardChoice>();
     private readonly List<PowerCardChoice> selectedCards = new List<PowerCardChoice>();
@@ -339,7 +342,7 @@ public class PlayerXpSystem : MonoBehaviour
         int choiceCount = Mathf.Min(3, allCards.Length);
         for (int i = 0; i < choiceCount; i++)
         {
-            int cardIndex = GetNextCardIndex(usedIndices, allCards.Length);
+            int cardIndex = GetNextCardIndex(usedIndices, allCards);
             usedIndices.Add(cardIndex);
 
             currentChoices.Add(new PowerCardChoice
@@ -357,6 +360,32 @@ public class PlayerXpSystem : MonoBehaviour
         }
 
         CardChoicesPresented?.Invoke(currentChoices);
+    }
+
+    private Rarity RollRarity(HashSet<Rarity> pAvailableRarities)
+    {
+        float totalWeight = 0f;
+
+        foreach(Rarity rarity in pAvailableRarities)
+        {
+            totalWeight += _rarityToWeightMap[rarity];
+        }
+
+        float roll = UnityEngine.Random.Range(0, totalWeight);
+
+        foreach (Rarity rarity in pAvailableRarities)
+        {
+            float rarityWeight = _rarityToWeightMap[rarity];
+
+            if(roll < rarityWeight)
+            {
+                return rarity;
+            }
+
+            roll -= _rarityToWeightMap[rarity];
+        }
+
+        return Rarity.Legendary;
     }
 
     private void CreateFallbackChoices()
@@ -782,34 +811,47 @@ public class PlayerXpSystem : MonoBehaviour
         XpProgressChanged?.Invoke(progress, currentXp, CurrentTarget);
     }
 
-    private int GetNextCardIndex(List<int> usedIndices, int totalCards)
+    private int GetNextCardIndex(List<int> usedIndices, PowerCardDefinition[] allCards)
     {
-        if (totalCards <= usedIndices.Count)
+        HashSet<Rarity> availableRarities = new();
+
+        for (int i = 0; i < allCards.Length; i++)
         {
-            return (currentTargetIndex + usedIndices.Count) % totalCards;
+            if (usedIndices.Contains(i)) continue;
+
+            availableRarities.Add(allCards[i]._Rarity);
         }
 
-        int attempts = 0;
-        while (attempts < 16)
+        if (availableRarities.Count == 0)
         {
-            int candidate = UnityEngine.Random.Range(0, totalCards);
-            if (!usedIndices.Contains(candidate))
+            throw new InvalidOperationException("No available cards.");
+        }
+
+        Rarity rolledRarity = RollRarity(availableRarities);
+
+        List<int> candidates = new();
+
+        for (int i = 0; i < allCards.Length; i++)
+        {
+            if (usedIndices.Contains(i))
             {
-                return candidate;
+                continue;
             }
 
-            attempts++;
-        }
-
-        for (int i = 0; i < totalCards; i++)
-        {
-            if (!usedIndices.Contains(i))
+            if (allCards[i]._Rarity == rolledRarity)
             {
-                return i;
+                candidates.Add(i);
             }
         }
 
-        return 0;
+        if (candidates.Count == 0)
+        {
+            throw new InvalidOperationException($"No candidates found for rarity {rolledRarity}");
+        }
+
+        int cardIndex = candidates[UnityEngine.Random.Range(0, candidates.Count)];
+
+        return cardIndex;
     }
 
     public void AddGearsWithRv(int amount)
@@ -819,7 +861,6 @@ public class PlayerXpSystem : MonoBehaviour
 
     public void SetTrapDamageMultiplierWithRv(float multiplier)
     {
-        Debug.Log($"Rv trap damage mult = {multiplier}");
         rvTrapDamageMultiplier = multiplier;
     }
 }
