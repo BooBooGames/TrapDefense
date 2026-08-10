@@ -192,7 +192,13 @@ public class ShopPanel : MonoBehaviour
         ShopButtonBinding binding = new ShopButtonBinding(button, priceLabel, itemId);
         buttonBindings.Add(binding);
 
-        UnityAction action = () => HandleShopButtonClicked(itemId);
+        UnityAction action = () =>
+        {
+            Debug.Log($"Click item {itemId}");
+
+            button.transform.DoClick();
+            HandleShopButtonClicked(itemId);
+        };
         boundButtonActions[button] = action;
         button.onClick.AddListener(action);
         RefreshButtonState(binding);
@@ -228,6 +234,7 @@ public class ShopPanel : MonoBehaviour
             return;
         }
 
+        Debug.Log($"Click item {itemId}");
         switch (item.purchaseType)
         {
             case ShopPurchaseType.Iap:
@@ -240,7 +247,13 @@ public class ShopPanel : MonoBehaviour
                 }
                 break;
             case ShopPurchaseType.RewardedVideo:
-                GrantShopItem(item);
+
+                string eventName = "claim_free_gems_from_shop";
+                HCSDKManager.INSTANCE.DisplayRV(eventName, () =>
+                {
+                    AnalyticsManager.ShowRVEvent(eventName);
+                    GrantShopItem(item);
+                });
                 break;
         }
     }

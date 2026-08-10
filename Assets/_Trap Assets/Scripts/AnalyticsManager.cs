@@ -19,9 +19,7 @@ public static class AnalyticsManager
 
     public static void ShowRVEvent(string eventName)
     {
-        //TaskManager.UpdateTask(TaskType.UseAds, 1);
-
-        //GameAnalyticsController.Miscellaneous.NewDesignEvent($"rv:{eventName}");
+        GameAnalyticsController.Miscellaneous.NewDesignEvent($"rv:{eventName}");
     }
 
     public static void RequestInterstitialAdAfterWaveEnd()
@@ -37,8 +35,6 @@ public static class AnalyticsManager
 
         if((Time.realtimeSinceStartup - LastInterstitialTime) >=  InterstitialWaitTimer)
         {
-            //HCSDKManager.INSTANCE.ShowInterstitialAd("wave_finish_rv");
-
             Debug.Log($"Show RV");
             WavesCompletedFromLastIS = 0;
             LastInterstitialTime = Time.realtimeSinceStartup;
@@ -53,22 +49,22 @@ public static class AnalyticsManager
         LastInterstitialTime = Time.realtimeSinceStartup;
     }
 
-    public static void ShowSubLevelProgressionEvent(int levelNumber, int stageNumber, ProgressionType progressionType)
+    public static void ShowLevelProgressionEvent(int levelNumber, ProgressionType progressionType)
     {
-        //if (progressionType == ProgressionType.Start)
-        //{
-        //    LastLevelStartTime = Time.realtimeSinceStartup;
-        //    GameAnalyticsController.LevelBasedProgressionRelated.LogLevelStartEventWithTime(levelNumber);
-        //}
-        //else if (progressionType == ProgressionType.Fail)
-        //{
-        //    var levelData = new GameAnalyticsController.LevelProgressTimeData(levelNumber, LastLevelStartTime);
-        //    GameAnalyticsController.StageLevelBasedProgressionRelated.LogStageLevelFailEvent(stageNumber, levelNumber);
-        //}
-        //else if (progressionType == ProgressionType.Finish)
-        //{
-        //    var levelData = new GameAnalyticsController.LevelProgressTimeData(levelNumber, LastLevelStartTime);
-        //    GameAnalyticsController.StageLevelBasedProgressionRelated.LogStageLevelEndEvent(stageNumber, levelNumber);
-        //}
+        if (progressionType == ProgressionType.Start)
+        {
+            LastLevelStartTime = Time.realtimeSinceStartup;
+            GameAnalyticsController.LevelBasedProgressionRelated.LogLevelStartEventWithTime(levelNumber);
+        }
+        else if (progressionType == ProgressionType.Fail)
+        {
+            var levelData = new GameAnalyticsController.LevelProgressTimeData(levelNumber, LastLevelStartTime);
+            GameAnalyticsController.LevelBasedProgressionRelated.LogLevelFailEventWithTime(levelData);
+        }
+        else if (progressionType == ProgressionType.Finish)
+        {
+            var levelData = new GameAnalyticsController.LevelProgressTimeData(levelNumber, LastLevelStartTime);
+            GameAnalyticsController.LevelBasedProgressionRelated.LogLevelEndEventWithTime(levelData);
+        }
     }
 }

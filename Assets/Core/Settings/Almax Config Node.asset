@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 082c8d35195474badb522a17b48abebb, type: 3}
+  m_Name: Almax Config Node
+  m_EditorClassIdentifier: Coredian.Advertisements.AppLovinMAX::Coredian.Advertisements.AppLovinMAX.AlmaxConfigNode
+  useThisConfig: 1
+  isUpToDateWithConfig: 1
+  googleSheetsCache:
+    url: 
+    sheetsNames: []
+    sheetsGuids: []
+    preferredSheet: 
+  appleAdapters: []
+  androidAdapters: []
+  showMediationDebugOnStart: 0
+  appLovinId: 35NqxHu5zxtuX7BQ3aIWxzroBtgAytA8cPg10ZVkxs0ZLF6igSgHwV1XxKpnZ5lSy7CHwzI6ZSKvoXnaT9IZB9
+  videoId: 7905f5597946a0f5
+  interstitialId: 15a640b76156603c
+  appOpenAdId: 90131fef01eeac77
+  bannerId: 21305dc0d53e1c86
+  adMobAppId: ca-app-pub-3927327742714241~1618853903
+  enableSegmentationByMediaSource: 0
+  startMediationOnInitialization: 1
+  segments: []
+  enableMediationLogs: 0

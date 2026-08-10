@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "799993206984",
+    "project_id": "bitcoin-trap-master",
+    "storage_bucket": "bitcoin-trap-master.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:799993206984:android:5b2dbbbfec0aac1692edfd",
+        "android_client_info": {
+          "package_name": "com.mobileesports.trapmaster"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_S6-Ovfq1Hepg9ct0hzxwCSdRX1-YZXk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

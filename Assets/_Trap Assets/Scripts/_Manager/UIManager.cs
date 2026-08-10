@@ -21,6 +21,7 @@ public class UIManager : MonoBehaviour
         !IsPanelActive(chestPreviewPanel) &&
         !IsPanelActive(evolutionScreenPanel) &&
         !IsPanelActive(ageChangePanel) &&
+        !IsPanelActive(cardViewPanel) &&
         (xSpeedPanel == null || !IsPanelActive(xSpeedPanel._mainContainer)) &&
         (perksCardInfoPanel == null || !IsPanelActive(perksCardInfoPanel.gameObject)) &&
         (summonScreenView == null || !IsPanelActive(summonScreenView.gameObject)));
@@ -303,7 +304,7 @@ public class UIManager : MonoBehaviour
             coins,
             elixirReward,
             () => OnFailLevel(1, coins, elixirReward),
-            () => OnFailLevel(2, coins, elixirReward),
+            () => TryClaim2xOnLevelFail(coins, elixirReward),
             HandleReviveButtonClickOnFail);
     }
 
@@ -430,16 +431,32 @@ public class UIManager : MonoBehaviour
         UpdateGameViewBGImageVisibility();
     }
 
+    private void TryClaim2xOnLevelFail(int coins, int elixirReward)
+    {
+        string eventName = "claim_2x_reward";
+
+        HCSDKManager.INSTANCE.DisplayRV(eventName, () =>
+        {
+            AnalyticsManager.ShowRVEvent(eventName);
+            OnFailLevel(2, coins, elixirReward);
+        });
+    }
+
     private void HandleReviveButtonClickOnFail()
     {
-        didUseReviveInThisRun = true;
-        gameViewScreen.Revive();
-        failPreviewPanelView.Hide();
-
-        if (gameViewScreen.ShouldPauseOnGameOver())
+        string eventName = "revive";
+        HCSDKManager.INSTANCE.DisplayRV(eventName, () =>
         {
-            Time.timeScale = 1f;
-        }
+            didUseReviveInThisRun = true;
+            gameViewScreen.Revive();
+            failPreviewPanelView.Hide();
+            AnalyticsManager.ShowRVEvent(eventName);
+
+            if (gameViewScreen.ShouldPauseOnGameOver())
+            {
+                Time.timeScale = 1f;
+            }
+        });
     }
 
     private void OnFailLevel(int pRewardMultiplier, int coins, int elixirReward)

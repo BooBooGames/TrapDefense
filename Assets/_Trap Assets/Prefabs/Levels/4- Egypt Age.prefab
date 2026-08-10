@@ -804,6 +804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
   path: {fileID: 9205152814582788193}
   inputCamera: {fileID: 0}
+  dragHoldTime: 0.5
 --- !u!1 &6904505418188911180
 GameObject:
   m_ObjectHideFlags: 0
@@ -1393,6 +1394,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
   path: {fileID: 9205152814582788193}
   inputCamera: {fileID: 0}
+  dragHoldTime: 0.5
 --- !u!1 &2017135959146109375 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2212855633711881869, guid: 42de70687ba7b4384bdd4e7b342dc723, type: 3}
@@ -5259,6 +5261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
   path: {fileID: 9205152814582788193}
   inputCamera: {fileID: 0}
+  dragHoldTime: 0.5
 --- !u!1 &4455464022090837894 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3344100973683751112, guid: a5a4e9eec340b469095bcb625a369af4, type: 3}

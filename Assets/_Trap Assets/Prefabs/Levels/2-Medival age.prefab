@@ -53,7 +53,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 12.954471, y: 3.5607054, z: 2.785301}
+  m_Size: {x: 15.49, y: 3.5607054, z: 2.785301}
   m_Center: {x: -0.0000000024147422, y: 4.6799116, z: -0.2810042}
 --- !u!114 &6055611048554037490
 MonoBehaviour:
@@ -69,6 +69,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
   path: {fileID: 8668199059086435438}
   inputCamera: {fileID: 0}
+  dragHoldTime: 0.5
 --- !u!1 &996108557167825806
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,6 +330,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
   path: {fileID: 8668199059086435438}
   inputCamera: {fileID: 0}
+  dragHoldTime: 0.5
 --- !u!65 &4129182387429508746
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4809,6 +4811,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponPathPlacement
   path: {fileID: 8668199059086435438}
   inputCamera: {fileID: 0}
+  dragHoldTime: 0.5
 --- !u!1 &7533634334518556796 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 227907328174741072, guid: 3d065f52cfefe4b28b524e3f9be09542, type: 3}

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20cd06285f614478db863644fe176658, type: 3}
+  m_Name: Apps Flyer Config Node
+  m_EditorClassIdentifier: Coredian.Attribution.AppsFlyer::Coredian.Attribution.AppsFlyer.Configuration.AppsFlyerConfigNode
+  useThisConfig: 1
+  isUpToDateWithConfig: 1
+  googleSheetsCache:
+    url: 
+    sheetsNames: []
+    sheetsGuids: []
+    preferredSheet: 
+  devKey: Ugf2FWT7Hc5L4TQHpm2SyT
+  customerUserIdSource: 0
+  startAutomatically: 1
+  startRequiresCustomUserId: 0
+  customerUserIdSourceMigrationCompleted: 0
+  usePurchaseConnector: 1
+  userInviteAttribution: 0
+  oneLinkId: 
+  debugMode: 0
+  purchaseConnectorSandbox: 0
+  storeVariant: 2
+  storeKitVersion: 0
+  additionalDataTimeoutSeconds: 5
