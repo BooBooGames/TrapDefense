@@ -209,6 +209,14 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        if (IsThisTutorialRunning(TutorialType.MainUpgrades))
+        {
+            UIManager.ResetToDefaults();
+        }
+    }
+
     private void OnDestroy()
     {
         WelcomeScreen.OnContinue -= RegisterAllTutorials;

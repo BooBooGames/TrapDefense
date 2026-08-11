@@ -20,6 +20,13 @@
             "type": 0,
             "platform": 0,
             "isEnabled": true
+        },
+        {
+            "symbol": "AF_PURCHASE_CONNECTOR",
+            "allowStatusChange": true,
+            "type": 4,
+            "platform": 1,
+            "isEnabled": true
         }
     ],
     "predefinedSymbolsStatus": [

@@ -116,11 +116,29 @@ public class PlayerXpSystem : MonoBehaviour
         {
             if (awaitingCardSelection)
             {
-                GenerateCardChoices();
-                RefreshCardUi();
-                SoundManager.PlayButtonClickSound();
+                string eventName = "reroll_cards";
+
+                if (HCSDKManager.INSTANCE == null)
+                {
+                    Reroll();
+                }
+                else
+                {
+                    HCSDKManager.INSTANCE.DisplayRV(eventName, () =>
+                    {
+                        AnalyticsManager.ShowRVEvent(eventName);
+                        Reroll();
+                    });
+                }
             }
         });
+    }
+
+    private void Reroll()
+    {
+        GenerateCardChoices();
+        RefreshCardUi();
+        SoundManager.PlayButtonClickSound();
     }
 
     private void OnDestroy()

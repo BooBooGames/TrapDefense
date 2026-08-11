@@ -180,6 +180,7 @@ public class GearFlowUpgradeDefinition
     [Range(0.01f, 1f)] public float valueMultiplier = 0.91f;
     [Min(1)] public int costPerLevel = 10;
     [Min(1)] public int maxLevel = 9;
+    public bool _IsInitialLevelFree;
 
     public float EvaluateValue(int level)
     {
@@ -191,7 +192,7 @@ public class GearFlowUpgradeDefinition
     {
         return new UpgradeResourceCost
         {
-            coins = costPerLevel * Mathf.Max(1, nextLevel),
+            coins = _IsInitialLevelFree && nextLevel == 1 ? 0 : (costPerLevel * Mathf.Max(1, nextLevel)),
             gears = 0,
         };
     }
@@ -206,6 +207,7 @@ public class BaseHealthUpgradeDefinition
     [Min(0)] public int costBaseOffset = 1;
     [Min(1)] public int costMultiplier = 5;
     [Min(1)] public int maxLevel = 9;
+    public bool _IsInitialLevelFree;
 
     public int EvaluateValue(int level)
     {
@@ -217,7 +219,7 @@ public class BaseHealthUpgradeDefinition
     {
         return new UpgradeResourceCost
         {
-            coins = (costBaseOffset + Mathf.Max(1, nextLevel)) * costMultiplier,
+            coins = _IsInitialLevelFree && nextLevel == 1 ? 0 : (costBaseOffset + Mathf.Max(1, nextLevel)) * costMultiplier,
             gears = 0,
         };
     }

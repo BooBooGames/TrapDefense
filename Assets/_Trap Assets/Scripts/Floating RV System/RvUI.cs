@@ -63,9 +63,17 @@ public class RvUI : MonoBehaviour
     {
         string eventName = _rvRequest._RvEventName;
 
-        AnalyticsManager.ShowRVEvent(eventName);
+        if (HCSDKManager.INSTANCE == null)
+        {
+            OnAdFinished();
+            return;
+        }
 
-        OnAdFinished();
+        HCSDKManager.INSTANCE.DisplayRV(eventName, () =>
+        {
+            AnalyticsManager.ShowRVEvent(eventName);
+            OnAdFinished();
+        });
     }
 
     private void OnAdFinished()

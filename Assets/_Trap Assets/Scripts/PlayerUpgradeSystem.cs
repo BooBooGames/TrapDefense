@@ -191,11 +191,19 @@ public static class PlayerUpgradeSystem
 
         SaveGameData saveData = GameSaveSystem.Load();
         saveData.unlockedWeaponStates = (bool[])unlockedWeaponStates.Clone();
+
         saveData.gearFlowLevel = gearFlowLevel;
         saveData.baseHealthLevel = baseHealthLevel;
         GameSaveSystem.Save(saveData);
 
         isInitialized = true;
+        UpgradeStateChanged?.Invoke();
+    }
+
+    public static void HandleOnResetUpgradeLevels()
+    {
+
+        SaveStatLevels();
         UpgradeStateChanged?.Invoke();
     }
 

@@ -435,6 +435,12 @@ public class UIManager : MonoBehaviour
     {
         string eventName = "claim_2x_reward";
 
+        if (HCSDKManager.INSTANCE == null)
+        {
+            OnFailLevel(2, coins, elixirReward);
+            return;
+        }
+
         HCSDKManager.INSTANCE.DisplayRV(eventName, () =>
         {
             AnalyticsManager.ShowRVEvent(eventName);
@@ -445,18 +451,27 @@ public class UIManager : MonoBehaviour
     private void HandleReviveButtonClickOnFail()
     {
         string eventName = "revive";
-        HCSDKManager.INSTANCE.DisplayRV(eventName, () =>
-        {
-            didUseReviveInThisRun = true;
-            gameViewScreen.Revive();
-            failPreviewPanelView.Hide();
-            AnalyticsManager.ShowRVEvent(eventName);
 
-            if (gameViewScreen.ShouldPauseOnGameOver())
-            {
-                Time.timeScale = 1f;
-            }
-        });
+        if (HCSDKManager.INSTANCE == null)
+        {
+            Revive();
+            return;
+        }
+        HCSDKManager.INSTANCE.DisplayRV(eventName, Revive);
+    }
+
+    private void Revive()
+    {
+        string eventName = "revive";
+        didUseReviveInThisRun = true;
+        gameViewScreen.Revive();
+        failPreviewPanelView.Hide();
+        AnalyticsManager.ShowRVEvent(eventName);
+
+        if (gameViewScreen.ShouldPauseOnGameOver())
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     private void OnFailLevel(int pRewardMultiplier, int coins, int elixirReward)
@@ -526,7 +541,25 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        xSpeedPanel.Bind(ActivateFreeXSpeedBoost, ActivateUnlimitedXSpeedBoost, () => CloseXSpeedPanel());
+        xSpeedPanel.Bind(TryActivateFreeXSpeedBoost, ActivateUnlimitedXSpeedBoost, () => CloseXSpeedPanel());
+    }
+
+    private void TryActivateFreeXSpeedBoost()
+    {
+        string eventName = "increase_gameplay_speed";
+        
+        if(HCSDKManager.INSTANCE == null)
+        {
+            ActivateFreeXSpeedBoost();
+        }
+        else
+        {
+            HCSDKManager.INSTANCE.DisplayRV(eventName, () =>
+            {
+                AnalyticsManager.ShowRVEvent(eventName);
+                ActivateFreeXSpeedBoost();
+            });
+        }
     }
 
     private void ActivateFreeXSpeedBoost()
@@ -667,7 +700,7 @@ public class UIManager : MonoBehaviour
         CollectElixir(elixirReward, elixirMultiplier);
 
         Time.timeScale = 1f;
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void CollectGameCoinsAndStartNextLevel(int coins, int multiplier, int elixirReward, int elixirMultiplier, UnityAction hidePanel)
@@ -711,5 +744,10 @@ public class UIManager : MonoBehaviour
         {
             PlayerCurrencySystem.AddElixir(collectedElixir);
         }
+    }
+
+    public static void ResetToDefaults()
+    {
+        PlayerUpgradeSystem.ResetProgressionStateToDefaults(GetActiveLevelUpgradeConfig());
     }
 }

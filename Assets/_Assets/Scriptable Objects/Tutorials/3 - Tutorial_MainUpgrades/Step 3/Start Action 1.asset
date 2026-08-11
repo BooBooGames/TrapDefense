@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Start Action 1
   m_EditorClassIdentifier: Assembly-CSharp::ShowPopupAction
   _PopupType: 5
-  _HudButtonTypeArray: 0100000003000000
+  _HudButtonTypeArray: 03000000

@@ -1,27 +1,54 @@
 pluginManagement {
-    repositories {
-        **ARTIFACTORYREPOSITORY**
-        gradlePluginPortal()
-        google()
-        mavenCentral()
-    }
+	repositories {
+		gradlePluginPortal()
+		google()
+		mavenCentral()
+		maven {
+			url "https://artifactory.boombit.com/artifactory/libs-release"
+		}
+		**ARTIFACTORYREPOSITORY**
+	}
 }
 
 include ':launcher', ':unityLibrary'
+include 'unityLibrary:Coredian.androidlib:unity-classes'
 **INCLUDES**
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
-    repositories {
-        **ARTIFACTORYREPOSITORY**
-        google()
-        mavenCentral()
-// Android Resolver Repos Start
-        def unityProjectPath = $/file:///**DIR_UNITYPROJECT**/$.replace("\\", "/")
-        mavenLocal()
-// Android Resolver Repos End
-        flatDir {
-            dirs "${project(':unityLibrary').projectDir}/libs"
-        }
-    }
+	repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+	repositories {
+		google()
+		mavenCentral()
+		maven {
+			url "https://artifactory.boombit.com/artifactory/libs-release"
+		}
+		**ARTIFACTORYREPOSITORY**
+		flatDir {
+			dirs "${project(':unityLibrary').projectDir}/libs"
+		}
+		maven {
+			url "https://artifactory.boombit.com/artifactory/libs-release"
+		}
+		maven {
+			url "https://cboost.jfrog.io/artifactory/chartboost-ads/"
+		}
+		maven {
+			url "https://android-sdk.is.com"
+		}
+		maven {
+			url "https://dl-maven-android.mintegral.com/repository/mbridge_android_sdk_oversea"
+		}
+		maven {
+			url "https://artifact.bytedance.com/repository/pangle"
+		}
+		maven {
+			url "https://s3.amazonaws.com/smaato-sdk-releases/"
+		}
+		maven {
+			url "https://verve.jfrog.io/artifactory/verve-gradle-release"
+		}
+		maven {
+			url "https://ysonetwork.s3.eu-west-3.amazonaws.com/sdk/android"
+		}
+	}
 }

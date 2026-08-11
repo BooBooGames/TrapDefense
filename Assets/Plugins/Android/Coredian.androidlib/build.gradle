@@ -1,0 +1,36 @@
+apply plugin: 'com.android.library'
+
+dependencies {
+	compileOnly project('unity-classes')
+	implementation fileTree(dir: 'bin', include: ['*.jar'])
+	implementation fileTree(dir: 'libs', include: ['*.jar'])
+	implementation fileTree(dir: '../libs', include: ['*.jar'])
+	implementation 'com.boombit:firebase-crashlytics:1.1.5.0'
+	implementation 'com.coredian.privacy:core-usercentrics:2.27.3.3'
+	implementation 'com.coredian:core-common:1.15.8.0'
+	implementation 'com.android.support:multidex:1.0.3'
+}
+
+android {
+	namespace "com.coredian.androidlib"
+	compileSdk 36
+	
+	defaultConfig {
+		minSdk 25
+		targetSdk 36
+	}
+	
+	lint {
+		abortOnError false
+	}
+	
+	sourceSets {
+		main {
+			manifest.srcFile 'AndroidManifest.xml'
+			java.srcDirs = ['src']
+			res.srcDirs = ['res']
+			assets.srcDirs = ['assets']
+			jniLibs.srcDirs = ['libs']
+		}
+	}
+}

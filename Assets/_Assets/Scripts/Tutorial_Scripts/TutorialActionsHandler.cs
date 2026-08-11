@@ -74,7 +74,7 @@ public class TutorialActionsHandler : MonoBehaviour
     {
         foreach (var pair in Instance._objectActiveStatusDictionary)
         {
-            pair.Key.SetActive(true);
+            pair.Key.SetActive(pair.Value);
         }
     }
 

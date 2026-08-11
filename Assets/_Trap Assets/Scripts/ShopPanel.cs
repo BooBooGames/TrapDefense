@@ -234,7 +234,6 @@ public class ShopPanel : MonoBehaviour
             return;
         }
 
-        Debug.Log($"Click item {itemId}");
         switch (item.purchaseType)
         {
             case ShopPurchaseType.Iap:
@@ -249,11 +248,20 @@ public class ShopPanel : MonoBehaviour
             case ShopPurchaseType.RewardedVideo:
 
                 string eventName = "claim_free_gems_from_shop";
-                HCSDKManager.INSTANCE.DisplayRV(eventName, () =>
+
+                if (HCSDKManager.INSTANCE == null)
                 {
-                    AnalyticsManager.ShowRVEvent(eventName);
                     GrantShopItem(item);
-                });
+                }
+                else
+                {
+                    HCSDKManager.INSTANCE.DisplayRV(eventName, () =>
+                    {
+                        AnalyticsManager.ShowRVEvent(eventName);
+                        GrantShopItem(item);
+                    });
+                }
+                
                 break;
         }
     }
