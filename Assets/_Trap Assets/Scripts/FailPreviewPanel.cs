@@ -13,7 +13,7 @@ public class FailPreviewPanel : MonoBehaviour
     public TextMeshProUGUI elixirAmountLabel;
     public Button rvCollectButton;
 
-    public void Show(int coins, int elixirReward, UnityAction onCollect, UnityAction onRewardedCollect, UnityAction onRevive)
+    public void Show(int coins, int elixirReward, UnityAction onCollect, UnityAction onRewardedCollect, UnityAction onRevive, bool pShouldShowRevive)
     {
         gameObject.SetActive(true);
         inGameCoinLabel.text = CoinFormatter.FormatCoins(coins);
@@ -22,6 +22,8 @@ public class FailPreviewPanel : MonoBehaviour
         SetButton(tryAgainButton, onCollect);
         SetButton(rvCollectButton, onRewardedCollect);
         SetButton(reviveButton, onRevive);
+
+        reviveButton.gameObject.SetActive(pShouldShowRevive);
         /*  if (rvCollectButton != null)
          {
              rvCollectButton.gameObject.SetActive(false);

@@ -63,6 +63,8 @@ public class UIManager : MonoBehaviour
     private bool xSpeedPanelOpenedFromGameView;
     private bool didUseReviveInThisRun = false;
 
+    private bool _shouldShowRevive;
+
     private float timeScaleBeforeSettings = 1f;
     private Coroutine damageFlashRoutine;
 
@@ -229,6 +231,7 @@ public class UIManager : MonoBehaviour
         WeaponUpgradeController.SetGameplayAnimationsEnabled(true);
 
         didUseReviveInThisRun = false;
+        _shouldShowRevive = true;
 
         gameViewScreen.StartGameplay();
     }
@@ -305,7 +308,10 @@ public class UIManager : MonoBehaviour
             elixirReward,
             () => OnFailLevel(1, coins, elixirReward),
             () => TryClaim2xOnLevelFail(coins, elixirReward),
-            HandleReviveButtonClickOnFail);
+            HandleReviveButtonClickOnFail,
+            _shouldShowRevive);
+
+        _shouldShowRevive = false;
     }
 
     public void ShowPerksCardInfoPanel(PowerCardDefinition cardData, Sprite cardBackgroundSprite)
